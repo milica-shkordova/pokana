@@ -1,0 +1,40 @@
+{
+    "compilerOptions": {
+        "types": ["node"],
+        "baseUrl": "./src",
+        "typeRoots": ["./src/@types"],
+        "target": "es2016",
+        "jsx": "preserve",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": false,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "paths": {
+            "@components/*": ["components/*"],
+            "@constants/*": ["constants/*"],
+            "@enums/*": ["enums/*"],
+            "@hooks/*": ["hooks/*"],
+            "@interfaces/*": ["interfaces/*"],
+            "@pages/*": ["pages/*"],
+            "@public/*": ["public/*"],
+            "@assets/*": ["public/assets*"],
+            "@services/*": ["services/*"],
+            "@styles/*": ["styles/*"],
+            "@utils/*": ["utils/*"]
+        }
+    }
+}
