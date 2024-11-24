@@ -29,12 +29,14 @@
             "@enums/*": ["enums/*"],
             "@hooks/*": ["hooks/*"],
             "@interfaces/*": ["interfaces/*"],
+            "@routes/*": ["routes/*"],
             "@pages/*": ["pages/*"],
             "@public/*": ["public/*"],
-            "@assets/*": ["public/assets*"],
+            "@assets/*": ["assets/*"],
             "@services/*": ["services/*"],
             "@styles/*": ["styles/*"],
-            "@utils/*": ["utils/*"]
+            "@utils/*": ["utils/*"],
+            "@root/*": ["../*"]
         }
     }
 }
