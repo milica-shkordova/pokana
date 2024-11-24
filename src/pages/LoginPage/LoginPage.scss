@@ -1,0 +1,180 @@
+@import "@styles/mixins.scss";
+@import "@styles/colors.scss";
+
+.login-page {
+    background-color: var(--color-background-primary);
+    max-height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+
+    .login-image-horizontal {
+        position: absolute;
+        bottom: -2%;
+        left: 1%;
+        width: 50vh;
+        overflow: hidden;
+
+        @include laptop-m-styles {
+            left: -2%;
+        }
+
+        @include laptop-s-styles {
+            left: -5%;
+        }
+
+        @include tablet-styles {
+            width: 40vh;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .middle-wrapper {
+        height: 100%;
+        width: 70vw;
+        position: absolute;
+        right: 6vh;
+        overflow: hidden;
+        @include display-flex;
+
+        @include laptop-m-styles {
+            right: 0vh;
+        }
+
+        @include custom-styles(600px) {
+            position: relative;
+            margin: 0 auto;
+            width: 60vw;
+        }
+
+        @include custom-styles(450px) {
+            width: 70vw;
+        }
+
+        .login-image-vertical {
+            margin-top: 40vh;
+            width: 500px;
+
+            @include laptop-m-styles {
+                width: 430px;
+            }
+
+            @include laptop-s-styles {
+                margin-top: 52vh;
+            }
+
+            @include custom-styles(920px) {
+                margin-top: 57vh;
+            }
+
+            @include tablet-styles {
+                margin-top: 20vh;
+            }
+
+            @include custom-styles(600px) {
+                display: none;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .login-wrapper {
+            width: 35vh;
+            height: 55vh;
+            flex-direction: column;
+            padding: 10px;
+            background-color: var(--color-background-secondary);
+            border: 2px solid var(--color-background-tertiary);
+            border-radius: 20px;
+            position: relative;
+            @include display-flex;
+
+            @include custom-styles(1100px) {
+                width: 40vh;
+            }
+
+            @include laptop-s-styles {
+                width: 45vh;
+                height: 50vh;
+            }
+
+            @include tablet-styles {
+                width: 65vh;
+            }
+
+            .logo-image {
+                width: 180px;
+                height: 45px;
+                margin: 0 auto;
+                position: absolute;
+                top: 3vh;
+
+                @include laptop-m-styles {
+                    width: 155px;
+                    height: 40px;
+                }
+
+                @include custom-styles(1100px) {
+                    width: 140px;
+                    height: 35px;
+                }
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .login-label {
+                text-align: center;
+                margin: 5vh 0;
+                width: 100%;
+                font-size: $font-size-base;
+
+                @include laptop-m-styles {
+                    font-size: $font-size-s;
+                }
+
+                @include laptop-s-styles {
+                    font-size: $font-size-xs;
+                }
+            }
+
+            input {
+                width: 95%;
+                height: 3.5vh;
+                margin-bottom: 2vh;
+                outline: none;
+                border-radius: 5px;
+                border: 1px solid var(--color-neutral-light);
+                padding: 0 8px;
+                background-color: var(--color-background-tertiary);
+
+                &:focus {
+                    border: 2px solid rgb(159, 156, 156);
+                }
+
+                @include tablet-styles {
+                    width: 100%;
+                }
+            }
+
+            .login-button {
+                width: 150px;
+                height: 30px;
+                font-size: $font-size-2xs;
+
+                @include tablet-styles {
+                    font-size: $font-size-3xs;
+                }
+            }
+        }
+    }
+}
