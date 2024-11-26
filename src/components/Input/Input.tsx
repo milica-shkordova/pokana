@@ -1,6 +1,6 @@
 import { InputType } from "@enums/enums";
 
-interface InputProps {
+interface Props {
     id: string;
     type: InputType;
     placeholder?: string;
@@ -8,7 +8,7 @@ interface InputProps {
     name?: string;
 }
 
-const Input = ({ type, id, placeholder, name, className }: InputProps) => {
+const Input = ({ type, id, placeholder, name, className }: Props) => {
     return (
         <input
             type={type}

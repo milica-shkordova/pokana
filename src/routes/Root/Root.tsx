@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { routes } from "../../constants/routes.const";
+import { routes } from "@constants/routes.const";
 
 const Root = () => {
     const navigate = useNavigate();

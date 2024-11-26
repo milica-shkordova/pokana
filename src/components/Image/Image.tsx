@@ -1,12 +1,12 @@
 import classNames from "classnames";
 
-interface ImageProps {
+interface Props {
     src: string;
     alt: string;
     className?: string;
 }
 
-const Image = ({ src, alt, className }: ImageProps) => {
+const Image = ({ src, alt, className }: Props) => {
     return (
         <div className={classNames("image-wrapper", className)}>
             <img src={src} alt={alt} />
