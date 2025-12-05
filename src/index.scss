@@ -1,0 +1,17 @@
+@use "@styles/colors" as *;
+@use "@styles/mixins.scss" as *;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: var(--color-tertiary);
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}

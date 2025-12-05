@@ -1,0 +1,19 @@
+@use "@styles/colors" as *;
+
+.primary {
+    background-color: var(--color-background-tertiary);
+    color: var(--color-neutral-dark);
+    outline: none;
+    border-radius: 20px;
+    border: 1px solid var(--color-neutral-light);
+    cursor: pointer;
+}
+
+.secondary {
+    background-color: transparent;
+    color: var(--color-neutral-dark);
+    outline: none;
+    border-radius: 20px;
+    border: 1px solid var(--color-neutral-light);
+    cursor: pointer;
+}
