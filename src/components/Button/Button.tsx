@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import "./Button.scss";
 import { ButtonType } from "@enums/enums";
 
 interface Props {

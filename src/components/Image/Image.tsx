@@ -1,5 +1,3 @@
-import classNames from "classnames";
-
 interface Props {
     src: string;
     alt: string;
@@ -7,11 +5,7 @@ interface Props {
 }
 
 const Image = ({ src, alt, className }: Props) => {
-    return (
-        <div className={classNames("image-wrapper", className)}>
-            <img src={src} alt={alt} />
-        </div>
-    );
+    return <img src={src} alt={alt} className={className} />;
 };
 
 export default Image;

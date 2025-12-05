@@ -1,4 +1,4 @@
-@import "@styles/colors.scss";
+@use "@styles/colors" as *;
 
 .primary {
     background-color: var(--color-background-tertiary);

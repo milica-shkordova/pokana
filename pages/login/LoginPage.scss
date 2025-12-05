@@ -1,0 +1,80 @@
+@use "@styles/colors" as *;
+@use "@styles/mixins.scss" as *;
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+}
+
+.login-image-horizontal {
+    display: none;
+}
+
+.middle-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+
+    @include display-flex;
+}
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    gap: 20px;
+    padding: 40px;
+}
+
+.logo-image {
+    width: 150px;
+    height: auto;
+}
+
+.login-label {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.email-input,
+.password-input {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-button {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-image-vertical {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .login-image-horizontal {
+        display: block;
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .middle-wrapper {
+        flex-direction: column;
+    }
+
+    .login-wrapper {
+        width: 100%;
+    }
+
+    .login-image-vertical {
+        display: none;
+    }
+}
