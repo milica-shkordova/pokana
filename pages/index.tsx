@@ -28,6 +28,9 @@ export default function WeddingInvitation() {
 
   useEffect(() => {
     document.body.style.overflow = showOverlay ? "hidden" : "";
+    if (showOverlay) {
+      window.scrollTo(0, 0);
+    }
     return () => {
       document.body.style.overflow = "";
     };
