@@ -1,12 +1,12 @@
 {
     "theme": [
-        { "primary": "rgba(246, 201, 83, 100)" },
-        { "secondary": "rgba(246, 201, 83, 43)" },
-        { "tertiary": "rgba(246, 201, 83, 23)" },
-        { "neutral-light": "rgb(255, 255, 255)" },
-        { "neutral-dark": "rgb(0, 0, 0)" },
-        { "background-primary": "rgb(251, 232, 181)" },
-        { "background-secondary": "rgb(246, 201, 85)" },
-        { "background-tertiary": "rgb(249, 243, 227)" }
+        { "primary": "#4a4a4a" },
+        { "secondary": "#616161" },
+        { "tertiary": "#737373" },
+        { "neutral-light": "#ffffff" },
+        { "neutral-dark": "#262626" },
+        { "background-primary": "#ffffff" },
+        { "background-secondary": "#f7f7f7" },
+        { "background-tertiary": "#ebebeb" }
     ]
 }

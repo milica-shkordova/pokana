@@ -1,17 +1,12 @@
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function HomePage() {
   const router = useRouter();
 
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    router.push("/login");
-  };
+  useEffect(() => {
+    router.replace("/");
+  }, [router]);
 
-  return (
-    <div className="home-page">
-      <h1>HOME PAGE</h1>
-      <button onClick={handleLogOut}>LOG OUT</button>
-    </div>
-  );
+  return null;
 }

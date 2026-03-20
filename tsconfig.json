@@ -16,14 +16,10 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "ignoreDeprecations": "6.0",
-    "types": [
+"types": [
       "node"
     ],
     "baseUrl": "./src",
-    "typeRoots": [
-      "./src/@types"
-    ],
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
