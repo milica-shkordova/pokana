@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 
 const WEDDING_DATE = new Date("2026-06-28T17:00:00");
 
@@ -25,7 +24,14 @@ export default function WeddingInvitation() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [attempted, setAttempted] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
+
+  useEffect(() => {
+    document.body.style.overflow = showOverlay ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showOverlay]);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const updateGuest = (
@@ -70,83 +76,48 @@ export default function WeddingInvitation() {
   };
 
   useEffect(() => {
-    setShowOverlay(true);
-  }, []);
-
-  useEffect(() => {
     setTimeLeft(getTimeLeft());
     const timer = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
     return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
-    const images = document.querySelectorAll<HTMLElement>("[data-slide]");
-    images.forEach((el) => {
-      gsap.set(el, { x: el.dataset.slide === "left" ? -80 : 80, opacity: 0 });
-    });
-
-    const timelineItems = document.querySelectorAll<HTMLElement>(".inv__timeline-event");
-    gsap.set(timelineItems, { opacity: 0, y: 24 });
-
-    const slideObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const el = entry.target as HTMLElement;
-          const dir = el.dataset.slide === "left" ? -80 : 80;
-          if (entry.isIntersecting) {
-            gsap.to(el, { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" });
-          } else {
-            gsap.set(el, { x: dir, opacity: 0 });
-          }
-        });
-      },
-      { threshold: 0.1 },
-    );
-    images.forEach((el) => slideObserver.observe(el));
-
-    const timelineObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            gsap.to(timelineItems, {
-              opacity: 1,
-              y: 0,
-              duration: 0.7,
-              ease: "power2.out",
-              stagger: 0.25,
-            });
-          } else {
-            gsap.set(timelineItems, { opacity: 0, y: 24 });
-          }
-        });
-      },
-      { threshold: 0.1 },
-    );
-    if (timelineItems.length) timelineObserver.observe(timelineItems[0]);
-
-    return () => {
-      slideObserver.disconnect();
-      timelineObserver.disconnect();
+    const observe = (sel: string, cls: string, once = true) => {
+      const els = document.querySelectorAll(sel);
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add(cls);
+              if (once) obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      els.forEach((el) => obs.observe(el));
+      return obs;
     };
+
+    const o1 = observe("[data-reveal]", "inv--visible");
+    const o2 = observe("[data-slide='left']", "inv--slide-visible");
+    const o3 = observe("[data-slide='right']", "inv--slide-visible");
+
+    const timelineItems = document.querySelectorAll(".inv__timeline-event");
+    const o4 = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          timelineItems.forEach((el) => el.classList.add("inv--timeline-visible"));
+          o4.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    if (timelineItems.length) o4.observe(timelineItems[0]);
+
+    return () => { o1.disconnect(); o2.disconnect(); o3.disconnect(); o4.disconnect(); };
   }, []);
 
-  useEffect(() => {
-    const elements = document.querySelectorAll("[data-reveal]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("inv--visible");
-          } else {
-            entry.target.classList.remove("inv--visible");
-          }
-        });
-      },
-      { threshold: 0.12 },
-    );
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -193,7 +164,6 @@ export default function WeddingInvitation() {
           className="inv__overlay"
           onClick={() => {
             setShowOverlay(false);
-            window.scrollTo(0, 0);
             audioRef.current?.play().catch(() => {});
           }}
         >
