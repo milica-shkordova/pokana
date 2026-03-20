@@ -63,7 +63,7 @@ export default function WeddingInvitation() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        access_key: "a4c29375-3a5f-46d2-a527-1c051120c211",
+        access_key: "abae5b86-f1c2-4456-9534-dab1cd266256",
         subject: `RSVP: ${guests[0].name}`,
         message,
       }),
@@ -107,7 +107,9 @@ export default function WeddingInvitation() {
     const o4 = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          timelineItems.forEach((el) => el.classList.add("inv--timeline-visible"));
+          timelineItems.forEach((el) =>
+            el.classList.add("inv--timeline-visible"),
+          );
           o4.disconnect();
         }
       },
@@ -115,9 +117,13 @@ export default function WeddingInvitation() {
     );
     if (timelineItems.length) o4.observe(timelineItems[0]);
 
-    return () => { o1.disconnect(); o2.disconnect(); o3.disconnect(); o4.disconnect(); };
+    return () => {
+      o1.disconnect();
+      o2.disconnect();
+      o3.disconnect();
+      o4.disconnect();
+    };
   }, []);
-
 
   useEffect(() => {
     const audio = audioRef.current;
