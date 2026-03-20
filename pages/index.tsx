@@ -27,12 +27,19 @@ export default function WeddingInvitation() {
   const [showOverlay, setShowOverlay] = useState(true);
 
   useEffect(() => {
-    document.body.style.overflow = showOverlay ? "hidden" : "";
     if (showOverlay) {
-      window.scrollTo(0, 0);
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     }
     return () => {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     };
   }, [showOverlay]);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -193,7 +200,7 @@ export default function WeddingInvitation() {
       {/* Hero */}
       <section className="inv__hero">
         <div className="inv__hero-text">
-          <p className="inv__hero-date">28 Јуни 2026</p>
+          <p className="inv__hero-date">28 јуни 2026</p>
           <p className="inv__hero-venue">Ресторан „Ксантика“</p>
           <div className="inv__divider" />
           <div className="inv__names">
@@ -274,7 +281,7 @@ export default function WeddingInvitation() {
       <section className="inv__section" data-reveal>
         <p className="inv__label">Потврди присуство</p>
         <p className="inv__sub-text">
-          Ве замолуваме да го потврдите вашето присуство најдоцна до 15 Јуни
+          Ве замолуваме да го потврдите вашето присуство најдоцна до 10 јуни
           2026
         </p>
         <form className="inv__form" onSubmit={handleSubmit}>
