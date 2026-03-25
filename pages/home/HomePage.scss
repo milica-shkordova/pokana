@@ -572,8 +572,8 @@
     margin: 0 auto;
     color: #313131;
     position: absolute;
-    left: 80px;
-    top: 70px;
+    left: 72px;
+    top: 90px;
     z-index: 100;
     font-weight: 700;
   }
@@ -589,14 +589,14 @@
   &__overlay-hint {
     position: absolute;
     font-family: "Cormorant Garamond", serif;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 700;
     color: black;
     text-align: center;
     letter-spacing: 1.5px;
     width: 58%;
     left: 80px;
-    top: 140px;
+    top: 148px;
   }
 
   &__overlay-btn {
