@@ -4,7 +4,8 @@
       "WebFetch(domain:webgency.tilda.ws)",
       "Bash(npm install react-leaflet leaflet @types/leaflet --legacy-peer-deps)",
       "Bash(npm install react-leaflet@4 --legacy-peer-deps)",
-      "Bash(npm install nodemailer @types/nodemailer --legacy-peer-deps)"
+      "Bash(npm install nodemailer @types/nodemailer --legacy-peer-deps)",
+      "WebFetch(domain:docs.web3forms.com)"
     ]
   }
 }
