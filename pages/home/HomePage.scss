@@ -123,8 +123,8 @@
   }
 
   &__scroll-hint {
-    position: absolute;
-    bottom: 105px;
+    position: fixed;
+    bottom: calc(145px + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
