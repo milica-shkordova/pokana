@@ -5,7 +5,12 @@
       "Bash(npm install react-leaflet leaflet @types/leaflet --legacy-peer-deps)",
       "Bash(npm install react-leaflet@4 --legacy-peer-deps)",
       "Bash(npm install nodemailer @types/nodemailer --legacy-peer-deps)",
-      "WebFetch(domain:docs.web3forms.com)"
+      "WebFetch(domain:docs.web3forms.com)",
+      "Bash(mkdir -p src/components src/styles/theme)",
+      "Bash(mv components/* src/components/)",
+      "Bash(mv styles/global.scss src/styles/theme/global.scss)",
+      "Bash(mv styles/base.scss src/styles/theme/base.scss)",
+      "Bash(mv styles/index.scss src/styles/index.scss)"
     ]
   }
 }

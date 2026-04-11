@@ -1,0 +1,46 @@
+.inv {
+  &__footer {
+    background: #e9e7d8;
+    border-top: 1px solid #dbdbdb;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  &__footer-text {
+    font-family: "Manrope", sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #737373;
+    margin: 0;
+  }
+
+  &__footer-names {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 36px;
+    font-weight: 100;
+    font-style: italic;
+    color: black;
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  &__footer-heart {
+    font-size: 22px;
+    color: #737373;
+    margin: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .inv {
+    &__footer {
+      padding: 50px 24px;
+    }
+  }
+}

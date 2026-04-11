@@ -1,0 +1,67 @@
+.inv {
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.923);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__overlay-circle {
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  &__overlay-h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 44px;
+    font-style: italic;
+    margin: 0 auto;
+    color: #313131;
+    position: absolute;
+    left: 72px;
+    top: 90px;
+    z-index: 100;
+    font-weight: 700;
+  }
+
+  &__overlay-img {
+    width: 370px;
+    height: 310px;
+    object-fit: contain;
+    display: block;
+    position: relative;
+  }
+
+  &__overlay-hint {
+    position: absolute;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: black;
+    text-align: center;
+    letter-spacing: 1.5px;
+    width: 58%;
+    left: 80px;
+    top: 148px;
+  }
+
+  &__overlay-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: #3c4435;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    position: absolute;
+    bottom: 70px;
+    left: 100px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,121 @@
+.inv {
+  &__countdown {
+    position: relative;
+    overflow: hidden;
+    background: #cbbbbb45;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+
+    .inv__label {
+      color: #616161;
+      font-size: 25px;
+    }
+  }
+
+  &__countdown-grid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__countdown-num {
+    font-family: "Manrope", sans-serif;
+    font-size: 48px;
+    font-weight: 100;
+    color: black;
+    line-height: 1;
+    min-width: 72px;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  &__countdown-unit {
+    font-family: "Manrope", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #737373;
+  }
+
+  &__confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  &__confetti-piece {
+    position: absolute;
+    top: -20px;
+    opacity: 0;
+  }
+
+  &__countdown-celebrate {
+    font-size: 26px;
+    font-family: Cormorant Garamond, serif;
+    font-style: italic;
+    font-weight: 700;
+    color: #616161;
+    text-align: center;
+    animation: inv-celebrate-in 1.2s ease both;
+  }
+}
+
+@keyframes inv-confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes inv-celebrate-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .inv {
+    &__countdown {
+      padding: 50px 24px;
+    }
+
+    &__countdown-grid {
+      gap: 20px;
+    }
+
+    &__countdown-num {
+      font-size: 40px;
+      min-width: 52px;
+    }
+  }
+}

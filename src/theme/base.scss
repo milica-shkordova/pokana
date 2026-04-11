@@ -1,0 +1,52 @@
+.inv {
+  max-width: 450px;
+  margin: 0 auto;
+  background: #e9e7d8;
+  min-height: 100vh;
+
+  &__label {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 36px;
+    font-weight: 500;
+    font-style: italic;
+    color: black;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  &__divider {
+    width: 380px;
+    height: 1px;
+    background: rgba(44, 39, 39, 0.5);
+    margin: 4px auto;
+  }
+
+  &__sub-text {
+    font-family: "Manrope", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #737373;
+    text-align: center;
+    line-height: 1.7;
+
+    &.location {
+      margin-top: 0;
+    }
+  }
+
+  &__section {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .inv {
+    &__section {
+      padding: 50px 24px;
+    }
+  }
+}

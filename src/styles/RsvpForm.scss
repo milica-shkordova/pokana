@@ -1,0 +1,211 @@
+.inv {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  &__guest-row {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    background: rgba(203, 187, 187, 0.15);
+    border-radius: 6px;
+    animation: guestRowIn 0.3s ease;
+
+    &--multi {
+      padding-top: 22px;
+    }
+
+    &--leaving {
+      animation: guestRowOut 0.28s ease forwards;
+    }
+  }
+
+  &__field-error {
+    font-family: "Manrope", sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #c85050;
+    letter-spacing: 0.3px;
+  }
+
+  &__guest-name-row {
+    display: flex;
+  }
+
+  &__guest-delete {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background: transparent;
+    border: none;
+    color: #3c3a3a;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #a03030;
+    }
+  }
+
+  &__add-guest {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed rgba(44, 39, 39, 0.35);
+    color: #737373;
+    font-family: "Manrope", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: border-color 0.2s, color 0.2s;
+
+    &:hover {
+      border-color: black;
+      color: black;
+    }
+  }
+
+  &__select-wrap {
+    position: relative;
+    width: 100%;
+
+    &::after {
+      content: "▾";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #737373;
+      font-size: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    &:focus-within::after {
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+
+  &__select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid #dbdbdb;
+    background: #ffffff;
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: black;
+    outline: none;
+    border-radius: 6px;
+    appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: #a0a0a0;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    &.inv__select--empty {
+      color: #b0b0b0;
+    }
+
+    option {
+      color: black;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid #dbdbdb;
+    background: #ffffff;
+    font-family: "Manrope", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: black;
+    outline: none;
+    border-radius: 6px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: #a0a0a0;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    &::placeholder {
+      color: #b0b0b0;
+    }
+  }
+
+  &__form-success {
+    font-family: "Manrope", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
+    padding: 10px;
+    background: rgba(203, 187, 187, 0.3);
+    border-radius: 4px;
+  }
+
+  &__button {
+    padding: 14px;
+    background: #4a4a4a;
+    color: #ffffff;
+    border: none;
+    font-family: "Manrope", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.25s ease;
+    width: 200px;
+    margin: 0 auto;
+    margin-top: 20px;
+
+    &:hover {
+      background: #262626;
+    }
+  }
+}
+
+@keyframes guestRowIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes guestRowOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    max-height: 200px;
+    margin-bottom: 0;
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+    max-height: 0;
+    margin-bottom: -14px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

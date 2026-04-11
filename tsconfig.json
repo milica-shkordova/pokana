@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@theme/*": ["src/theme/*"],
+      "@/*": ["src/*"]
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,10 +19,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-"types": [
-      "node"
-    ],
-    "baseUrl": "./src",
+    "types": ["node"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -32,52 +32,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@constants/*": [
-        "constants/*"
-      ],
-      "@enums/*": [
-        "enums/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@interfaces/*": [
-        "interfaces/*"
-      ],
-      "@routes/*": [
-        "routes/*"
-      ],
-      "@pages/*": [
-        "pages/*"
-      ],
-      "@public/*": [
-        "public/*"
-      ],
-      "@assets/*": [
-        "assets/*"
-      ],
-      "@services/*": [
-        "services/*"
-      ],
-      "@styles/*": [
-        "styles/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@root/*": [
-        "../*"
-      ]
-    },
+    "plugins": [{ "name": "next" }],
     "target": "ES2017"
   },
   "include": [
@@ -87,7 +42,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
