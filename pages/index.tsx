@@ -29,7 +29,6 @@ export default function WeddingInvitation() {
   const [submitted, setSubmitted] = useState(false);
   const [attempted, setAttempted] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     if (showOverlay) {
@@ -53,16 +52,6 @@ export default function WeddingInvitation() {
   const heroImgWrapRef = useRef<HTMLDivElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
 
-  const toggleMusic = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play().catch(() => {});
-    }
-    setIsPlaying((prev) => !prev);
-  };
 
   const updateGuest = (
     index: number,
@@ -496,10 +485,6 @@ export default function WeddingInvitation() {
       <div className="inv__divider" />
 
       {/* Footer */}
-      <button className="inv__music-btn" onClick={toggleMusic}>
-        {isPlaying ? "⏸" : "▶"}
-      </button>
-
       <footer className="inv__footer">
         <p className="inv__footer-text">Со нетрпение ве очекуваме</p>
         <p className="inv__footer-names">Татјана &amp; Драган</p>
