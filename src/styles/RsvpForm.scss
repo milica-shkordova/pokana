@@ -7,6 +7,40 @@
     max-width: 400px;
   }
 
+  &__attendance {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  &__attendance-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #dbdbdb;
+    border-radius: 6px;
+    font-family: "Manrope", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #737373;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+
+    input[type="radio"] {
+      accent-color: #4a4a4a;
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    &--active {
+      border-color: #4a4a4a;
+      color: black;
+    }
+  }
+
   &__guest-row {
     position: relative;
     display: flex;

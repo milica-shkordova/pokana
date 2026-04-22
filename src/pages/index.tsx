@@ -52,8 +52,8 @@ export default function WeddingInvitation() {
         ease: "none",
         scrollTrigger: {
           trigger: "[data-gsap='welcome']",
-          start: "top 85%",
-          end: "top 60%",
+          start: "top 90%",
+          end: "top 55%",
           scrub: 1,
         },
       });

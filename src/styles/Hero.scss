@@ -56,13 +56,11 @@
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 10px;
   }
 
   &__hero-img-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(203, 187, 187, 0.45);
     pointer-events: none;
     border-radius: 10px;
   }

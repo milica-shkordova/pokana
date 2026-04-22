@@ -34,10 +34,10 @@ const config = {
   // Images — paths relative to /public
   images: {
     // Main hero photo
-    hero: "/assets/slika.jpeg",
+    hero: "/assets/1.jpg",
     // Photos shown in the image band sections between content blocks.
     // Add more paths to show different images in each band.
-    bands: ["/assets/slika.jpeg", "/assets/slika.jpeg"],
+    bands: ["/assets/2.jpg", "/assets/3.jpg"],
   },
 
   // Browser tab title
