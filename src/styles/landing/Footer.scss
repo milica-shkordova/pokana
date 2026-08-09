@@ -1,0 +1,24 @@
+.landing__footer {
+  padding: 16px 0;
+  border-top: 1px solid $landing-border;
+
+  &-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &-logo {
+    height: 54px;
+    width: auto;
+    display: block;
+  }
+
+  &-copy {
+    font-size: 13px;
+    color: $landing-muted;
+    margin: 0;
+  }
+}

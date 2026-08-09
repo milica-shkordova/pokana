@@ -1,0 +1,28 @@
+// Shared tokens for the Invy landing page — pulled from the existing
+// wedding-template palette (src/theme/base.scss) for visual consistency.
+$landing-bg: #ffffff;
+$landing-bg-soft: #e9e7d8;
+$landing-ink: #211d1d;
+$landing-muted: #6f6f6f;
+$landing-accent: #b8956a;
+$landing-accent-soft: #d4a8b0;
+$landing-border: rgba(44, 39, 39, 0.12);
+
+// Secondary accent palette — muted/dusty tones for hover states, icon
+// circles and confetti, kept in the same family as the gold/blush theme
+// above rather than saturated primary colors.
+$landing-fun-coral: #c17f5f; // dusty terracotta
+$landing-fun-yellow: #c9a24d; // muted ochre
+$landing-fun-mint: #7f9b82; // sage
+$landing-fun-sky: #7d93a6; // dusty slate blue
+$landing-fun-colors: $landing-fun-coral, $landing-fun-yellow, $landing-fun-mint, $landing-fun-sky, $landing-accent-soft;
+
+// Dedicated, fixed colors for gallery status badges (not part of the
+// rotating palette above, so they stay consistent regardless of card order).
+$landing-status-available: #5f7d6b; // muted forest green
+$landing-status-soon: #8a7a92; // muted mauve
+
+$landing-font-heading: "Cormorant Garamond", serif;
+$landing-font-body: "Manrope", sans-serif;
+
+$landing-max-width: 1120px;

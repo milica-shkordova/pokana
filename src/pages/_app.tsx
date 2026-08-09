@@ -1,14 +1,16 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import "@theme/index.scss";
-import config from "@/config";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>{config.title}</title>
-        <link rel="icon" href={config.favicon} />
+        <title>Invy — Digital invitations that feel like an event</title>
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>"
+        />
       </Head>
       <Component {...pageProps} />
     </>

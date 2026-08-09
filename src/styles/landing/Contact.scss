@@ -1,0 +1,208 @@
+.landing__contact {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 56px;
+  background: $landing-ink;
+  color: #fff;
+  border-radius: 28px;
+  padding: 56px;
+
+  .landing__eyebrow {
+    color: $landing-accent-soft;
+  }
+
+  .landing__heading {
+    color: #fff;
+  }
+
+  .landing__lede {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.landing__contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+
+    strong {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: $landing-accent-soft;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.landing__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  &-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+
+    &--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  label {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  input,
+  select,
+  textarea {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: #fff;
+    font-family: $landing-font-body;
+    font-size: 14px;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $landing-accent-soft;
+    }
+  }
+
+  // Native <option> elements render with the OS/browser's own dropdown
+  // chrome, not the dark input styling above — without this they inherit
+  // white text onto the browser's default white dropdown background.
+  // Solid (non-transparent) colors here keep the dropdown dark and readable.
+  select option {
+    color: #fff;
+    background: $landing-ink;
+  }
+
+  select optgroup {
+    color: $landing-accent-soft;
+    background: $landing-ink;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 96px;
+  }
+
+  &-submit {
+    grid-column: 1 / -1;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+    padding: 14px 28px;
+    border-radius: 999px;
+    background: $landing-accent-soft;
+    color: $landing-ink;
+    border: none;
+    font-family: $landing-font-body;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.2s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.03);
+      background: $landing-accent;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    &:hover:not(:disabled) &-arrow {
+      transform: translateX(4px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $landing-accent-soft;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  &-submit-arrow {
+    display: inline-block;
+    transition: transform 0.25s ease;
+  }
+
+  &-success {
+    position: relative;
+    grid-column: 1 / -1;
+    font-size: 14px;
+    color: $landing-fun-yellow;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.landing__confetti {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+
+  &-piece {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+    opacity: 0;
+    animation: landing-confetti-burst 0.9s ease-out forwards;
+  }
+}
+
+@keyframes landing-confetti-burst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), calc(var(--y) + 40px)) rotate(var(--rot));
+  }
+}
+
+@media (max-width: 860px) {
+  .landing__contact {
+    grid-template-columns: 1fr;
+    padding: 36px 24px;
+    border-radius: 20px;
+  }
+
+  .landing__form {
+    grid-template-columns: 1fr;
+  }
+}

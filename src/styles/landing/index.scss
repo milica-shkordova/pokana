@@ -1,0 +1,122 @@
+@import './variables';
+@import './Hero';
+@import './WhatWeDo';
+@import './TemplateGallery';
+@import './HowItWorks';
+@import './Contact';
+@import './Footer';
+
+.landing {
+  background: $landing-bg;
+  color: $landing-ink;
+  font-family: $landing-font-body;
+  overflow-x: hidden;
+
+  &__container {
+    max-width: $landing-max-width;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  &__eyebrow {
+    font-family: $landing-font-heading;
+    font-style: italic;
+    font-size: 20px;
+    color: $landing-accent;
+    letter-spacing: 1px;
+    margin: 0 0 8px;
+  }
+
+  &__heading {
+    font-family: $landing-font-heading;
+    font-weight: 500;
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.15;
+    margin: 0 0 16px;
+  }
+
+  &__lede {
+    font-size: 17px;
+    line-height: 1.7;
+    color: $landing-muted;
+    max-width: 620px;
+    margin: 0 0 0;
+  }
+
+  &__section {
+    padding: 96px 0;
+
+    &--soft {
+      background: $landing-bg-soft;
+    }
+  }
+
+  &__section-head {
+    text-align: center;
+    margin: 0 auto 56px;
+    max-width: 640px;
+
+    .landing__lede {
+      margin: 0 auto;
+    }
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 30px;
+    border-radius: 999px;
+    font-family: $landing-font-body;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.2s ease;
+
+    &--primary {
+      background: $landing-ink;
+      color: #fff;
+
+      &:hover {
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 10px 24px rgba(33, 29, 29, 0.25);
+        background: $landing-accent;
+      }
+    }
+
+    &--ghost {
+      background: transparent;
+      color: $landing-ink;
+      border-color: $landing-border;
+
+      &:hover {
+        border-color: $landing-ink;
+        transform: translateY(-2px) scale(1.04);
+      }
+    }
+
+    &--small {
+      padding: 10px 22px;
+      font-size: 14px;
+    }
+  }
+
+  [data-reveal] {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .landing {
+    &__section {
+      padding: 64px 0;
+    }
+
+    &__container {
+      padding: 0 20px;
+    }
+  }
+}
