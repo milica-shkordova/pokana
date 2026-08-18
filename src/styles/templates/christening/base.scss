@@ -1,0 +1,104 @@
+.christen {
+  --tpl-bg: #f7fafb;
+  --tpl-ink: #33393e;
+  --tpl-muted: #7c8790;
+  --tpl-accent: #7fa5ba;
+  --tpl-accent-soft: #e2eef2;
+  --tpl-border: rgba(51, 57, 62, 0.12);
+  --tpl-font-heading: "Cormorant Garamond", serif;
+  --tpl-font-body: "Manrope", sans-serif;
+
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--tpl-bg);
+  min-height: 100vh;
+  font-family: var(--tpl-font-body);
+  color: var(--tpl-ink);
+
+  &__hero {
+    padding: 56px 32px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+
+    &-image-wrap {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 6px solid #fff;
+      box-shadow: 0 16px 32px rgba(127, 165, 186, 0.3);
+      margin-bottom: 8px;
+    }
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &-title {
+      font-family: var(--tpl-font-heading);
+      font-style: italic;
+      font-size: 30px;
+      font-weight: 500;
+      margin: 0;
+      line-height: 1.3;
+      max-width: 320px;
+    }
+  }
+
+  &__parent-names {
+    font-family: var(--tpl-font-heading);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--tpl-accent);
+    margin: 0;
+  }
+
+  &__program {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  &__program-event {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  &__program-time {
+    font-weight: 700;
+    color: var(--tpl-accent);
+  }
+
+  &__footer {
+    padding: 48px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+
+    &-text {
+      font-size: 14px;
+      color: var(--tpl-muted);
+    }
+
+    &-name {
+      font-family: var(--tpl-font-heading);
+      font-style: italic;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    &-heart {
+      color: var(--tpl-accent);
+      font-size: 20px;
+      margin-top: 4px;
+    }
+  }
+}

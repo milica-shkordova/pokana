@@ -45,11 +45,14 @@ export const templateRegistry: TemplateMeta[] = [
   // Birthday
   {
     id: "birthday-kids",
+    templateId: "birthday",
     name: "Kids Birthday Bash",
     eventType: "Birthday",
     description:
       "Bright, playful and easy to scan for parents on the go — built for milestone kids' parties.",
-    status: "coming-soon",
+    previewImage: "/assets/2.jpg",
+    status: "available",
+    demoSlug: "demo-birthday",
   },
   {
     id: "birthday-milestone",
@@ -70,11 +73,14 @@ export const templateRegistry: TemplateMeta[] = [
   // Corporate
   {
     id: "corporate-conference",
+    templateId: "corporate",
     name: "Conference & Summit",
     eventType: "Corporate",
     description:
       "A polished, agenda-first layout for multi-day conferences and summits.",
-    status: "coming-soon",
+    previewImage: "/assets/3.jpg",
+    status: "available",
+    demoSlug: "demo-corporate",
   },
   {
     id: "corporate-launch",
@@ -96,11 +102,14 @@ export const templateRegistry: TemplateMeta[] = [
   // Christening
   {
     id: "christening-classic",
+    templateId: "christening",
     name: "Classic Christening",
     eventType: "Christening",
     description:
       "A timeless, soft-toned invitation for christenings and naming ceremonies.",
-    status: "coming-soon",
+    previewImage: "/assets/slika.jpeg",
+    status: "available",
+    demoSlug: "demo-christening",
   },
   {
     id: "christening-floral",

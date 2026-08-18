@@ -1,0 +1,166 @@
+.bday {
+  --tpl-bg: #fffaf3;
+  --tpl-ink: #2b2626;
+  --tpl-muted: #8a7f7f;
+  --tpl-accent: #ff8a65;
+  --tpl-accent-soft: #ffe4d6;
+  --tpl-border: rgba(43, 38, 38, 0.12);
+  --tpl-font-heading: "Cormorant Garamond", serif;
+  --tpl-font-body: "Manrope", sans-serif;
+
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--tpl-bg);
+  min-height: 100vh;
+  font-family: var(--tpl-font-body);
+  color: var(--tpl-ink);
+
+  // Pick a theme (config.theme) based on what the child's into — this is
+  // the "gender of the child" hook the design brief asked for, expressed as
+  // a style choice rather than a hardcoded assumption.
+  &--superhero {
+    --tpl-accent: #1e5fbf;
+    --tpl-accent-soft: #dce8fb;
+  }
+
+  &--princess {
+    --tpl-accent: #d67ab1;
+    --tpl-accent-soft: #fbe4f0;
+  }
+
+  &__hero {
+    padding: 56px 32px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+
+    &-image-wrap {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 6px solid #fff;
+      box-shadow: 0 16px 32px rgba(255, 138, 101, 0.25);
+      margin-bottom: 8px;
+    }
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    &-badge {
+      font-size: 32px;
+    }
+
+    &-title {
+      font-family: var(--tpl-font-heading);
+      font-size: 36px;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    &-message {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--tpl-muted);
+      max-width: 340px;
+    }
+  }
+
+  &__theme-banner {
+    width: 100%;
+
+    &-img {
+      width: 100%;
+      display: block;
+    }
+
+    &-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 40px 24px;
+      background: var(--tpl-accent-soft);
+      border-top: 1px dashed var(--tpl-border);
+      border-bottom: 1px dashed var(--tpl-border);
+    }
+
+    &-icon {
+      font-size: 40px;
+    }
+
+    &-text {
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      color: var(--tpl-muted);
+      text-align: center;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  &__detail-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 20px;
+    background: var(--tpl-accent-soft);
+    border-radius: 16px;
+    min-width: 120px;
+  }
+
+  &__detail-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--tpl-accent);
+    font-weight: 700;
+  }
+
+  &__detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tpl-ink);
+    text-align: center;
+  }
+
+  &__footer {
+    padding: 48px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+
+    &-text {
+      font-size: 15px;
+      color: var(--tpl-muted);
+    }
+
+    &-name {
+      font-family: var(--tpl-font-heading);
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+}

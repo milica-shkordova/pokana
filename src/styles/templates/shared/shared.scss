@@ -1,0 +1,296 @@
+// Structural styles shared by the birthday/corporate/christening templates.
+// Colors/fonts come from CSS custom properties (--tpl-*) that each
+// template's own base.scss sets on its root class, so this file stays
+// theme-agnostic and doesn't need to know which template is using it.
+
+// Pre-hide scroll-reveal targets so there's no flash of visible content
+// before useScrollReveal's GSAP effect runs. Every template's root element
+// carries the "tpl-page" class alongside its own (e.g. "bday").
+.tpl-page {
+  [data-reveal],
+  [data-reveal-scale],
+  [data-reveal-item] {
+    opacity: 0;
+  }
+}
+
+.tpl-label {
+  font-family: var(--tpl-font-heading);
+  font-style: italic;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--tpl-ink);
+  letter-spacing: 1px;
+  text-align: center;
+  margin: 0;
+}
+
+.tpl-sub-text {
+  font-family: var(--tpl-font-body);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--tpl-muted);
+  text-align: center;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.tpl-divider {
+  width: 100%;
+  max-width: 320px;
+  height: 1px;
+  background: var(--tpl-border);
+  margin: 4px auto;
+}
+
+.tpl-section {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+// Image band
+.tpl-image-band {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+
+  &-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--tpl-ink);
+    opacity: 0.06;
+  }
+}
+
+// Countdown
+.tpl-countdown {
+  position: relative;
+  padding: 44px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &-num {
+    font-family: var(--tpl-font-heading);
+    font-size: 34px;
+    font-weight: 600;
+    color: var(--tpl-ink);
+  }
+
+  &-unit {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--tpl-muted);
+  }
+
+  &-celebrate {
+    font-family: var(--tpl-font-heading);
+    font-style: italic;
+    font-size: 26px;
+    color: var(--tpl-accent);
+    text-align: center;
+  }
+}
+
+.tpl-confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  &-piece {
+    position: absolute;
+    top: -20px;
+    opacity: 0.9;
+  }
+}
+
+@keyframes tpl-confetti-fall {
+  0% {
+    top: -10%;
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0.3;
+  }
+}
+
+// Location
+.tpl-location-name {
+  font-family: var(--tpl-font-heading);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--tpl-ink);
+  margin: 0;
+  text-align: center;
+}
+
+.tpl-map-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.tpl-map-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.tpl-map-overlay-link {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: #fff;
+  color: var(--tpl-ink);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+// Form
+.tpl-form {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tpl-attendance {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tpl-attendance-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--tpl-border);
+  border-radius: 12px;
+  font-family: var(--tpl-font-body);
+  font-size: 14px;
+  color: var(--tpl-ink);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &--active {
+    border-color: var(--tpl-accent);
+    background: var(--tpl-accent-soft);
+  }
+}
+
+.tpl-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tpl-field-label {
+  font-size: 13px;
+  color: var(--tpl-muted);
+}
+
+.tpl-field-error {
+  font-size: 12px;
+  color: #c0483f;
+}
+
+.tpl-input,
+.tpl-textarea {
+  font-family: var(--tpl-font-body);
+  font-size: 14px;
+  color: var(--tpl-ink);
+  background: #fff;
+  border: 1px solid var(--tpl-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+
+  &:focus {
+    outline: none;
+    border-color: var(--tpl-accent);
+  }
+}
+
+.tpl-input--number {
+  max-width: 100px;
+}
+
+.tpl-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.tpl-form-success {
+  font-size: 14px;
+  color: var(--tpl-accent);
+  font-weight: 600;
+  margin: 0;
+}
+
+.tpl-button {
+  background: var(--tpl-accent);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-family: var(--tpl-font-body);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 600px) {
+  .tpl-section {
+    padding: 44px 24px;
+  }
+}

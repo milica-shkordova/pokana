@@ -1,1 +1,1 @@
-export type TemplateId = "wedding";
+export type TemplateId = "wedding" | "birthday" | "corporate" | "christening";

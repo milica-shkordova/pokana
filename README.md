@@ -29,18 +29,22 @@ src/
 │   ├── types.ts           # TemplateId union — add a new id here when a new template is built
 │   ├── index.ts            # TemplateId -> component registry
 │   ├── registry.ts         # Gallery metadata shown on the landing page (see below)
-│   └── wedding/            # The one template that's actually implemented today
-│       ├── index.tsx        # WeddingTemplate(config, clientSlug) — the full invitation page
-│       ├── types.ts          # WeddingConfig shape
-│       └── components/       # Hero, Countdown, RsvpForm, Program, Location, etc.
+│   ├── shared/              # Pieces reused by every template except wedding (see below)
+│   ├── wedding/             # Hero, Countdown, RsvpForm, Program, Location, Overlay, music intro
+│   ├── birthday/            # Hero, Countdown, PartyDetails, RsvpForm, Location
+│   ├── corporate/           # Hero, Countdown, About, Agenda, RsvpForm ("Register"), Location
+│   └── christening/         # Hero, Countdown, Welcome, Program, RsvpForm, Location
 ├── clients/
 │   ├── types.ts            # ClientEntry = { slug, templateId, config }
 │   ├── index.ts             # clients[] + getClientBySlug() / getAllSlugs()
 │   ├── tatjana-i-dragan.ts   # A real, live client
-│   └── demo-wedding.ts       # Sanitized placeholder client, used as the gallery's public demo
+│   └── demo-*.ts             # One sanitized placeholder client per template, used by the gallery
 ├── components/landing/     # Landing-page-only components (Hero, TemplateGallery, ContactForm, ...)
 ├── styles/
-│   ├── templates/wedding/   # Wedding template's scss (moved out of the old flat src/styles/)
+│   ├── templates/
+│   │   ├── wedding/          # Wedding's own scss (moved out of the old flat src/styles/)
+│   │   ├── shared/            # shared.scss — structural styles for the shared/ components
+│   │   ├── birthday/, corporate/, christening/  # base.scss per template: palette + bespoke sections
 │   └── landing/              # Landing page's scss
 ├── theme/                  # Global reset + the @import aggregator (index.scss)
 └── lib/web3forms.ts        # Web3Forms submit helper + per-client env var key lookup
@@ -48,7 +52,15 @@ src/
 
 ## How the invitation system works
 
-**Templates** (`src/templates/<id>/`) are reusable component trees that take a typed `config` object as a prop — they contain no hardcoded client data. Only one exists today: `wedding`.
+**Templates** (`src/templates/<id>/`) are reusable component trees that take a typed `config` object as a prop — they contain no hardcoded client data. Four exist today: `wedding`, `birthday`, `corporate`, `christening`.
+
+**Wedding** is the original, richest template (Overlay splash screen with music autoplay, per-guest RSVP with menu choice, hand-tuned GSAP scroll choreography) and is fully self-contained under `src/templates/wedding/` — nothing else depends on it and it depends on nothing shared, specifically so it can keep serving its one real, live client without risk from changes elsewhere.
+
+**Birthday, Corporate and Christening** were added later and share common pieces from `src/templates/shared/`, since their needs (a countdown, a simple RSVP/registration form, a venue map, a photo band) largely overlap:
+
+- `Countdown`, `Location`, `ImageBand`, `RsvpForm` — take their target date, labels, colors, etc. as props rather than hardcoding them.
+- `useScrollReveal(rootRef)` — a hook that fades in every `[data-reveal]` element inside a container as it scrolls into view, replacing the hand-written `ScrollTrigger` wiring the wedding template does per-selector.
+- Colors and fonts for these shared components come from CSS custom properties (`--tpl-bg`, `--tpl-ink`, `--tpl-accent`, etc., see `src/styles/templates/shared/shared.scss`) that each template's own `base.scss` sets on its root class — one shared stylesheet, a different palette (and, for Corporate, a restyled non-italic label) per template. Each template still has its own bespoke sections beyond the shared pieces (e.g. Corporate's `Agenda`, Birthday's `PartyDetails`, Christening's `Program`) — the goal was reuse of genuinely identical structure, not forcing every event type into one generic shape.
 
 **Clients** (`src/clients/<slug>.ts`) are one file per real invitation: which template it uses, plus that client's actual config (names, date, venue, photos, ...). They're collected in `src/clients/index.ts`.
 
@@ -56,16 +68,16 @@ src/
 
 ### Adding a new client
 
-1. Copy `src/clients/tatjana-i-dragan.ts` to `src/clients/<new-slug>.ts` and fill in that client's details (matches the `WeddingConfig` shape in `src/templates/wedding/types.ts` until a second template exists).
+1. Copy the closest `src/clients/demo-*.ts` for the template you're using to `src/clients/<new-slug>.ts` and fill in that client's details (the config shape is defined in `src/templates/<template>/types.ts`).
 2. Register it in the `clients` array in `src/clients/index.ts`.
-3. Add a Web3Forms access key for their RSVP form to `.env.local`: `NEXT_PUBLIC_WEB3FORMS_KEY_<SLUG_UPPER_SNAKE>=...` (see `.env.example`). Get a free key at [web3forms.com](https://web3forms.com) — it just needs the email address RSVPs should land in.
+3. Add a Web3Forms access key for their RSVP/registration form to `.env.local`: `NEXT_PUBLIC_WEB3FORMS_KEY_<SLUG_UPPER_SNAKE>=...` (see `.env.example`). Get a free key at [web3forms.com](https://web3forms.com) — it just needs the email address responses should land in.
 4. Redeploy. Their invitation is now live at `/<new-slug>`.
 
-### Adding a new template (e.g. "birthday")
+### Adding a new template (e.g. "graduation")
 
 1. Add the id to the `TemplateId` union in `src/templates/types.ts`.
-2. Build `src/templates/<id>/` (component tree + `types.ts` for its config shape), following the `wedding/` folder as a reference.
-3. Add its scss under `src/styles/templates/<id>/` and `@import` it from `src/theme/index.scss`.
+2. Build `src/templates/<id>/` (component tree + `types.ts` for its config shape). Reuse `src/templates/shared/*` for anything that's genuinely generic (countdown, map, simple RSVP, photo band); write bespoke components for whatever isn't (see `corporate/components/Agenda.tsx` for an example of the latter).
+3. Add a `base.scss` under `src/styles/templates/<id>/` that sets the `--tpl-*` custom properties (if using the shared components) plus styles for its own bespoke sections, and `@import` it from `src/theme/index.scss`.
 4. Register the component in `src/templates/index.ts`.
 5. Update `src/templates/registry.ts` (see below) so it shows up in the landing page's gallery as `"available"`, and point `demoSlug` at a new sanitized demo client.
 
@@ -75,7 +87,7 @@ src/
 
 ### Template gallery (`src/templates/registry.ts`)
 
-This is a plain data file, independent from the `clients`/`templates` system above — it's just what's *displayed* on the landing page, and doesn't have to correspond 1:1 with what's actually built. Each entry has a `status` of `"available"` (links to a live `demoSlug` client) or `"coming-soon"` (shown as a locked placeholder card). The gallery groups entries by `eventType` and shows a category tab per event type (derived automatically — no separate list to maintain). There are currently 12 entries across 4 categories (Wedding, Birthday, Corporate, Christening); only one ("Elegant Wedding") is real, the rest are placeholders describing templates not built yet.
+This is a plain data file, independent from the `clients`/`templates` system above — it's just what's *displayed* on the landing page, and doesn't have to correspond 1:1 with what's actually built. Each entry has a `status` of `"available"` (links to a live `demoSlug` client, and carries a `templateId`) or `"coming-soon"` (shown as a locked placeholder card, no `templateId`). The gallery groups entries by `eventType` and shows a category tab per event type (derived automatically — no separate list to maintain). There are 12 entries across 4 categories (Wedding, Birthday, Corporate, Christening), 3 per category; one entry per category is real ("Elegant Wedding", "Kids Birthday Bash", "Conference & Summit", "Classic Christening"), the other 8 are placeholders describing style variants that don't exist in code yet (e.g. "Rustic Wedding", "Product Launch").
 
 Filtering by tab doesn't unmount cards — it toggles a `hidden` class (`display: none`) — because the scroll-reveal animation only runs once on page load; unmounting and remounting a card would leave it permanently invisible.
 
@@ -104,4 +116,5 @@ npm run start    # run a production build
 
 - No deployment config in the repo (no `vercel.json` etc.) — sub-routes work on any Next.js host, but nothing is wired to a specific platform yet.
 - No admin UI or database — onboarding a client is a manual PR + redeploy, by design (see project history/decisions for why).
-- Most gallery entries are placeholders describing templates that don't exist in code yet.
+- 8 of the 12 gallery entries are style-variant placeholders within a category that already has a real template (e.g. "Rustic Wedding" alongside the real "Elegant Wedding") — describing templates that don't exist in code yet, not new event types.
+- The 3 newer templates (birthday, corporate, christening) skip the wedding template's Overlay splash screen and background-music autoplay — that intro is currently wedding-specific, not a shared feature.
