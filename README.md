@@ -1,8 +1,106 @@
-# Momentelo
+<p align="center">
+  <img src="apps/web/public/brand/momentelo-mark.png" alt="" width="96">
+</p>
 
-Scroll-animated digital invitations for weddings, birthdays, corporate events and christenings. Each invitation is a mobile-first page at its own link (`momentelo.mk/ana-marko`). Guests open it on their phone, see the countdown, program and map, and RSVP, and every RSVP is emailed straight to the client.
+<h1 align="center">Momentelo</h1>
 
-The client picks a template on the landing page and sends their details. The Momentelo team builds and publishes the invitation in the admin. Clients never log in.
+<p align="center">
+  <strong>Invitations your guests actually want to open.</strong><br>
+  Scroll-animated digital invitations for weddings, birthdays, christenings and company events.
+</p>
+
+<p align="center">
+  <img src="docs/images/landing-envelope.jpg" alt="The Momentelo landing page opens as a sealed envelope with a wax seal and a “Break the seal” button" width="860">
+</p>
+
+---
+
+## What it is
+
+Momentelo turns an invitation into a small, beautiful website. Each one lives at its own link, such as `momentelo.mk/ana-marko`. Guests open it on their phone, watch the countdown tick, read the program, find the venue in one tap and RSVP. Every reply lands straight in the host's inbox.
+
+There's nothing to install and nothing to print, and the host never has to log in anywhere:
+
+1. **Choose a template.** The host browses the gallery and taps any design to open its live demo.
+2. **Tell us about it.** They send names, date, venue and photos through the contact form.
+3. **We personalize it.** The Momentelo team builds their version in the admin and sends a preview link.
+4. **It goes live.** The invitation is published at its own link, ready to share.
+
+<p align="center">
+  <img src="docs/images/landing-hero.jpg" alt="Landing page hero: “Invitations your guests actually want to open.” with photos of a couple and an “I'll be there” tag" width="860">
+</p>
+
+## Inside every invitation
+
+| | |
+| --- | --- |
+| **Live countdown** | Ticks down every time a guest reopens the link. |
+| **RSVP in a tap** | Guest count and menu choice, emailed straight to the host. |
+| **One-tap directions** | Church, venue and parking, right in the guest's maps app. |
+| **Macedonian or English** | Or both, with a language switch for guests abroad. |
+| **Photos and music** | Photo slots with focal points, plus optional background music. |
+| **Private if needed** | An optional access code keeps an invitation for invited guests only. |
+
+<p align="center">
+  <img src="docs/images/landing-inside.jpg" alt="“Try it like your guests will”: cards for live countdown, RSVP, directions and language switch" width="860">
+</p>
+
+## Templates
+
+Every template is a real, working invitation, built mobile-first and animated as you scroll.
+
+<p align="center">
+  <img src="docs/images/landing-templates.jpg" alt="The “Pick your vibe” template gallery: phones showing wedding, kids birthday and milestone birthday designs" width="860">
+</p>
+
+<p align="center">
+  <img src="docs/images/invite-kids.jpg" alt="Kids Birthday Bash invitation on a phone" width="250">
+  &nbsp;
+  <img src="docs/images/invite-milestone.jpg" alt="Milestone Birthday invitation on a phone, in black and gold" width="250">
+  &nbsp;
+  <img src="docs/images/invite-summit.jpg" alt="Conference & Summit invitation on a phone, with a countdown" width="250">
+</p>
+<p align="center"><sub>Kids Birthday Bash · Milestone Birthday · Conference &amp; Summit</sub></p>
+
+## The admin
+
+The team runs everything from one workspace: events, templates, leads, media and settings. Its editor shows the real invitation in a live phone or desktop preview while you type.
+
+<p align="center">
+  <img src="docs/images/admin-events.jpg" alt="Admin events list with stats, status tabs and RSVP counts" width="860">
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/admin-new-event.jpg" alt="New event: choosing a template, with a preview panel and a lead suggestion"></td>
+    <td width="50%"><img src="docs/images/admin-menu.jpg" alt="Row menu with Open editor, View live page, Copy link, Download QR code, Export guest list, Duplicate, Unpublish and Archive"></td>
+  </tr>
+  <tr>
+    <td><sub><strong>New event.</strong> Pick a template, or start from a lead's request.</sub></td>
+    <td><sub><strong>Row actions.</strong> Share links, QR codes and guest-list exports.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/admin-archive.jpg" alt="Archive dialog with a “Keep the invitation link online” option"></td>
+    <td><img src="docs/images/landing-how.jpg" alt="“Four steps, zero stress”: an envelope travels along a dotted path through the four steps"></td>
+  </tr>
+  <tr>
+    <td><sub><strong>Archive.</strong> Optionally keep the invitation link online.</sub></td>
+    <td><sub><strong>How it works.</strong> The landing page's scroll-driven journey.</sub></td>
+  </tr>
+</table>
+
+## Brand
+
+| | |
+| --- | --- |
+| **Voice** | Warm, personal, a little playful. Short sentences, no jargon. |
+| **Colours** | Terracotta `#B5502F` · linen `#FBE6E0` · cream `#FFF9F3` · honey `#FCEFD9` · ink `#2A2522`, with sage and marigold accents. Tokens live in [`packages/ui/src/styles/_tokens.scss`](packages/ui/src/styles/_tokens.scss). |
+| **Assets** | Logo, mark, wordmark, wax seal and postmark in [`apps/web/public/brand/`](apps/web/public/brand/). |
+| **Languages** | Macedonian (default) and English across the landing page and invitations. |
+
+---
+
+# For developers
 
 ## Architecture
 
