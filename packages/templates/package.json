@@ -1,0 +1,25 @@
+{
+  "name": "@momentelo/templates",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./definitions": "./src/definitions.ts",
+    "./styles.scss": "./styles/index.scss"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@momentelo/shared": "*",
+    "gsap": "^3.14.2",
+    "zod": "^3.25.76"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

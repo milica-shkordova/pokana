@@ -1,0 +1,349 @@
+.ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+
+  &__label {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ui-color-ink);
+  }
+
+  &__hint {
+    color: var(--ui-color-muted);
+    font-size: 12px;
+  }
+
+  &__error {
+    color: var(--ui-color-danger);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  &__ok {
+    color: var(--ui-color-success);
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.ui-input,
+.ui-select,
+.ui-textarea {
+  width: 100%;
+  min-height: var(--ui-touch);
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border-input);
+  border-radius: var(--ui-radius-input);
+  padding: 0 12px;
+  color: var(--ui-color-ink);
+  font-family: var(--ui-font-body);
+  font-size: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &::placeholder {
+    color: var(--ui-color-faint);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--ui-color-terracotta);
+    box-shadow: 0 0 0 3px rgba(181, 80, 47, 0.15);
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--ui-color-danger);
+  }
+
+  &:disabled {
+    background: var(--ui-color-bg);
+    color: var(--ui-color-muted);
+    cursor: not-allowed;
+  }
+}
+
+.ui-textarea {
+  padding: 12px;
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.6;
+
+  &--code {
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size: 13px;
+    min-height: 420px;
+    white-space: pre;
+  }
+}
+
+// Input with a fixed prefix ("momentelo.mk/") and optional suffix ("Available").
+.ui-input-group {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--ui-touch);
+  border: 1px solid var(--ui-color-border-input);
+  border-radius: var(--ui-radius-input);
+  overflow: hidden;
+  background: var(--ui-color-surface);
+
+  &:focus-within {
+    border-color: var(--ui-color-terracotta);
+    box-shadow: 0 0 0 3px rgba(181, 80, 47, 0.15);
+  }
+
+  &__addon {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    color: var(--ui-color-muted);
+    white-space: nowrap;
+
+    &--prefix {
+      background: var(--ui-color-bg);
+      border-right: 1px solid var(--ui-color-border-input);
+    }
+  }
+
+  .ui-input {
+    border: 0;
+    border-radius: 0;
+    min-width: 0;
+    flex: 1;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.ui-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--ui-touch);
+  font-size: 14px;
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--ui-color-terracotta);
+  }
+}
+
+.ui-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+
+  > .ui-field--full {
+    grid-column: 1 / -1;
+  }
+}
+
+// ── Switch ──
+.ui-switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__label {
+    font-weight: 600;
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: var(--ui-color-muted);
+  }
+}
+
+.ui-switch {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--ui-radius-pill);
+  padding: 3px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  background: var(--ui-color-border-dashed);
+  transition: background 0.15s ease;
+
+  &::after {
+    content: "";
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease;
+  }
+
+  &[aria-checked="true"] {
+    background: var(--ui-color-success);
+
+    &::after {
+      transform: translateX(20px);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// ── Segmented control ──
+.ui-segmented {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  background: var(--ui-color-selected);
+  padding: 4px;
+  border-radius: var(--ui-radius-md);
+
+  &--inline {
+    display: inline-grid;
+    grid-auto-columns: auto;
+    padding: 3px;
+    border-radius: var(--ui-radius-input);
+  }
+
+  &__option {
+    min-height: 38px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ui-color-muted);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    &[aria-checked="true"],
+    &[aria-pressed="true"] {
+      background: var(--ui-color-surface);
+      color: var(--ui-color-ink);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  // Sliding thumb (Segmented.tsx positions it): the selected option is drawn by
+  // the thumb, which glides when the choice changes.
+  & {
+    position: relative;
+    isolation: isolate;
+  }
+
+  &__option {
+    position: relative;
+    transition: color 0.2s ease;
+
+    &[aria-checked="true"] {
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+
+  &__thumb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    border-radius: 9px;
+    background: var(--ui-color-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+    transition:
+      transform 0.32s var(--ui-ease-out),
+      width 0.32s var(--ui-ease-out),
+      height 0.32s var(--ui-ease-out);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+}
+
+// ── Swatches (theme colour presets) ──
+.ui-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ui-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+
+  &[aria-checked="true"]::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 2px solid var(--ui-color-ink-strong);
+  }
+
+  &--lg {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+// Dark surface variant (e.g. the landing contact card).
+.ui-inverse {
+  .ui-field__label {
+    color: var(--ui-color-cocoa-soft);
+    font-weight: 500;
+  }
+
+  .ui-input,
+  .ui-select,
+  .ui-textarea {
+    background: var(--ui-color-cocoa-input);
+    border-color: var(--ui-color-cocoa-input);
+    color: var(--ui-color-cocoa-text);
+    min-height: 46px;
+    padding-left: 14px;
+    padding-right: 14px;
+
+    &::placeholder {
+      color: #a8928a;
+    }
+
+    &:focus {
+      border-color: var(--ui-color-rose);
+      box-shadow: none;
+    }
+  }
+
+  .ui-textarea {
+    padding-top: 12px;
+  }
+
+  .ui-select option,
+  .ui-select optgroup {
+    color: var(--ui-color-cocoa-text);
+    background: var(--ui-color-cocoa);
+  }
+}

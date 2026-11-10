@@ -1,0 +1,54 @@
+// Kept deliberately minimal — the invitation templates render on top of this
+// reset too, so anything added here changes how every template looks.
+// App-level typography lives on `.ui-root` (landing, admin).
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// `clip`, not `hidden`: hidden on <body> makes it a scroll container,
+// which silently breaks every position: sticky (admin sidebar, settings nav).
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ui-root {
+  color: var(--ui-color-ink);
+  font-family: var(--ui-font-body);
+  font-size: 14px;
+  line-height: 1.5;
+
+  // :where() keeps specificity at 0 so component classes (.ui-button--primary
+  // on an <a>) always win over these defaults.
+  :where(a) {
+    color: var(--ui-color-ink);
+  }
+
+  :where(a):hover {
+    color: var(--ui-color-terracotta);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ui-color-terracotta);
+    outline-offset: 2px;
+  }
+}
+
+.ui-sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

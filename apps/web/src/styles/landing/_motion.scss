@@ -1,0 +1,603 @@
+// Animated landing sections built on top of landing.scss (HANDOFF-ANIMATIONS):
+// B2 flip cards, B5 inside dive, B7 contact envelope, B8 cursor, B9 footer.
+// Imported from global.scss.
+
+// ── B2 What we do: flip cards ──────────────────────────────────────────────
+.lp-flip {
+  perspective: 1200px;
+  display: flex;
+
+  &__inner {
+    position: relative;
+    flex: 1;
+    display: flex;
+    transform-style: preserve-3d;
+  }
+
+  &__front,
+  &__back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  &__front {
+    flex: 1;
+    box-shadow: 0 16px 40px rgba(181, 80, 47, 0.1);
+  }
+
+  &__back {
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+    border-radius: 18px;
+    background: var(--ui-color-terracotta);
+    box-shadow: 0 16px 40px rgba(181, 80, 47, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__m {
+    font-family: var(--ui-font-heading);
+    font-weight: 600;
+    font-size: 96px;
+    line-height: 1;
+    color: var(--ui-color-blush-tint);
+  }
+
+  &__dot {
+    position: absolute;
+
+    &--1 {
+      left: 40px;
+      top: 44px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--ui-color-marigold);
+    }
+    &--2 {
+      right: 44px;
+      top: 70px;
+      width: 30px;
+      height: 10px;
+      border-radius: 5px;
+      background: var(--ui-color-rose);
+      rotate: -30deg;
+    }
+    &--3 {
+      left: 64px;
+      bottom: 48px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--ui-color-sage);
+    }
+  }
+}
+
+// ── B7 Contact: the message folds into an envelope and flies away ──────────
+.lp-send {
+  position: relative;
+
+  &__envelope {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 260px;
+    height: 170px;
+    margin: -85px 0 0 -130px;
+    border-radius: 14px;
+    background: #fffdf9;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    will-change: transform;
+  }
+
+  &__flap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 60%;
+    background: #f3d7be;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+
+  &__seal {
+    position: absolute;
+    left: calc(50% - 14px);
+    top: calc(60% - 18px);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ui-color-terracotta);
+  }
+
+  &__burst {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  &__piece {
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    opacity: 0;
+
+    &--strip {
+      left: -11px;
+      top: -4px;
+      width: 22px;
+      height: 8px;
+      border-radius: 4px;
+    }
+  }
+
+  &__done {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &__title {
+    font-family: var(--ui-font-heading);
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.1;
+    color: var(--ui-color-cocoa-text);
+  }
+
+  &__text {
+    color: var(--ui-color-cocoa-soft);
+  }
+
+  &__again {
+    margin-top: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    border: 1px solid #6a5650;
+    border-radius: var(--ui-radius-pill);
+    background: transparent;
+    color: var(--ui-color-cocoa-text);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--ui-color-rose);
+    }
+  }
+}
+
+// ── B9 Footer finale ───────────────────────────────────────────────────────
+.lp-finale {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  padding: 96px 24px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  text-align: center;
+
+  &__rain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__drop {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: lp-finale-fall 8s linear infinite;
+    animation-play-state: paused;
+    transition: opacity 0.6s ease;
+
+    &--strip {
+      width: 20px;
+      height: 7px;
+      border-radius: 4px;
+    }
+
+    .is-raining & {
+      opacity: 0.8;
+      animation-play-state: running;
+    }
+  }
+
+  &__mark {
+    position: relative;
+    width: clamp(110px, 16vw, 190px);
+    height: auto;
+    display: block;
+    margin-bottom: -20px;
+  }
+
+  &__word {
+    position: relative;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-family: var(--ui-font-heading);
+    font-weight: 600;
+    font-size: clamp(64px, 14.5vw, 210px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ui-color-ink);
+  }
+
+  &__char {
+    display: inline-block;
+    white-space: pre;
+
+    &--dot {
+      color: var(--ui-color-coral);
+    }
+  }
+
+  &__tag {
+    position: relative;
+    margin: 0;
+    font-size: 18px;
+    color: var(--ui-color-text-secondary);
+  }
+
+  @media (max-width: 720px) {
+    padding: 64px 16px 40px;
+    gap: 20px;
+
+    &__tag {
+      font-size: 15px;
+    }
+  }
+}
+
+@keyframes lp-finale-fall {
+  from {
+    transform: translateY(-60px) rotate(0deg);
+  }
+  to {
+    transform: translateY(min(960px, 110vh)) rotate(540deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-finale__drop {
+    display: none;
+  }
+}
+
+// The finale fills the viewport together with the small copyright row under it.
+.lp-footer {
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 0;
+  border-top: 0;
+  display: flex;
+  flex-direction: column;
+
+  .lp-footer__row {
+    padding: 24px;
+    border-top: 0;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+// ── B8 Custom cursor ───────────────────────────────────────────────────────
+// Positioned with transforms by Cursor.tsx; hidden until the mouse moves, and
+// never shown on touch devices or with reduced motion.
+.lp-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+
+  &__dot,
+  &__pill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    translate: -50% -50%;
+  }
+
+  &__dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--ui-color-coral);
+  }
+
+  &__pill {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--ui-radius-pill);
+    background: var(--ui-color-ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  @media (pointer: coarse), (prefers-reduced-motion: reduce) {
+    display: none;
+  }
+}
+
+// What we do on desktop: sized to its content (no longer a full screen).
+@media (min-width: 1024px) {
+  .lp-what {
+    padding-top: 80px;
+    padding-bottom: 88px;
+
+    > .lp-wrap {
+      width: 100%;
+    }
+
+    .lp-feature {
+      padding: 36px 32px;
+      border-radius: 28px;
+    }
+
+    .lp-flip__back {
+      border-radius: 28px;
+    }
+
+    .lp-feature__title {
+      font-size: 26px;
+    }
+
+    .lp-feature__text {
+      font-size: 15px;
+    }
+  }
+}
+
+// ── Landing scrollbar ──────────────────────────────────────────────────────
+// global.scss hides the scrollbar for the full-bleed invitation pages. The
+// landing page is long and partly pinned, so it shows a slim brand scrollbar
+// as a hint that there's more below. Scoped to pages containing `.lp`.
+html:has(.lp) {
+  // The scrollbar's space is always reserved, so the page never shifts when
+  // scrolling is locked (sealed envelope, open phone menu) and the bar hides.
+  // The reserved strip shows the page's cream background.
+  scrollbar-gutter: stable;
+  background: var(--ui-color-cream);
+
+  // Firefox, and Chrome/Edge 121+ (these take priority over ::-webkit-*).
+  scrollbar-width: thin;
+  scrollbar-color: var(--ui-color-terracotta) var(--ui-color-blush-tint);
+
+  // Older WebKit/Blink and Safari.
+  body::-webkit-scrollbar {
+    display: block;
+    width: 10px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: var(--ui-color-blush-tint);
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: var(--ui-color-terracotta);
+    border-radius: 999px;
+    border: 2px solid var(--ui-color-blush-tint);
+
+    &:hover {
+      background: var(--ui-color-clay-deep);
+    }
+  }
+}
+
+// ── FAQ: animated expand / collapse ────────────────────────────────────────
+// The answer's grid row animates 0fr → 1fr (its natural height), with a fade.
+.lp-faq__a {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.4s var(--ui-ease-out),
+    opacity 0.3s ease;
+}
+
+.lp-faq__a-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lp-faq__item--open .lp-faq__a {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+// ── Blur while jumping between sections (useSmoothAnchors) ─────────────────
+.lp-scroll-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 999; // under the custom cursor
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  background: rgba(255, 249, 243, 0.12);
+  // backdrop-filter is set inline by useSmoothAnchors (see the note there).
+}
+
+// ── Header language switch (МК / EN) ───────────────────────────────────────
+.lp-lang {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--ui-radius-pill);
+  background: #fff;
+  border: 1px solid var(--ui-color-line);
+
+  &__opt {
+    min-width: 40px;
+    min-height: 34px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: var(--ui-radius-pill);
+    background: transparent;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ui-color-ink-soft);
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      color: var(--ui-color-terracotta);
+    }
+
+    // The chosen language sits on the sliding terracotta pill (same colour
+    // as the header "Get in touch" button).
+    &--on,
+    &--on:hover {
+      color: #fff;
+    }
+  }
+
+  &__opt {
+    position: relative;
+    z-index: 1;
+  }
+
+  // The pill: positioned by LangToggle (width + translateX of the active
+  // button), it slides with a little spring once it has been placed.
+  &__thumb {
+    position: absolute;
+    left: 0;
+    top: 3px;
+    bottom: 3px;
+    width: 40px;
+    border-radius: var(--ui-radius-pill);
+    background: var(--ui-color-terracotta);
+    box-shadow: 0 2px 6px rgba(181, 80, 47, 0.3);
+    pointer-events: none;
+  }
+
+  &--placed &__thumb {
+    transition:
+      transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+      width 0.3s ease;
+  }
+
+  &:active &__thumb {
+    scale: 0.94;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &--placed &__thumb {
+      transition: none;
+    }
+  }
+}
+
+// What we do: a soft shadow gives every card a clear edge on the cream
+// background (no border).
+.lp-flip__front {
+  box-shadow:
+    0 18px 40px rgba(181, 80, 47, 0.14),
+    0 2px 6px rgba(42, 37, 34, 0.06);
+}
+
+// Contact: on phones the card padding is smaller, so tuck the top confetti
+// into the top edge, clear of the eyebrow and the form fields.
+@media (max-width: 720px) {
+  .lp-contact__confetti--1 {
+    top: 10px;
+    right: 24px;
+  }
+
+  .lp-contact__confetti--2 {
+    top: 8px;
+    right: 56px;
+  }
+}
+
+// Footer row: "© 2026 Momentelo" and the language switch, side by side.
+.lp-footer .lp-footer__row {
+  gap: 16px;
+}
+
+// Cursor: a small outlined ring (not a solid dot), so it never reads as
+// stray confetti.
+.lp-cursor__dot {
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 2px solid var(--ui-color-terracotta);
+  box-sizing: border-box;
+}
+
+// While the envelope is showing (sealed or opening) or the phone menu is open,
+// the page can't scroll: the scrollbar keeps its space (no shift) but turns
+// fully transparent, so only the cream background shows there.
+html.lp-sealed,
+html.lp-opening,
+html.lp-intro-armed,
+html.lp-menu-open {
+  scrollbar-color: transparent transparent;
+
+  body::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-color: transparent;
+  }
+}
+
+// Off-screen sections (usePauseOffscreen): looping CSS animations stop, so
+// they need no frames, style updates or compositor layers while unseen.
+.lp-paused,
+.lp-paused *,
+.lp-paused *::before,
+.lp-paused *::after {
+  animation-play-state: paused !important;
+}
+
+// The decorative confetti loops go further: no animation at all while off
+// screen, because even a paused animation keeps each piece on its own
+// compositor layer (~65 of them). They restart from the beginning when their
+// section comes back, which isn't noticeable for looping drift.
+.lp-paused :is(.lp-hero__burst-piece, .lp-hero__confetti, .lp-finale__drop) {
+  animation: none !important;
+}

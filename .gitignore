@@ -27,3 +27,12 @@ next-env.d.ts
 *.njsproj
 *.sln
 *.sw?
+
+# Monorepo build output / local data
+dist
+*.tsbuildinfo
+*.db
+*.db-journal
+
+# Uploaded media (local storage driver)
+apps/api/storage

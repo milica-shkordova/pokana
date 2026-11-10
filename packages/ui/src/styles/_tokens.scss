@@ -1,0 +1,123 @@
+// Momentelo design tokens — the single source of truth for the "Momentelo look" shared
+// by the landing page and the admin panel (HANDOFF §4). Exposed as CSS custom
+// properties so any stylesheet (or inline style) can use them.
+// Palette: HANDOFF §4.3 / design/Palette.dc.html ("playful but muted").
+
+:root {
+  // Accents. Bright ones (coral, rose, marigold, sage) are fills and decoration
+  // only: put ink text on them, never white.
+  --ui-color-terracotta: #b5502f; // primary buttons, links, active tabs; safe for text
+  --ui-color-coral: #d9693f;
+  --ui-color-rose: #ee9c92;
+  --ui-color-marigold: #e9a94f;
+  --ui-color-sage: #9db59a;
+  --ui-color-clay-deep: #8e3a22; // terracotta hover, dark accent text
+
+  // Tints (section and card backgrounds)
+  --ui-color-blush-tint: #fbe6e0;
+  --ui-color-honey: #fcefd9;
+  --ui-color-mint: #e6eee4;
+  --ui-color-mist: #e4eaf2;
+  --ui-color-lilac: #f6e1ec;
+  --ui-color-line: #f0e2d6;
+
+  // Dark contact card
+  --ui-color-cocoa: #3a2a26;
+  --ui-color-cocoa-input: #4a3833;
+  --ui-color-cocoa-text: #fbefe8;
+  --ui-color-cocoa-soft: #d9c8bf;
+  --ui-color-cocoa-faint: #bfa99e;
+
+  // Primary action
+  --ui-color-primary: var(--ui-color-terracotta);
+  --ui-color-primary-hover: var(--ui-color-clay-deep);
+
+  // Surfaces
+  --ui-color-bg: #fff9f3; // cream: admin page background
+  --ui-color-cream: #fff9f3; // landing background
+  --ui-color-sand: #fcefd9; // honey: landing template section
+  --ui-color-linen: #fbe6e0; // blush: landing hero
+  --ui-color-surface: #ffffff; // paper: cards, sidebar
+  --ui-color-surface-muted: #fff9f3; // drop zones, quoted messages
+  --ui-color-selected: #fbe6e0; // selected nav item / row / segmented track
+
+  // Lines
+  --ui-color-border: #f0e2d6;
+  --ui-color-border-soft: #f5ebe2;
+  --ui-color-border-input: #f0e2d6;
+  --ui-color-border-dashed: #e7c9b8;
+
+  // Ink
+  --ui-color-ink: #2a2522;
+  --ui-color-ink-strong: #2a2522; // dark mock-ups (phone frame), strong text
+  --ui-color-ink-soft: #4a403a;
+  --ui-color-text-secondary: #5e544c;
+  --ui-color-muted: #7a6e66; // passes 4.5:1 on cream
+  --ui-color-faint: #a39b8f;
+
+  // Accent roles
+  --ui-color-clay: #b5502f; // category labels, lead badge
+  --ui-color-gold: #b5502f; // section eyebrow
+  --ui-color-blush: #ee9c92; // rose: buttons on dark backgrounds
+  --ui-color-danger: #8c3b2e;
+  --ui-color-warning: #8a5a12;
+  --ui-color-success: #3d5a41;
+
+  // Status pairs (bg / text)
+  --ui-status-live-bg: #e6eee4;
+  --ui-status-live-fg: #3d5a41;
+  --ui-status-draft-bg: #f0e2d6;
+  --ui-status-draft-fg: #5e544c;
+  --ui-status-review-bg: #fcefd9;
+  --ui-status-review-fg: #8a5a12;
+  --ui-status-soon-bg: #f6e1ec;
+  --ui-status-soon-fg: #8a4468;
+  --ui-status-past-bg: #eeeeee;
+  --ui-status-past-fg: #555555;
+  --ui-status-new-bg: #fbe6e0;
+  --ui-status-new-fg: #9a4a2a;
+  --ui-status-info-bg: #e4eaf2;
+  --ui-status-info-fg: #3b5a80;
+  --ui-status-danger-bg: #f6e1dd;
+  --ui-status-danger-fg: #8c3b2e;
+
+  // Dots (section list, checklist)
+  --ui-dot-ok: #9db59a;
+  --ui-dot-warn: #e9a94f;
+  --ui-dot-off: #e7c9b8;
+
+  // Typography. Fredoka has no Cyrillic, so Macedonian headings fall back,
+  // glyph by glyph, to M PLUS Rounded 1c (rounded and bold, the closest
+  // match to Fredoka), then Nunito and Manrope.
+  --ui-font-heading: "Fredoka", "M PLUS Rounded 1c", "Nunito", "Manrope", system-ui, sans-serif;
+  --ui-font-body: "Manrope", system-ui, sans-serif;
+
+  // Radii
+  --ui-radius-sm: 8px;
+  --ui-radius-input: 10px;
+  --ui-radius-md: 12px;
+  --ui-radius-card: 14px;
+  --ui-radius-lg: 18px;
+  --ui-radius-xl: 24px;
+  --ui-radius-pill: 999px;
+
+  // Elevation
+  --ui-shadow-sm: 0 1px 2px rgba(42, 37, 34, 0.06);
+  --ui-shadow-md: 0 10px 24px rgba(42, 37, 34, 0.1);
+  --ui-shadow-lg: 0 20px 50px rgba(42, 37, 34, 0.18);
+
+  // Motion
+  --ui-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ui-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // Layout
+  --ui-container-max: 1080px;
+  --ui-gutter: 24px;
+  --ui-touch: 44px; // minimum touch target
+}
+
+@media (max-width: 720px) {
+  :root {
+    --ui-gutter: 16px;
+  }
+}

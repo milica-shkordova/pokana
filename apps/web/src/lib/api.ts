@@ -1,0 +1,20 @@
+import { createApiClient } from "@momentelo/shared";
+
+/**
+ * Server-side (getStaticProps / getServerSideProps / API routes): talk to the
+ * API directly on its internal URL.
+ */
+export const API_URL = process.env.API_URL ?? "http://localhost:4000";
+export const serverApi = createApiClient(API_URL);
+
+/**
+ * Browser: same-origin requests to /api/public/*, proxied to the API by the
+ * rewrite in next.config.ts.
+ */
+export const browserApi = createApiClient("");
+
+/** Public origin of this site (absolute URLs for OG tags, sitemap, robots). */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+
+/** Admin origin allowed to drive /preview via postMessage and to frame it. */
+export const ADMIN_URL = (process.env.NEXT_PUBLIC_ADMIN_URL ?? "http://localhost:3001").replace(/\/$/, "");

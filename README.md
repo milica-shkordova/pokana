@@ -1,120 +1,157 @@
-# Invy
+# Momentelo
 
-Invy is a Next.js app with two halves:
+Scroll-animated digital invitations for weddings, birthdays, corporate events and christenings. Each invitation is a mobile-first page at its own link (`momentelo.mk/ana-marko`). Guests open it on their phone, see the countdown, program and map, and RSVP, and every RSVP is emailed straight to the client.
 
-1. A **marketing landing page** (`/`) that explains what Invy does and shows a gallery of invitation templates.
-2. A **multi-client invitation system** — each client's personalized invitation is a static page at its own route (e.g. `/tatjana-i-dragan`), built from a shared, reusable template plus that client's own config.
+The client picks a template on the landing page and sends their details. The Momentelo team builds and publishes the invitation in the admin. Clients never log in.
 
-The idea: a couple (or company, or parent) contacts us through the landing page, picks a template, sends over their details, and we hand-add their config to the codebase and redeploy — their invitation goes live at its own link.
+## Architecture
 
-## Tech stack
-
-- **Next.js 16** (Pages Router, not the App Router) + React 18 + TypeScript
-- **Sass** for styling — one `.scss` file per component, aggregated in `src/theme/index.scss`
-- **GSAP** (`ScrollTrigger`) for scroll-driven animations, on both the landing page and the invitation templates
-- **Web3Forms** for form submissions (RSVP forms and the landing page's contact form) — no backend/database of our own
-- `sharp` (a transitive dependency of Next.js image handling) is also used by a one-off script for logo background removal
-
-There is no database. Content lives in TypeScript config files committed to the repo; "publishing" a new client means adding a file and redeploying.
-
-## Project structure
+npm-workspaces monorepo:
 
 ```
-src/
-├── pages/
-│   ├── index.tsx        # Invy landing page
-│   ├── [slug].tsx        # Renders a client's invitation by slug (getStaticProps/getStaticPaths)
-│   ├── _app.tsx, _document.tsx, 404.tsx
-├── templates/
-│   ├── types.ts           # TemplateId union — add a new id here when a new template is built
-│   ├── index.ts            # TemplateId -> component registry
-│   ├── registry.ts         # Gallery metadata shown on the landing page (see below)
-│   ├── shared/              # Pieces reused by every template except wedding (see below)
-│   ├── wedding/             # Hero, Countdown, RsvpForm, Program, Location, Overlay, music intro
-│   ├── birthday/            # Hero, Countdown, PartyDetails, RsvpForm, Location
-│   ├── corporate/           # Hero, Countdown, About, Agenda, RsvpForm ("Register"), Location
-│   └── christening/         # Hero, Countdown, Welcome, Program, RsvpForm, Location
-├── clients/
-│   ├── types.ts            # ClientEntry = { slug, templateId, config }
-│   ├── index.ts             # clients[] + getClientBySlug() / getAllSlugs()
-│   ├── tatjana-i-dragan.ts   # A real, live client
-│   └── demo-*.ts             # One sanitized placeholder client per template, used by the gallery
-├── components/landing/     # Landing-page-only components (Hero, TemplateGallery, ContactForm, ...)
-├── styles/
-│   ├── templates/
-│   │   ├── wedding/          # Wedding's own scss (moved out of the old flat src/styles/)
-│   │   ├── shared/            # shared.scss — structural styles for the shared/ components
-│   │   ├── birthday/, corporate/, christening/  # base.scss per template: palette + bespoke sections
-│   └── landing/              # Landing page's scss
-├── theme/                  # Global reset + the @import aggregator (index.scss)
-└── lib/web3forms.ts        # Web3Forms submit helper + per-client env var key lookup
+apps/
+  web/     Next.js (Pages Router): landing "/", invitations "/<slug>", previews, OG images      :3000
+  admin/   Next.js (Pages Router): team admin (events, editor, templates, leads, media, settings) :3001
+  api/     Hono + Prisma: REST API, email queue, media processing, background jobs             :4000
+packages/
+  ui/         @momentelo/ui: design system (tokens + React components) shared by landing and admin
+  templates/  @momentelo/templates: template engine + the 9 invitation templates
+  shared/     @momentelo/shared: domain constants, content model, zod schemas, API types, date helpers
 ```
 
-## How the invitation system works
+```
+ guest ─► web ──/api/public/*──┐                     ┌─► Resend (RSVP / test / lead / invite emails)
+ team  ─► admin ─/api/*────────┼─► api ─► database ──┤
+          web ◄─/api/revalidate┘    └─► storage      └─► jobs: email retries, daily digest, live→past
+          admin ⇄ web /preview iframe (postMessage live preview)
+```
 
-**Templates** (`src/templates/<id>/`) are reusable component trees that take a typed `config` object as a prop — they contain no hardcoded client data. Four exist today: `wedding`, `birthday`, `corporate`, `christening`.
+- **Same-origin proxy.** Both Next apps proxy `/api` to the API, so there's no CORS and the session cookie is first-party.
+- **Static invitations.** Invitations are statically generated per slug (ISR). The API asks the site to revalidate the affected pages whenever something is published or edited.
+- **Live preview.** The editor's preview is the real template, rendered by the public site in an iframe (`/preview/<id>?token=…&embed=1`). The admin pushes unsaved changes into it with `postMessage` (`momentelo:preview` ⇄ `momentelo:preview-ready`), and only messages from `NEXT_PUBLIC_ADMIN_URL` are accepted.
 
-**Wedding** is the original, richest template (Overlay splash screen with music autoplay, per-guest RSVP with menu choice, hand-tuned GSAP scroll choreography) and is fully self-contained under `src/templates/wedding/` — nothing else depends on it and it depends on nothing shared, specifically so it can keep serving its one real, live client without risk from changes elsewhere.
+## The template engine (`packages/templates`)
 
-**Birthday, Corporate and Christening** were added later and share common pieces from `src/templates/shared/`, since their needs (a countdown, a simple RSVP/registration form, a venue map, a photo band) largely overlap:
+Each template is reusable code plus per-event content:
 
-- `Countdown`, `Location`, `ImageBand`, `RsvpForm` — take their target date, labels, colors, etc. as props rather than hardcoding them.
-- `useScrollReveal(rootRef)` — a hook that fades in every `[data-reveal]` element inside a container as it scrolls into view, replacing the hand-written `ScrollTrigger` wiring the wedding template does per-selector.
-- Colors and fonts for these shared components come from CSS custom properties (`--tpl-bg`, `--tpl-ink`, `--tpl-accent`, etc., see `src/styles/templates/shared/shared.scss`) that each template's own `base.scss` sets on its root class — one shared stylesheet, a different palette (and, for Corporate, a restyled non-italic label) per template. Each template still has its own bespoke sections beyond the shared pieces (e.g. Corporate's `Agenda`, Birthday's `PartyDetails`, Christening's `Program`) — the goal was reuse of genuinely identical structure, not forcing every event type into one generic shape.
+```
+src/engine/            runtime (useInvitation), hooks (countdown, reveal, parallax, music),
+                       useRsvpForm (5 RSVP modes), Photo/Map/LanguageToggle/MusicButton, checklist
+src/<template>/        definition.ts (React-free) + Template.tsx + Template.module.scss
+src/definitions.ts     React-free registry, used by the API and the admin
+src/index.tsx          component registry + <Invitation event submitRsvp />
+```
 
-**Clients** (`src/clients/<slug>.ts`) are one file per real invitation: which template it uses, plus that client's actual config (names, date, venue, photos, ...). They're collected in `src/clients/index.ts`.
+- An **Event** stores `templateId`, `content` (one shared content model, `packages/shared/src/content.ts`, with guest text per locale `{ mk, en }`), `theme` (colour levers with preset swatches), and `sections` (order plus on/off).
+- A **definition** declares the template's sections (with editor labels such as "Agenda" or "What awaits"), photo slots (aspect, required), theme options, RSVP mode, fonts, default content (with `[Placeholders]`) and demo data.
+- **Templates:**
 
-**Routing**: `src/pages/[slug].tsx` uses `getStaticPaths` (built from `getAllSlugs()`) and `getStaticProps` to statically generate one page per client at build time. An unknown slug returns `notFound: true`, which renders `src/pages/404.tsx`. Nothing is rendered dynamically at request time — every client page is pre-built HTML.
+  | id | Live on landing |
+  | --- | --- |
+  | elegant-wedding (the original) | ✓ |
+  | rustic-wedding · minimal-wedding | coming soon |
+  | kids-birthday | ✓ |
+  | milestone-birthday | coming soon |
+  | conference-summit | ✓ |
+  | product-launch (same component as conference-summit) | coming soon |
+  | classic-christening | ✓ |
+  | floral-christening (same component as classic-christening) | coming soon |
 
-### Adding a new client
+- **Publish checklist** (`getPublishChecklist`, shared by the editor and the API's publish gate). It requires:
+  - names, date and time
+  - every required photo slot filled
+  - an RSVP deadline
+  - an RSVP email that has been set and tested
+  - no `[placeholder]` text left
+  - the client's approval
+- **Motion and accessibility.** Scroll reveal, subtle parallax and a live countdown all respect `prefers-reduced-motion`. Dates always render in Europe/Skopje time. Macedonian month and day names are built in, because Chrome's ICU has no Macedonian.
 
-1. Copy the closest `src/clients/demo-*.ts` for the template you're using to `src/clients/<new-slug>.ts` and fill in that client's details (the config shape is defined in `src/templates/<template>/types.ts`).
-2. Register it in the `clients` array in `src/clients/index.ts`.
-3. Add a Web3Forms access key for their RSVP/registration form to `.env.local`: `NEXT_PUBLIC_WEB3FORMS_KEY_<SLUG_UPPER_SNAKE>=...` (see `.env.example`). Get a free key at [web3forms.com](https://web3forms.com) — it just needs the email address responses should land in.
-4. Redeploy. Their invitation is now live at `/<new-slug>`.
+### Template variants and defaults (no code)
 
-### Adding a new template (e.g. "graduation")
+- **Templates › New template** creates a *variant*: it reuses an existing layout (`Template.layoutId`) with its own name, category, card thumbnail, status, palette, sections and default text. Its demo starts as a copy of the base demo.
+- **Edit defaults** opens the normal event editor on the template's hidden defaults event (`Event.isDefaults`). Every new event of that template starts as a copy of it. Defaults events are never listed, published or reachable by URL.
+- The palette swatches and the section chips in the Templates side panel edit those same defaults.
+- An event keeps `templateId` = its layout (what renders), and `variantId` = the variant it came from (for names and usage counts).
+- Variants can be deleted while no events use them. Built-in templates can only be hidden.
 
-1. Add the id to the `TemplateId` union in `src/templates/types.ts`.
-2. Build `src/templates/<id>/` (component tree + `types.ts` for its config shape). Reuse `src/templates/shared/*` for anything that's genuinely generic (countdown, map, simple RSVP, photo band); write bespoke components for whatever isn't (see `corporate/components/Agenda.tsx` for an example of the latter).
-3. Add a `base.scss` under `src/styles/templates/<id>/` that sets the `--tpl-*` custom properties (if using the shared components) plus styles for its own bespoke sections, and `@import` it from `src/theme/index.scss`.
-4. Register the component in `src/templates/index.ts`.
-5. Update `src/templates/registry.ts` (see below) so it shows up in the landing page's gallery as `"available"`, and point `demoSlug` at a new sanitized demo client.
+### Adding a template (new layout, needs code)
 
-## The landing page
+1. Create `packages/templates/src/<id>/` with `definition.ts`, `Template.tsx` and `Template.module.scss`. Copy the closest existing template.
+2. Register it in `src/definitions.ts` (`templateList`) and in `src/index.tsx` (`templateComponents`).
+3. Add a catalog row to `CATALOG` in `apps/api/prisma/seed.ts`, then run `npm run db:seed`. This creates `/demo-<id>`.
+4. Set its status (Live / Coming soon / Hidden) in Admin › Templates.
 
-`src/pages/index.tsx` composes the sections in `src/components/landing/`: Hero, WhatWeDo, TemplateGallery, HowItWorks, ContactSection, Footer. Scroll animations are wired centrally in `pages/index.tsx` — card grids (features, gallery, steps) get a staggered "pop in" via `ScrollTrigger`, everything else gets a simple fade-up.
+## Getting started
 
-### Template gallery (`src/templates/registry.ts`)
-
-This is a plain data file, independent from the `clients`/`templates` system above — it's just what's *displayed* on the landing page, and doesn't have to correspond 1:1 with what's actually built. Each entry has a `status` of `"available"` (links to a live `demoSlug` client, and carries a `templateId`) or `"coming-soon"` (shown as a locked placeholder card, no `templateId`). The gallery groups entries by `eventType` and shows a category tab per event type (derived automatically — no separate list to maintain). There are 12 entries across 4 categories (Wedding, Birthday, Corporate, Christening), 3 per category; one entry per category is real ("Elegant Wedding", "Kids Birthday Bash", "Conference & Summit", "Classic Christening"), the other 8 are placeholders describing style variants that don't exist in code yet (e.g. "Rustic Wedding", "Product Launch").
-
-Filtering by tab doesn't unmount cards — it toggles a `hidden` class (`display: none`) — because the scroll-reveal animation only runs once on page load; unmounting and remounting a card would leave it permanently invisible.
-
-### Contact form
-
-`src/components/landing/ContactForm.tsx` submits leads (name, contact info, template of interest, message) to Web3Forms via `NEXT_PUBLIC_INVY_CONTACT_WEB3FORMS_KEY`. This is a *lead capture* form — it doesn't create a client automatically. Turning a lead into a live invitation is the manual "adding a new client" process above.
-
-## Environment variables
-
-All form submissions happen client-side via Web3Forms, so keys must be `NEXT_PUBLIC_`-prefixed. Copy `.env.example` to `.env.local` (gitignored) and fill in real keys:
-
-- `NEXT_PUBLIC_INVY_CONTACT_WEB3FORMS_KEY` — landing page contact form
-- `NEXT_PUBLIC_WEB3FORMS_KEY_<SLUG>` — one per client, used by that client's RSVP form (looked up by `src/lib/web3forms.ts` from the client's slug)
-
-## Local development
+Requires Node ≥ 20.12.
 
 ```bash
-npm run dev      # start the dev server
-npm run build    # production build (also validates getStaticPaths/getStaticProps + types)
-npm run start    # run a production build
+npm install
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
+cp apps/admin/.env.example apps/admin/.env.local
+npm run setup        # migrate + seed: owner account, settings, catalog, 9 demos, the Татјана & Драган event
+npm run dev          # api :4000 · web :3000 · admin :3001
 ```
 
-`npm run lint` is currently broken — `eslint.config.js` is unmodified leftover from the project's original Vite scaffold and references a plugin (`eslint-plugin-react-refresh`) that isn't installed. This predates the Invy work and hasn't been fixed.
+Sign in at http://localhost:3001 with `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `apps/api/.env`.
 
-## Known gaps / not yet set up
+Without `RESEND_API_KEY`, emails are printed in the API console. The full flow (test email, RSVP email, invites) still works locally.
 
-- No deployment config in the repo (no `vercel.json` etc.) — sub-routes work on any Next.js host, but nothing is wired to a specific platform yet.
-- No admin UI or database — onboarding a client is a manual PR + redeploy, by design (see project history/decisions for why).
-- 8 of the 12 gallery entries are style-variant placeholders within a category that already has a real template (e.g. "Rustic Wedding" alongside the real "Elegant Wedding") — describing templates that don't exist in code yet, not new event types.
-- The 3 newer templates (birthday, corporate, christening) skip the wedding template's Overlay splash screen and background-music autoplay — that intro is currently wedding-specific, not a shared feature.
+If you see "Prisma Client did not initialize", run `npm run postinstall -w @momentelo/api`. npm ≥ 11 may skip dependency install scripts.
+
+| Script | |
+| --- | --- |
+| `npm run dev` | All three apps in watch mode |
+| `npm run build` | Production build of api → web → admin (web prerenders from a running API) |
+| `npm run typecheck` / `npm run lint` | tsc in every workspace / ESLint across the repo |
+| `npm run db:migrate` / `db:seed` / `db:studio` | Prisma migrate (dev) / idempotent seed / DB browser |
+
+## Key flows
+
+- **RSVP.**
+  1. A guest submits the form. The API rate-limits it, validates it and checks the honeypot.
+  2. The RSVP is stored and queued for email.
+  3. The API emails each address in the event's RSVP list, plus the owner if "Send me a copy" is on. Retries back off over roughly an hour, and failures show in the editor's Replies pane with a Resend button.
+  4. With "Daily summary for clients" on, clients get one digest a day (after `DIGEST_HOUR`) instead of one email per reply.
+  5. Past the deadline, the form shows a closed message.
+  6. Demo invitations accept RSVPs but don't store them.
+- **Publish.**
+  1. The checklist must pass.
+  2. The status becomes Live, and `expiresAt` is set to the event date plus "keep online" months.
+  3. The page is revalidated.
+  4. The day after the event, a job moves it to Past. After `expiresAt`, guests see a gentle "this invitation has ended" page.
+- **Previews.** "Share preview link" produces `/<slug>?preview=<token>`. It works for drafts, lasts 14 days, and moves a draft to In review.
+- **Lead → event.** The contact form and "Notify me" create leads.
+  1. "Create event from lead" prefills the client, template and date, and links the lead, which moves the lead to Won.
+  2. Publishing the event moves the lead to Live.
+- **Password-protected invitations.** An optional access code per event. Guests type it once per session. The default comes from Settings.
+- **Media.**
+  - Upload JPG, PNG, HEIC (converted) or MP3. Originals are kept, and 640/1080/1600px WebP versions are generated.
+  - Every photo has a focal point.
+  - "Used in" and "Unused" are tracked from event content, and deleting a file that's in use asks first.
+  - Storage is local in dev and S3-compatible (e.g. Cloudflare R2) in production; see `apps/api/.env.example`.
+- **Team.** The users table is the allow-list. Owners invite people by email (the invite link is also shown, in case email isn't set up) and assign the Owner or Editor role.
+
+## Environment
+
+| App | File | Variables |
+| --- | --- | --- |
+| api | `apps/api/.env` | `DATABASE_URL`, `AUTH_SECRET`, `WEB_URL`, `ADMIN_URL`, `REVALIDATE_SECRET`, `ADMIN_EMAIL`/`ADMIN_PASSWORD`/`ADMIN_NAME` (seed), `RESEND_API_KEY`, `MEDIA_DRIVER` + `S3_*`/`MEDIA_PUBLIC_URL`, `MEDIA_QUOTA_GB`, `DIGEST_HOUR` |
+| web | `apps/web/.env.local` | `API_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL` |
+| admin | `apps/admin/.env.local` | `API_URL`, `NEXT_PUBLIC_WEB_URL` |
+
+## Deploying
+
+- **API:** `npm run build -w @momentelo/api && npm run db:deploy -w @momentelo/api && npm run start -w @momentelo/api`.
+  - For production, switch `provider` in `schema.prisma` to `postgresql`, set `DATABASE_URL`, and generate a fresh migration.
+  - Use `MEDIA_DRIVER=s3` (R2).
+  - Run a single instance (jobs and rate limits are in-process), or set `JOBS=off` on extra instances.
+- **web / admin:** any Next.js host (e.g. Vercel), with `API_URL` pointing at the API. Keep the admin private if you can.
+- **Email:** verify the sending domain (e.g. `momentelo.mk` for `rsvp@momentelo.mk`) in Resend.
+
+## Owner TODOs (placeholders kept on purpose)
+
+- `[PRICE]` and `[N]` on the landing page: `apps/web/src/content/landing.ts`.
+- Template default content contains `[Venue]`, `[COMPANY]`, `[Name]`. The publish checklist blocks any event that still has them.
+- Answers to the handoff's open questions (§12): prices, delivery time, how long invitations stay online (Settings › Links & publishing), email domain, payments, music sourcing.

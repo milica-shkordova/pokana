@@ -1,0 +1,482 @@
+// Owned by the journey animation (HANDOFF-ANIMATIONS). Imported from landing.scss.
+// ── How it works: ribbon journey (B3) ───────────────────────────────────────
+// Base rules = the static layout (reduced motion): the card row from
+// landing.scss with coloured, tilted number tiles; decoration hidden.
+// With motion, CSS lays out the journey (scatter on desktop, stacked column
+// below 1024px) and HowItWorks/setupJourney draws the ribbon from those
+// measured positions. `.lp-journey--live` is set by JS while it animates.
+
+$lp-journey-motion: "(prefers-reduced-motion: no-preference)";
+$lp-journey-desk: "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
+$lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
+
+.lp-journey {
+  overflow-x: clip;
+
+  .lp-step__num {
+    background: var(--step-color);
+    color: var(--step-ink, var(--ui-color-ink));
+  }
+
+  &__svg,
+  &__env,
+  &__url,
+  &__notif {
+    display: none;
+  }
+
+  // Wrappers that only matter for the animated layout.
+  &__device,
+  &__screen,
+  &__copy {
+    display: contents;
+  }
+}
+
+@media #{$lp-journey-motion} {
+  .lp-journey {
+    &__map {
+      position: relative;
+    }
+
+    &__svg {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    &__guide {
+      fill: none;
+      stroke: #f2c9bf;
+      stroke-width: 4;
+      stroke-dasharray: 2 14;
+      stroke-linecap: round;
+    }
+
+    &__ribbon {
+      fill: none;
+      stroke-width: 22;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0;
+    }
+
+    &__measure {
+      fill: none;
+      stroke: none;
+    }
+
+    &__stop--a {
+      stop-color: var(--ui-color-coral);
+    }
+    &__stop--b {
+      stop-color: var(--ui-color-rose);
+    }
+    &__stop--c {
+      stop-color: var(--ui-color-marigold);
+    }
+
+    // ── Step cards
+    &__steps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    &__copy {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      b {
+        font-family: var(--ui-font-heading);
+        font-weight: 600;
+        font-size: 19px;
+      }
+
+      .lp-step__text {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+    }
+
+    // ── Phone (step 4)
+    &__device {
+      display: block;
+      width: 150px;
+      height: 300px;
+      box-sizing: border-box;
+      padding: 7px;
+      border-radius: 28px;
+      background: var(--ui-color-ink);
+      box-shadow: 0 20px 40px rgba(42, 37, 34, 0.2);
+    }
+
+    &__screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 14px 12px;
+      border-radius: 22px;
+      background: var(--ui-color-cream);
+      text-align: center;
+
+      .lp-journey__copy {
+        align-items: center;
+
+        b {
+          font-size: 15px;
+        }
+
+        .lp-step__text {
+          font-size: 11px;
+          line-height: 1.45;
+        }
+      }
+    }
+
+    &__url {
+      display: block;
+      font-size: 10px;
+      color: var(--ui-color-muted);
+    }
+
+    &__notif {
+      display: flex;
+      position: absolute;
+      left: -150px;
+      top: -70px;
+      z-index: 6;
+      width: 230px;
+      box-sizing: border-box;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(42, 37, 34, 0.16);
+      text-align: left;
+      transform-origin: 80% 100%;
+      transform: scale(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &__app {
+      flex: 0 0 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--ui-color-terracotta);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ui-font-heading);
+      font-weight: 600;
+    }
+
+    &__notif-copy {
+      display: flex;
+      flex-direction: column;
+
+      b {
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      span {
+        font-size: 11px;
+        color: var(--ui-color-text-secondary);
+      }
+    }
+
+    // ── Envelope riding the ribbon (positioned by JS from the map's top-left)
+    &__env {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 5;
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    &__letter {
+      position: relative;
+      width: 70px;
+      height: 48px;
+      border-radius: 8px;
+      background: #fffdf9;
+      box-shadow: 0 6px 16px rgba(42, 37, 34, 0.18);
+    }
+
+    &__flap {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 28px;
+      border-radius: 8px 8px 0 0;
+      background: #f3d7be;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+
+    &__seal {
+      position: absolute;
+      left: 29px;
+      top: 18px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--ui-color-terracotta);
+    }
+
+    &__att {
+      position: absolute;
+      transform: scale(0);
+    }
+
+    // Mini template card: cream page with a coral title bar and two lines.
+    &__att--card {
+      left: -16px;
+      top: -20px;
+      width: 26px;
+      height: 34px;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      background:
+        linear-gradient(var(--ui-color-coral), var(--ui-color-coral)) 50% 7px / 14px 3px no-repeat,
+        linear-gradient(#c9bfae, #c9bfae) 50% 15px / 16px 2px no-repeat,
+        linear-gradient(#c9bfae, #c9bfae) 50% 20px / 12px 2px no-repeat,
+        #e8e5d6;
+      box-shadow: 0 3px 8px rgba(42, 37, 34, 0.15);
+    }
+
+    &__att--tag {
+      left: 30px;
+      top: 40px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--ui-color-marigold);
+      color: var(--ui-color-ink);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
+    // Photo: a tiny sun-over-hills snapshot.
+    &__att--photo {
+      right: -16px;
+      top: -18px;
+      width: 28px;
+      height: 28px;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      background:
+        radial-gradient(circle at 70% 30%, var(--ui-color-marigold) 0 4px, transparent 5px),
+        radial-gradient(ellipse at 30% 115%, var(--ui-color-sage) 0 55%, transparent 56%),
+        linear-gradient(#d8c4b6, #b49a8a);
+      box-shadow: 0 3px 8px rgba(42, 37, 34, 0.15);
+    }
+  }
+
+  // Cards in the journey: tile beside the copy, dimmed until reached.
+  // (Specificity beats the landing.scss .lp-step rules, incl. nth-child tilts.)
+  .lp-journey .lp-journey__steps > .lp-step {
+    position: relative; // paint above the ribbon SVG
+    z-index: 1;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(181, 80, 47, 0.04);
+    transition: box-shadow 0.3s ease; // no transform transition: JS scrubs it
+
+    &:hover {
+      transform: none;
+    }
+
+    &.is-reached {
+      box-shadow: 0 12px 30px rgba(181, 80, 47, 0.14);
+    }
+
+    .lp-step__num {
+      flex: 0 0 44px;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      rotate: -6deg;
+      transition:
+        background-color 0.3s ease,
+        rotate 0.3s ease;
+    }
+  }
+
+  .lp-journey--live .lp-journey__steps > .lp-step:not(.is-reached) .lp-step__num {
+    background: var(--ui-color-line);
+    rotate: 0deg;
+  }
+
+  .lp-journey .lp-journey__steps > .lp-step--phone {
+    display: block;
+    width: 150px;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+
+    &.is-reached {
+      box-shadow: none;
+    }
+
+    .lp-step__num {
+      flex: 0 0 36px;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+  }
+}
+
+// ── Desktop: pinned stage, scattered cards, phone on the right
+@media #{$lp-journey-desk} {
+  .lp-section.lp-journey {
+    padding: 0 24px;
+  }
+
+  .lp-journey {
+    &__stage {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      height: 100vh;
+      height: 100svh;
+      min-height: 640px;
+      padding: 40px 0 28px;
+    }
+
+    .lp-journey__inner {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      max-width: 1320px;
+      gap: 24px;
+    }
+
+    &__map {
+      flex: 1;
+      min-height: 480px;
+    }
+
+    // The <ol> stays unpositioned so the cards' offsetParent is the map.
+    &__steps {
+      display: block;
+    }
+  }
+
+  .lp-journey .lp-journey__steps > .lp-step {
+    position: absolute;
+    width: clamp(250px, 23%, 310px); // wide enough for one-line titles
+    box-sizing: border-box;
+
+    &:nth-child(1) {
+      left: 10%;
+      top: 30%;
+    }
+    &:nth-child(2) {
+      left: 35%;
+      bottom: 4%;
+    }
+    &:nth-child(3) {
+      left: 57%;
+      top: 2%;
+    }
+    &:nth-child(4) {
+      right: 1%;
+      top: 50%;
+      width: 150px;
+      margin-top: -150px;
+    }
+  }
+}
+
+// ── Below 1024px: stacked column, ribbon down the left gutter, phone last
+@media #{$lp-journey-mob} {
+  .lp-journey {
+    &__map {
+      padding: 48px 0 8px 64px;
+    }
+
+    &__steps {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    &__notif {
+      left: 28px;
+      top: -64px;
+      width: 200px;
+    }
+  }
+
+  .lp-journey .lp-journey__steps > .lp-step--phone {
+    position: relative;
+    align-self: flex-start;
+    margin-top: 72px; // room for the notification above the phone
+  }
+}
+
+// Phones / tablets: the pinned screen (setupJourney sets --journey-h); the
+// steps inside glide up as the envelope travels.
+@media #{$lp-journey-mob} {
+  .lp-journey.lp-journey--live .lp-journey__stage {
+    height: var(--journey-h, 100svh);
+    overflow: hidden;
+  }
+
+  .lp-journey.lp-journey--live .lp-journey__map {
+    will-change: transform;
+  }
+}
+
+// Phones / tablets: the steps slide up under the heading, which carries the
+// section background (cheaper than clipping the moving steps every frame).
+// The ::before reaches up and sideways to cover what passes above it.
+@media #{$lp-journey-mob} {
+  .lp-journey.lp-journey--live .lp-journey__inner > :first-child {
+    position: relative;
+    z-index: 3;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -100vh -50vw 0;
+      z-index: -1;
+      background: var(--ui-color-blush-tint);
+    }
+  }
+}
+
+// Scrub performance: the ribbon (repainted as it draws), the envelope and the
+// scaling cards each get their own compositor layer, so one changing doesn't
+// repaint the others (and the card shadows).
+.lp-journey.lp-journey--live {
+  .lp-journey__svg,
+  .lp-journey__env,
+  .lp-journey__steps > .lp-step {
+    will-change: transform;
+  }
+}

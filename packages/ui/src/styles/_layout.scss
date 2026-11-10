@@ -1,0 +1,139 @@
+.ui-container {
+  max-width: var(--ui-container-max);
+  margin: 0 auto;
+  padding: 0 var(--ui-gutter);
+  width: 100%;
+  box-sizing: content-box;
+
+  @media (max-width: 1128px) {
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+}
+
+.ui-section {
+  padding: 96px var(--ui-gutter);
+
+  > .ui-container {
+    padding: 0;
+  }
+
+  &--cream {
+    background: var(--ui-color-cream);
+  }
+  &--sand {
+    background: var(--ui-color-sand);
+  }
+  &--linen {
+    background: var(--ui-color-linen);
+  }
+  &--white {
+    background: var(--ui-color-surface);
+  }
+
+  @media (max-width: 720px) {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+// ── Typography ─────────────────────────────────────────────────────────────
+
+.ui-eyebrow {
+  font-family: var(--ui-font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ui-color-gold);
+}
+
+.ui-kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ui-color-muted);
+}
+
+.ui-category {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ui-color-clay);
+}
+
+.ui-heading {
+  font-family: var(--ui-font-heading);
+  font-weight: 600;
+  line-height: 1.1;
+  color: inherit;
+
+  &--display {
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05;
+  }
+  &--xl {
+    font-size: clamp(34px, 4.6vw, 52px);
+  }
+  &--lg {
+    font-size: clamp(32px, 4vw, 48px);
+  }
+  &--page {
+    font-size: 40px;
+    font-weight: 600;
+  }
+  &--md {
+    font-size: 28px;
+    font-weight: 600;
+  }
+  &--sm {
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
+.ui-lede {
+  color: var(--ui-color-text-secondary);
+  line-height: 1.7;
+  font-size: 15px;
+  max-width: 520px;
+}
+
+.ui-text-muted {
+  color: var(--ui-color-muted);
+}
+
+.ui-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &--center {
+    text-align: center;
+    align-items: center;
+
+    .ui-lede {
+      margin: 0 auto;
+    }
+  }
+}
+
+// Inverse context (dark surface): flips typography and form controls.
+.ui-inverse {
+  color: var(--ui-color-cocoa-text);
+
+  .ui-eyebrow {
+    color: #f2b49f;
+  }
+  .ui-heading {
+    color: var(--ui-color-cocoa-text);
+  }
+  .ui-lede {
+    color: var(--ui-color-cocoa-soft);
+  }
+  a {
+    color: var(--ui-color-cocoa-text);
+  }
+}

@@ -1,0 +1,452 @@
+// Mobile layout of the landing page (from the mobile design mock-ups).
+// Loaded after landing.scss and _motion.scss, so these rules win.
+
+// ── Header: logo · language switch · menu button (phones) ──────────────────
+.lp-header__burger,
+.lp-menu {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .lp-intro__pin {
+    padding-top: 72px; // the header is fixed on phones
+  }
+
+  .lp-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--ui-color-line);
+
+    .lp-header__row {
+      min-height: 72px;
+      flex-wrap: nowrap;
+      gap: 12px;
+    }
+
+    .ui-wordmark {
+      height: 34px;
+    }
+
+    .lp-header__nav {
+      flex-wrap: nowrap;
+      gap: 10px;
+
+      .lp-header__link,
+      .lp-header__cta {
+        display: none;
+      }
+    }
+  }
+
+  .lp-header__burger {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 14px;
+    background: var(--ui-color-blush-tint);
+    cursor: pointer;
+
+    span {
+      width: 20px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--ui-color-ink);
+      transition:
+        transform 0.3s var(--ui-ease-out),
+        opacity 0.2s ease;
+    }
+  }
+
+  .lp-header--open .lp-header__burger span {
+    &:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+    &:nth-child(2) {
+      opacity: 0;
+    }
+    &:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+  }
+
+  // Full-screen menu under the header bar. It unrolls from the top; the
+  // links and button slide up one by one; confetti pops in at the bottom.
+  .lp-menu {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    flex-direction: column;
+    padding: 96px 24px 32px;
+    background: var(--ui-color-cream);
+    overflow: hidden auto;
+    // No scrollbar of its own: it would flash in while the links slide up and
+    // make the full-width button jump. Still scrollable on very short screens.
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    visibility: hidden;
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transition:
+      clip-path 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 0.3s ease 0.1s,
+      visibility 0s linear 0.4s;
+
+    &--open {
+      visibility: visible;
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transition:
+        clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.2s ease,
+        visibility 0s;
+    }
+  }
+
+  .lp-menu__nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lp-menu__link,
+  .lp-menu__cta {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+
+    .lp-menu--open & {
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.4s ease calc(0.15s + var(--i) * 0.06s),
+        transform 0.5s var(--ui-ease-bounce) calc(0.15s + var(--i) * 0.06s);
+    }
+  }
+
+  .lp-menu__link {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--ui-color-line);
+    font-family: var(--ui-font-heading);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--ui-color-ink);
+    text-decoration: none;
+  }
+
+  .lp-menu__cta {
+    margin-top: 28px;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--ui-radius-pill);
+    background: var(--ui-color-terracotta);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .lp-menu__confetti {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40%;
+    pointer-events: none;
+
+    span {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(30px) rotate(0deg) scale(0.4);
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+  }
+
+  .lp-menu--open .lp-menu__confetti span {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rot)) scale(1);
+    transition:
+      opacity 0.3s ease calc(0.4s + var(--i) * 0.05s),
+      transform 0.7s var(--ui-ease-bounce) calc(0.4s + var(--i) * 0.05s);
+    animation: lp-drift-b 9s ease-in-out calc(1.2s + var(--i) * 0.3s) infinite;
+  }
+}
+
+@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+  .lp-menu,
+  .lp-menu--open,
+  .lp-menu__link,
+  .lp-menu__cta,
+  .lp-menu__confetti span {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+
+// ── Hero: full-width stacked buttons ───────────────────────────────────────
+@media (max-width: 720px) {
+  .lp-hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    align-self: stretch;
+    width: 100%;
+
+    .lp-hero__mag {
+      display: block;
+    }
+
+    .ui-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// ── What we do: compact cards (icon beside the text, same content) ─────────
+@media (max-width: 720px) {
+  .lp-what .lp-features {
+    gap: 14px;
+  }
+
+  .lp-what .lp-feature {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    column-gap: 16px;
+    row-gap: 4px;
+    padding: 20px;
+  }
+
+  .lp-what .lp-feature__icon {
+    grid-row: 1 / span 2;
+    width: 48px;
+    height: 48px;
+  }
+
+  .lp-what .lp-feature__title {
+    font-size: 20px;
+  }
+}
+
+// ── How it works: the phone sits in the middle ─────────────────────────────
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .lp-journey .lp-journey__steps > .lp-step--phone {
+    align-self: center;
+  }
+
+  // The "You’re invited!" notification sits centred above the phone.
+  .lp-journey .lp-journey__notif {
+    left: 50%;
+    margin-left: -100px;
+    transform-origin: 50% 100%;
+  }
+}
+
+// ── Templates: "swipe for more" hint over the carousel ─────────────────────
+.lp-gallery__swipe {
+  display: none;
+}
+
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .lp-gallery__swipe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 4px auto 0;
+    font-family: "Caveat", "Comic Sans MS", cursive;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ui-color-terracotta);
+    transition: opacity 0.4s ease;
+    animation: lp-swipe-nudge 2.4s ease-in-out infinite;
+
+    svg {
+      width: 52px;
+      height: 18px;
+      overflow: visible;
+    }
+
+    path {
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 100;
+    }
+
+  }
+
+  .lp-gallery__swipe-line {
+    animation: lp-more-line 3.6s ease-in-out infinite;
+  }
+
+  .lp-gallery__swipe-head {
+    animation: lp-more-head 3.6s ease-in-out infinite;
+  }
+}
+
+@keyframes lp-swipe-nudge {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 6px 0;
+  }
+}
+
+// ── Pricing: featured plan first, compact cards ────────────────────────────
+.lp-plan__head {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+@media (max-width: 720px) {
+  .lp-plans {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lp-plan--featured {
+    order: -1;
+  }
+
+  .lp-plan {
+    padding: 26px 22px;
+    gap: 14px;
+  }
+
+  .lp-plan__head {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .lp-plan__price {
+    font-size: 28px;
+    white-space: nowrap;
+  }
+
+  .lp-plan__features {
+    display: block;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: inline;
+    }
+
+    li + li::before {
+      content: " · ";
+    }
+  }
+}
+
+// ── Contact: compact, email under the button ───────────────────────────────
+.lp-contact__alt {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .lp-contact {
+    gap: 20px;
+  }
+
+  .lp-contact__intro .ui-lede,
+  .lp-contact .lp-contact__label,
+  .lp-contact .lp-contact__email {
+    display: none;
+  }
+
+  .lp-contact__actions .ui-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lp-contact__alt {
+    display: block;
+    grid-column: 1 / -1;
+    margin: 0;
+    text-align: center;
+    color: var(--ui-color-cocoa-soft);
+
+    a {
+      color: var(--ui-color-cocoa-text);
+      font-weight: 700;
+      text-decoration: none;
+    }
+  }
+}
+
+// ── What we do: rounded top that overlaps the end of the hero ──────────────
+.lp-what {
+  position: relative;
+  z-index: 2;
+  margin-top: -48px;
+  border-radius: 48px 48px 0 0;
+}
+
+@media (max-width: 720px) {
+  .lp-what {
+    margin-top: -32px;
+    border-radius: 32px 32px 0 0;
+  }
+}
+
+// Keep "there's more" (bottom of the hero) clear of the overlapping section.
+@media (min-width: 1024px) {
+  .lp-hero > .lp-hero__more {
+    bottom: 64px;
+  }
+}
+
+// The rounded "What we do" top overlaps the hero's last 48px (32px on phones),
+// so the sealed screen's button sits above that overlap.
+.lp-seal-btn {
+  bottom: calc(clamp(16px, 5vh, 56px) + 48px);
+}
+
+@media (max-width: 720px) {
+  .lp-seal-btn {
+    bottom: calc(clamp(16px, 5vh, 56px) + 32px);
+  }
+}
+
+// Desktop: the "You're invited!" notification sits centred above the phone.
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .lp-journey .lp-journey__notif {
+    left: 50%;
+    margin-left: -115px; // half its 230px width
+    transform-origin: 50% 100%;
+  }
+}
+
+// Phones: the language toggle lives in the fixed header, so not in the footer too.
+@media (max-width: 720px) {
+  .lp-footer__lang {
+    display: none;
+  }
+}
