@@ -1,0 +1,364 @@
+// Milestone Birthday — MilestoneBirthday.dc.html. Theme: --theme-gold.
+$serif: "Playfair Display", serif;
+$bg: #16171d;
+$panel: #1f2028;
+$line: #3a3a44;
+$text: #f3efe6;
+$soft: #b8b4aa;
+$gold: var(--theme-gold, #d9b86c);
+
+.page {
+  min-height: 100vh;
+  background: $bg;
+}
+
+.phone {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: $bg;
+  font-family: "Manrope", system-ui, sans-serif;
+  color: $text;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  a {
+    color: $gold;
+  }
+
+  :focus-visible {
+    outline: 2px solid $gold;
+    outline-offset: 2px;
+  }
+
+  :global(.momentelo-sr-only) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+
+.hero {
+  width: 100%;
+  padding: 64px 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: $gold;
+}
+
+.age {
+  font-family: $serif;
+  font-weight: 600;
+  font-size: 220px;
+  line-height: 0.9;
+  color: $gold;
+  letter-spacing: -0.04em;
+}
+
+.name {
+  font-family: $serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1;
+}
+
+.rule {
+  margin-top: 14px;
+  width: 48px;
+  height: 1px;
+  background: $gold;
+}
+
+.when {
+  margin-top: 14px;
+  font-size: 14px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.photos {
+  margin-top: 56px;
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+%photo {
+  flex: 0 1 165px;
+  aspect-ratio: 165 / 230;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.photoThen {
+  @extend %photo;
+  background: #3a3a44;
+}
+
+.photoNow {
+  @extend %photo;
+  margin-top: 40px;
+  background: #4a4650;
+}
+
+.photoImg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: $soft;
+  font-size: 12px;
+  min-height: 0;
+}
+
+.welcome {
+  margin: 56px 36px 0;
+}
+
+.welcomeText {
+  font-family: $serif;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.55;
+  color: #e6e0d2;
+}
+
+.countdown {
+  margin-top: 56px;
+  width: calc(100% - 48px);
+  border: 1px solid $line;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.smallCaps {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: $soft;
+}
+
+.countdownGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.countdownCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  & + & {
+    border-left: 1px solid $line;
+  }
+}
+
+.countdownNum {
+  font-family: $serif;
+  font-size: 34px;
+  color: $gold;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdownUnit {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $soft;
+}
+
+.info {
+  margin-top: 56px;
+  width: 100%;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  text-align: left;
+}
+
+.infoCard {
+  background: $panel;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoLabel {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: $gold;
+}
+
+.infoTitle {
+  font-family: $serif;
+  font-size: 20px;
+}
+
+.infoText {
+  font-size: 12px;
+  color: $soft;
+  line-height: 1.5;
+}
+
+.rsvp {
+  margin-top: 64px;
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.h2 {
+  font-family: $serif;
+  font-weight: 400;
+  font-size: 34px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.muted {
+  font-size: 13px;
+  color: $soft;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  font-size: 12px;
+  color: $soft;
+}
+
+.input {
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid $line;
+  border-radius: 0;
+  background: $panel;
+  font: inherit;
+  font-size: 15px;
+  color: $text;
+  width: 100%;
+}
+
+.submit {
+  margin-top: 8px;
+  min-height: 52px;
+  border: 0;
+  background: $gold;
+  color: $bg;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.decline {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: $soft;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.error {
+  font-size: 12px;
+  color: #e79a8c;
+  text-align: left;
+}
+
+.success {
+  font-family: $serif;
+  font-style: italic;
+  font-size: 18px;
+  color: $gold;
+}
+
+.location {
+  margin-top: 56px;
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.venue {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.venueName {
+  font-family: $serif;
+  font-size: 26px;
+}
+
+.mapLink {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 22px;
+  border: 1px solid $gold;
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 64px 0 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.footerTitle {
+  font-family: $serif;
+  font-style: italic;
+  font-size: 26px;
+  color: $gold;
+}
+
+.footerSign {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #8e8a80;
+}

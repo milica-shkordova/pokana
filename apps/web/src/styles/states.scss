@@ -1,0 +1,72 @@
+// Full-page states: 404, locked (access code), ended, not published, loading.
+
+.state-page {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: var(--ui-color-cream);
+  text-align: center;
+
+  &__card {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__names {
+    font-family: var(--ui-font-heading);
+    font-weight: 600;
+    font-size: clamp(36px, 10vw, 52px);
+    line-height: 1.05;
+  }
+
+  &__date {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ui-color-muted);
+  }
+
+  &__rule {
+    width: 120px;
+    height: 1px;
+    background: var(--ui-color-border-dashed);
+  }
+
+  &__text {
+    color: var(--ui-color-text-secondary);
+    line-height: 1.7;
+    max-width: 340px;
+  }
+
+  &__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+
+    .ui-input {
+      text-align: center;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      min-height: 52px;
+    }
+  }
+
+  &__footer {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--ui-color-muted);
+
+    a {
+      color: var(--ui-color-muted);
+    }
+  }
+}

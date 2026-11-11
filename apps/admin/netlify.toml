@@ -1,0 +1,9 @@
+# Second Netlify site for the admin (Package directory: apps/admin, Base
+# directory empty). The public site shows it at /admin by proxying
+# /admin/* to this site's URL (ADMIN_APP_URL on the public site).
+[build]
+  command = "npm run build -w @momentelo/admin"
+  publish = "apps/admin/.next"
+
+[build.environment]
+  NODE_VERSION = "22"

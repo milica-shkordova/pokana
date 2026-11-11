@@ -1,0 +1,9 @@
+# Netlify builds the public site (apps/web) from the monorepo root, so npm
+# workspaces install the shared packages it imports.
+# Admin and API are deployed separately (see README › Deploying).
+[build]
+  command = "npm run build -w @momentelo/web"
+  publish = "apps/web/.next"
+
+[build.environment]
+  NODE_VERSION = "22"

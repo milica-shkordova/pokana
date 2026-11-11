@@ -1,0 +1,720 @@
+// ── Card ──────────────────────────────────────────────────────────────────
+.ui-card {
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-card);
+
+  &--padded {
+    padding: 24px;
+  }
+
+  &--compact {
+    padding: 16px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  // Title with its description on the right (editor design); pages can
+  // stack it underneath instead (settings design, see admin.scss).
+  &__heading {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px 16px;
+    min-width: 0;
+  }
+
+  &__title {
+    font-family: var(--ui-font-heading);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ui-color-text-secondary);
+  }
+}
+
+// ── Badge ─────────────────────────────────────────────────────────────────
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--ui-radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.3;
+
+  &--live {
+    background: var(--ui-status-live-bg);
+    color: var(--ui-status-live-fg);
+  }
+  &--draft {
+    background: var(--ui-status-draft-bg);
+    color: var(--ui-status-draft-fg);
+  }
+  &--review {
+    background: var(--ui-status-review-bg);
+    color: var(--ui-status-review-fg);
+  }
+  &--soon {
+    background: var(--ui-status-soon-bg);
+    color: var(--ui-status-soon-fg);
+  }
+  &--past {
+    background: var(--ui-status-past-bg);
+    color: var(--ui-status-past-fg);
+  }
+  &--new {
+    background: var(--ui-status-new-bg);
+    color: var(--ui-status-new-fg);
+  }
+  &--info {
+    background: var(--ui-status-info-bg);
+    color: var(--ui-status-info-fg);
+  }
+  &--danger {
+    background: var(--ui-status-danger-bg);
+    color: var(--ui-status-danger-fg);
+  }
+  &--clay {
+    background: var(--ui-color-clay);
+    color: #fff;
+  }
+  &--ink {
+    background: var(--ui-color-ink-strong);
+    color: #fff;
+  }
+  &--outline {
+    background: var(--ui-color-bg);
+    color: var(--ui-color-ink-soft);
+    border: 1px solid var(--ui-color-border-soft);
+  }
+  &--sm {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+  &--caps {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+}
+
+// ── Tabs (pill) ───────────────────────────────────────────────────────────
+.ui-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  &--center {
+    justify-content: center;
+    gap: 8px;
+  }
+
+  &__tab {
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: var(--ui-radius-pill);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--ui-color-ink-soft);
+    font-family: var(--ui-font-body);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    // Selecting crossfades the colours instead of snapping.
+    transition:
+      color 0.25s ease,
+      background-color 0.25s ease,
+      border-color 0.25s ease;
+
+    &:hover {
+      color: var(--ui-color-ink);
+      background: var(--ui-color-selected);
+    }
+
+    &--active,
+    &--active:hover {
+      background: var(--ui-color-terracotta);
+      border-color: var(--ui-color-terracotta);
+      color: #fff;
+    }
+  }
+
+  &__count {
+    opacity: 0.7;
+    font-weight: 500;
+  }
+
+  // Sliding variant: one terracotta pill glides to the active tab (Tabs.tsx
+  // positions it); the tabs only change their text colour.
+  &--sliding {
+    position: relative;
+    isolation: isolate;
+  }
+
+  &.ui-tabs--sliding &__tab {
+    position: relative;
+
+    &--active,
+    &--active:hover {
+      background: transparent;
+      border-color: transparent;
+    }
+  }
+
+  &__glider {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    border-radius: var(--ui-radius-pill);
+    background: var(--ui-color-terracotta);
+    box-shadow: 0 4px 12px rgba(181, 80, 47, 0.25);
+    pointer-events: none;
+    transition:
+      transform 0.38s var(--ui-ease-bounce),
+      width 0.38s var(--ui-ease-out),
+      height 0.38s var(--ui-ease-out);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // Landing: white pills, 44px; the active one is terracotta.
+  &--outline &__tab {
+    min-height: var(--ui-touch);
+    padding: 0 20px;
+    background: var(--ui-color-surface);
+    border-color: var(--ui-color-surface);
+    color: var(--ui-color-ink);
+    font-weight: 700;
+
+    &:hover {
+      background: var(--ui-color-surface);
+      border-color: var(--ui-color-terracotta);
+      color: var(--ui-color-ink);
+    }
+  }
+
+  &--outline &__tab--active,
+  &--outline &__tab--active:hover {
+    background: var(--ui-color-terracotta);
+    border-color: var(--ui-color-terracotta);
+    color: #fff;
+  }
+
+  // Admin filter chips: white pills with a border.
+  &--chips &__tab {
+    background: var(--ui-color-surface);
+    border-color: var(--ui-color-border-input);
+    padding: 0 16px;
+  }
+
+  &--chips &__tab--active,
+  &--chips &__tab--active:hover {
+    background: var(--ui-color-terracotta);
+    border-color: var(--ui-color-terracotta);
+    color: #fff;
+  }
+}
+
+// ── Alert ─────────────────────────────────────────────────────────────────
+.ui-alert {
+  padding: 12px 14px;
+  border-radius: var(--ui-radius-md);
+  font-size: 13px;
+  line-height: 1.5;
+
+  &--info {
+    background: var(--ui-status-info-bg);
+    color: var(--ui-status-info-fg);
+  }
+  &--success {
+    background: var(--ui-status-live-bg);
+    color: var(--ui-status-live-fg);
+  }
+  &--warning {
+    background: var(--ui-status-review-bg);
+    color: var(--ui-status-review-fg);
+  }
+  &--danger {
+    background: var(--ui-status-danger-bg);
+    color: var(--ui-status-danger-fg);
+  }
+
+  ul {
+    margin: 6px 0 0 18px;
+  }
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────
+.ui-table-wrap {
+  overflow-x: auto;
+}
+
+.ui-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ui-color-muted);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 14px 16px;
+    border-top: 1px solid var(--ui-color-border-soft);
+    vertical-align: middle;
+    color: var(--ui-color-ink-soft);
+  }
+
+  tbody tr:hover td {
+    background: #fffcf8;
+  }
+
+  .ui-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ── Stat ──────────────────────────────────────────────────────────────────
+.ui-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+
+  &__label {
+    color: var(--ui-color-muted);
+    font-size: 13px;
+  }
+
+  &__value {
+    font-family: var(--ui-font-heading);
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: var(--ui-color-muted);
+
+    &--good {
+      color: var(--ui-color-success);
+    }
+    &--warn {
+      color: var(--ui-color-warning);
+    }
+  }
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────
+.ui-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--ui-color-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  &__icon {
+    font-size: 28px;
+    color: var(--ui-color-gold);
+  }
+
+  &__title {
+    font-family: var(--ui-font-heading);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ui-color-ink);
+  }
+
+  &__action {
+    margin-top: 12px;
+  }
+}
+
+// ── Spinner ───────────────────────────────────────────────────────────────
+.ui-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ui-spin 0.7s linear infinite;
+  vertical-align: middle;
+
+  &--lg {
+    width: 28px;
+    height: 28px;
+    border-width: 3px;
+  }
+}
+
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ── Wordmark / logo ───────────────────────────────────────────────────────
+.ui-wordmark {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  // The confetti above the icon takes ~40% of the logo's height, so the
+  // full logo runs taller than the wordmark alone.
+  height: 44px;
+
+  &--sm {
+    height: 34px;
+  }
+
+  &--lg {
+    height: 62px;
+  }
+
+  &--wordmark {
+    height: 28px;
+
+    &.ui-wordmark--sm {
+      height: 22px;
+    }
+  }
+
+  &--icon {
+    height: 40px;
+  }
+}
+
+// ── Avatar ────────────────────────────────────────────────────────────────
+.ui-avatar {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ui-color-ink);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+
+  &--lg {
+    width: 36px;
+    height: 36px;
+  }
+
+  &--pending {
+    background: #c9b79c;
+    color: var(--ui-color-ink);
+  }
+}
+
+// ── Dot ───────────────────────────────────────────────────────────────────
+.ui-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+
+  &--ok {
+    background: var(--ui-dot-ok);
+  }
+  &--warn {
+    background: var(--ui-dot-warn);
+  }
+  &--off {
+    background: var(--ui-dot-off);
+  }
+}
+
+// ── Progress bar ──────────────────────────────────────────────────────────
+.ui-progress {
+  display: block;
+  height: 6px;
+  border-radius: var(--ui-radius-pill);
+  background: var(--ui-color-border);
+  overflow: hidden;
+
+  &__bar {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--ui-color-terracotta);
+  }
+}
+
+// ── Dialog ────────────────────────────────────────────────────────────────
+.ui-dialog {
+  border: 0;
+  padding: 0;
+  border-radius: var(--ui-radius-lg);
+  background: var(--ui-color-surface);
+  color: var(--ui-color-ink);
+  font-family: var(--ui-font-body);
+  box-shadow: var(--ui-shadow-lg);
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  margin: auto;
+
+  &--wide {
+    width: min(880px, calc(100vw - 32px));
+  }
+
+  &::backdrop {
+    background: rgba(35, 31, 30, 0.45);
+  }
+
+  // Opens: the backdrop fades in, the panel rises and scales up into place.
+  // Closes (Dialog.tsx adds --closing for the duration): the reverse, quicker.
+  &[open] {
+    animation: ui-dialog-in 0.26s var(--ui-ease-out);
+  }
+
+  &[open]::backdrop {
+    animation: ui-fade-in 0.22s ease-out;
+  }
+
+  &--closing[open] {
+    animation: ui-dialog-out 0.16s ease-in forwards;
+  }
+
+  &--closing[open]::backdrop {
+    animation: ui-fade-out 0.16s ease-in forwards;
+  }
+
+  &__inner {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  &__title {
+    font-family: var(--ui-font-heading);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  // Confirm dialogs: icon tile on top, then the title.
+  &__header--icon {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  &__header--icon &__title {
+    font-size: 28px;
+  }
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    animation: ui-icon-pop 0.45s 0.08s var(--ui-ease-bounce) backwards;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    &--warn {
+      background: #fdecd6;
+      color: #8a5a12;
+    }
+
+    &--danger {
+      background: #fbe0da;
+      color: var(--ui-color-danger);
+    }
+  }
+
+  &__close {
+    width: var(--ui-touch);
+    height: var(--ui-touch);
+    margin: -10px -10px 0 0;
+    border: 0;
+    border-radius: var(--ui-radius-sm);
+    background: transparent;
+    color: var(--ui-color-muted);
+    font-size: 22px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--ui-color-selected);
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}
+
+// ── Toasts ────────────────────────────────────────────────────────────────
+.ui-toasts {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+}
+
+.ui-toast {
+  pointer-events: auto;
+  padding: 12px 18px;
+  border-radius: var(--ui-radius-pill);
+  background: var(--ui-color-ink-strong);
+  color: #fff;
+  font-family: var(--ui-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--ui-shadow-md);
+  animation: ui-toast-in 0.32s var(--ui-ease-bounce);
+
+  &--error {
+    background: var(--ui-color-danger);
+  }
+
+  &--leaving {
+    animation: ui-toast-out 0.2s ease-in forwards;
+  }
+}
+
+@keyframes ui-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92);
+  }
+}
+
+@keyframes ui-toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+@keyframes ui-icon-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+  }
+}
+
+@keyframes ui-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+}
+
+@keyframes ui-dialog-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+@keyframes ui-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ui-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+// ── Confetti ──────────────────────────────────────────────────────────────
+.ui-confetti {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+
+  &__piece {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+    opacity: 0;
+    animation: ui-confetti-burst 0.9s ease-out forwards;
+  }
+}
+
+@keyframes ui-confetti-burst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), calc(var(--y) + 40px)) rotate(var(--rot));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-confetti,
+  .ui-toast,
+  .ui-dialog[open],
+  .ui-dialog[open]::backdrop,
+  .ui-dialog__icon {
+    animation: none;
+  }
+}

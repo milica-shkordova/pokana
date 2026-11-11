@@ -1,0 +1,216 @@
+// Momentelo data model. SQLite for zero-setup local development — switch the
+// provider to "postgresql" (and DATABASE_URL) for production; nothing here is
+// SQLite-specific. Lists are stored as Json because SQLite has no arrays.
+//
+// String "enums" (status, stage, role…) are validated by the API with the
+// constants in @momentelo/shared, so the allowed values live in one place.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Team members. Only users in this table can sign in (the allow-list).
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String?
+  role            String    @default("editor") // owner | editor
+  passwordHash    String?
+  inviteToken     String?   @unique
+  inviteExpiresAt DateTime?
+  invitedAt       DateTime  @default(now())
+  acceptedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  events          Event[]
+}
+
+/// Catalog state for a template. The template itself is code in
+/// packages/templates; this row decides how it shows on the landing page.
+model Template {
+  id              String   @id // registry id, e.g. "elegant-wedding"
+  name            String
+  category        String // wedding | birthday | corporate | christening
+  status          String   @default("draft") // live | coming-soon | hidden | draft
+  description     String   @default("")
+  demoEventId     String?  @unique
+  demoEvent       Event?   @relation("TemplateDemo", fields: [demoEventId], references: [id], onDelete: SetNull)
+  /// Hidden event holding the content, theme and sections every new event
+  /// starts from (edited in the event editor via Templates > Edit defaults).
+  defaultsEventId String?  @unique
+  defaultsEvent   Event?   @relation("TemplateDefaults", fields: [defaultsEventId], references: [id], onDelete: SetNull)
+  /// Code layout (packages/templates registry id) this template renders with.
+  /// Null: the template is itself a layout (id = registry id). Set for variants.
+  layoutId        String?
+  /// Card thumbnail overrides (default: first word of the name, layout colours).
+  thumbLabel      String?
+  thumbBg         String?
+  thumbInk        String?
+  previewMediaId  String?
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sortOrder])
+}
+
+model Event {
+  id             String    @id @default(cuid())
+  slug           String    @unique
+  /// Layout id (packages/templates registry): what the invitation renders with.
+  templateId     String
+  /// Catalog template (a variant of the layout) the event was created from.
+  variantId      String?
+  name           String
+  clientName     String    @default("")
+  clientContact  String    @default("")
+  status         String    @default("draft") // draft | in-review | live | past | archived
+  /// Archived but the invitation link still works (read-only: no new RSVPs).
+  archivedOnline Boolean   @default(false)
+  /// Status before archiving; Restore puts it back (live/past re-checked by date).
+  statusBeforeArchive String?
+  /// UTC instant; entered/displayed in Europe/Skopje.
+  eventDate      DateTime
+  languages      Json // ["mk"] | ["en"] | ["mk","en"]
+  content        Json
+  theme          Json
+  sections       Json
+  rsvpEmails     Json // string[]
+  rsvpDeadline   DateTime?
+  rsvpTestedAt   DateTime?
+  expectedGuests Int?
+  /// Optional guest access code (shown to the team so it can be shared).
+  accessCode     String?
+  noindex        Boolean   @default(true)
+  clientApproved Boolean   @default(false)
+  isDemo         Boolean   @default(false)
+  /// A template's default content: never public, never listed with events.
+  isDefaults     Boolean   @default(false)
+  publishedAt    DateTime?
+  expiresAt      DateTime?
+  leadId         String?   @unique
+  lead           Lead?     @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  createdById    String?
+  createdBy      User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  rsvps            Rsvp[]
+  media            Media[]
+  mediaUsages      MediaUsage[]
+  demoTemplate     Template?    @relation("TemplateDemo")
+  defaultsTemplate Template?    @relation("TemplateDefaults")
+
+  @@index([status, eventDate])
+  @@index([templateId])
+}
+
+model Media {
+  id             String       @id @default(cuid())
+  eventId        String?
+  event          Event?       @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  kind           String // photo | audio
+  fileName       String
+  originalKey    String
+  /// Base key of the optimized variants: <key>-<width>.webp
+  optimizedKey   String?
+  mime           String
+  width          Int?
+  height         Int?
+  bytes          Int
+  optimizedBytes Int?
+  durationSec    Float?
+  focalX         Float        @default(0.5)
+  focalY         Float        @default(0.5)
+  alt            String       @default("")
+  uploadedAt     DateTime     @default(now())
+  usages         MediaUsage[]
+
+  @@index([eventId])
+}
+
+/// Where a media file is used. Rebuilt from the event content on every save.
+model MediaUsage {
+  mediaId String
+  media   Media  @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  slot    String
+
+  @@id([mediaId, eventId, slot])
+  @@index([eventId])
+}
+
+model Rsvp {
+  id            String    @id @default(cuid())
+  eventId       String
+  event         Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  attending     Boolean
+  name          String
+  /// [{ name, menu? }]
+  guests        Json
+  totalGuests   Int
+  adults        Int?
+  children      Int?
+  allergies     String?
+  message       String?
+  /// { company, email, dinner, plusOne }
+  extra         Json
+  locale        String?
+  createdAt     DateTime  @default(now())
+  emailedAt     DateTime?
+  emailError    String?
+  emailAttempts Int       @default(0)
+  nextEmailAt   DateTime?
+  digestedAt    DateTime?
+
+  @@index([eventId, createdAt])
+  @@index([emailedAt, nextEmailAt])
+}
+
+model Lead {
+  id         String   @id @default(cuid())
+  source     String   @default("contact-form") // contact-form | notify-me
+  name       String
+  contact    String
+  templateId String?
+  eventDate  String?
+  guestCount Int?
+  message    String   @default("")
+  stage      String   @default("new") // new | contacted | preview-sent | won | live | lost
+  unread     Boolean  @default(true)
+  note       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  event      Event?
+
+  @@index([stage, createdAt])
+}
+
+/// Singleton (id = "settings").
+model Settings {
+  id                      String    @id @default("settings")
+  businessName            String    @default("Momentelo")
+  contactEmail            String    @default("hello@momentelo.mk")
+  phone                   String    @default("")
+  instagram               String    @default("")
+  logoMediaId             String?
+  senderName              String    @default("Momentelo покани")
+  fromAddress             String    @default("rsvp@momentelo.mk")
+  subjectTemplate         String    @default("Нова потврда: {гостин} — {настан}")
+  ccOwnerOnRsvp           Boolean   @default(true)
+  clientDailyDigest       Boolean   @default(false)
+  domain                  String    @default("momentelo.mk")
+  keepOnlineMonths        Int       @default(6)
+  defaultNoindex          Boolean   @default(true)
+  defaultPassword         Boolean   @default(false)
+  defaultLanguage         String    @default("mk")
+  defaultRsvpDeadlineDays Int       @default(14)
+  defaultMenuOptions      Json
+  lastDigestAt            DateTime?
+}

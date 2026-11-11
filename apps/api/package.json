@@ -1,0 +1,35 @@
+{
+  "name": "@momentelo/api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/index.ts",
+    "build": "prisma generate && tsup",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1164.0",
+    "@hono/node-server": "^1.13.0",
+    "@momentelo/shared": "*",
+    "@momentelo/templates": "*",
+    "@prisma/client": "6.19.3",
+    "heic-convert": "^2.1.0",
+    "hono": "^4.6.0",
+    "music-metadata": "^11.16.1",
+    "sharp": "^0.34.5",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/heic-convert": "^2.1.1",
+    "prisma": "6.19.3",
+    "tsup": "^8.3.0",
+    "tsx": "^4.19.0"
+  }
+}

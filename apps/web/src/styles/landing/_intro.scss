@@ -1,0 +1,1117 @@
+// Owned by the intro animation (HANDOFF-ANIMATIONS). Imported from landing.scss.
+//
+// B1 — the hero's envelope intro. Values from design/anim/AnimHero.dc.html.
+// The envelope is laid out in 520×340 "envelope units"; useHeroIntro scales
+// `.lp-env__scale` to the viewport (1.45 at 1440×900, ~90% width on mobile).
+// The CSS scales below are only the pre-hydration guess.
+//
+// The stage is `display: none` unless the intro runs, so the static hero
+// (reduced motion, repeat visit, no JS) never shows the envelope.
+
+// Desktop: header + hero fill the pinned viewport.
+@media (min-width: 1024px) {
+  .lp-intro__pin {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+$lp-env-shadow: rgba(120, 60, 30, 0.22);
+
+@mixin lp-env-liner($sage: true) {
+  background-color: var(--ui-color-blush-tint);
+  @if $sage {
+    background-image:
+      radial-gradient(circle, var(--ui-color-marigold) 0 2.5px, transparent 3px),
+      radial-gradient(circle, var(--ui-color-rose) 0 2.5px, transparent 3px),
+      radial-gradient(circle, var(--ui-color-sage) 0 2px, transparent 2.5px);
+    background-size: 34px 34px;
+    background-position:
+      0 0,
+      17px 17px,
+      8px 25px;
+  } @else {
+    background-image:
+      radial-gradient(circle, var(--ui-color-marigold) 0 2.5px, transparent 3px),
+      radial-gradient(circle, var(--ui-color-rose) 0 2.5px, transparent 3px);
+    background-size: 34px 34px;
+    background-position:
+      0 0,
+      17px 17px;
+  }
+}
+
+.lp-hero__stage {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+
+  @media (max-width: 1023px) {
+    // Mobile: centre the envelope in the first screen, not the tall hero.
+    height: min(100%, calc(100svh - 72px));
+  }
+}
+
+.lp-hero__hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ui-color-muted);
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
+}
+
+// Confetti burst (positions driven per frame by the timeline).
+.lp-hero__burst {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+
+  @media (max-width: 1023px) {
+    bottom: auto;
+    height: min(100%, calc(100svh - 72px));
+  }
+}
+
+.lp-hero__burst-piece {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+}
+
+// ── Envelope ───────────────────────────────────────────────────────────────
+.lp-env {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 520px;
+  height: 340px;
+  margin: -170px 0 0 -260px;
+  will-change: transform;
+
+  &__scale {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: scale(1.45);
+    transform-origin: 50% 50%;
+
+    @media (max-width: 1023px) {
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 720px) {
+      transform: scale(0.66);
+    }
+  }
+
+  &__shadow {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: -26px;
+    height: 40px;
+    border-radius: 50%;
+    background: $lp-env-shadow;
+    filter: blur(14px);
+  }
+
+  &__back {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #e7cdb4 0%, #ebd5bf 100%);
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  }
+
+  &__liner {
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    width: 500px;
+    height: 210px;
+    clip-path: polygon(0 0, 100% 0, 50% 96%);
+    @include lp-env-liner(true);
+  }
+
+  // The invitation card. Starts 70px low, hidden inside the pocket.
+  &__card {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    z-index: 1;
+    width: 460px;
+    height: 290px;
+    border-radius: 16px;
+    background: #fffdf9;
+    box-shadow: 0 10px 30px rgba(42, 37, 34, 0.12);
+    opacity: 0;
+    transform: translateY(70px);
+    transform-origin: 50% 40%;
+    will-change: transform, opacity;
+  }
+
+  &__card-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  &__kicker {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--ui-color-terracotta);
+  }
+
+  &__logo {
+    display: inline-flex;
+    margin: 6px 0 4px;
+
+    .ui-wordmark {
+      height: 64px;
+    }
+  }
+
+  &__tagline {
+    font-size: 14px;
+    color: var(--ui-color-text-secondary);
+  }
+
+  // Front pocket: three folded flaps, each a slightly different cream.
+  &__pocket {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  &__pocket-l,
+  &__pocket-r,
+  &__pocket-b,
+  &__pocket-b-shadow {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__pocket-l {
+    clip-path: polygon(0 0, 53% 58%, 0 100%);
+    background: linear-gradient(90deg, #f2dfcb 0%, #f6e8d9 100%);
+  }
+
+  &__pocket-r {
+    clip-path: polygon(100% 0, 47% 58%, 100% 100%);
+    background: linear-gradient(270deg, #efdac4 0%, #f5e5d4 100%);
+  }
+
+  &__pocket-b-shadow {
+    filter: drop-shadow(0 -3px 4px rgba(120, 60, 30, 0.16));
+  }
+
+  &__pocket-b {
+    clip-path: polygon(0 100%, 46% 52%, 50% 49%, 54% 52%, 100% 100%);
+    background: linear-gradient(180deg, #f9ede1 0%, #f4e2cf 100%);
+  }
+
+  &__postmark {
+    position: absolute;
+    right: 14px;
+    bottom: 10px;
+    width: 210px;
+    height: 120px;
+    transform: rotate(-12deg);
+    opacity: 0.78;
+  }
+
+  // Top flap: 3D, paper in front, confetti-dot liner on the back.
+  &__flap-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    perspective: 1100px;
+    filter: drop-shadow(0 4px 6px rgba(120, 60, 30, 0.18));
+  }
+
+  &__flap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 520px;
+    height: 228px;
+    transform-style: preserve-3d;
+    transform-origin: 50% 0;
+    will-change: transform;
+  }
+
+  &__flap-front,
+  &__flap-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  &__flap-front {
+    clip-path: polygon(0 0, 100% 0, 56% 92%, 50% 96%, 44% 92%);
+    background: linear-gradient(180deg, #f9eee3 0%, #efd9c3 100%);
+  }
+
+  &__flap-back {
+    transform: rotateX(180deg);
+    clip-path: polygon(44% 8%, 50% 4%, 56% 8%, 100% 100%, 0 100%);
+    @include lp-env-liner(false);
+  }
+
+  // Wax seal on the flap tip: two copies of the SVG split along a jagged crack.
+  &__seal {
+    position: absolute;
+    left: 200px;
+    top: 140px; // a little above the flap tip
+    z-index: 4;
+    width: 120px;
+    height: 120px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    pointer-events: auto;
+
+    &:focus-visible {
+      outline: 3px solid var(--ui-color-terracotta);
+      outline-offset: 6px;
+    }
+  }
+
+  // Squeezes and trembles as one piece while the crack runs (sealBreak.ts).
+  &__seal-body {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+  }
+
+  // The intact seal; swapped for the two halves the moment it splits.
+  &__seal-whole {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 4px 5px rgba(80, 30, 10, 0.35));
+  }
+
+  // Each half keeps its own shadow (HANDOFF-SEAL), and is clipped along the
+  // same jagged line the crack is drawn on. The clip reaches past the box
+  // (−30%…130%) so the shadows around the outside aren’t cut off flat.
+  &__seal-half {
+    opacity: 0;
+    position: absolute;
+    inset: 0;
+    filter: drop-shadow(0 4px 5px rgba(80, 30, 10, 0.35));
+    will-change: transform, opacity;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &--l {
+      clip-path: polygon(-30% -30%, 51.7% -30%, 51.7% 1.7%, 47.5% 15%, 50% 21.7%, 45.8% 30.8%, 50.8% 40%, 54.2% 50%, 49.2% 58.3%, 47.5% 68.3%, 50.8% 75%, 46.7% 83.3%, 50% 91.7%, 51.7% 100%, 51.7% 130%, -30% 130%);
+      transform-origin: 30% 70%;
+    }
+
+    &--r {
+      clip-path: polygon(51.7% -30%, 130% -30%, 130% 130%, 51.7% 130%, 51.7% 100%, 50% 91.7%, 46.7% 83.3%, 50.8% 75%, 47.5% 68.3%, 49.2% 58.3%, 54.2% 50%, 50.8% 40%, 45.8% 30.8%, 50% 21.7%, 47.5% 15%, 51.7% 1.7%);
+      transform-origin: 85% 15%; // hinges from its top-right corner
+    }
+  }
+
+  // Hairline crack over the halves (drawn by sealBreak.ts); hidden until then.
+  &__crack {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    opacity: 0;
+    pointer-events: none;
+
+    path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+  }
+
+  // Wax crumbs that pop out of the crack (positioned by sealBreak.ts).
+  &__crumb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 40% 60% 50% 30%;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+// ── Before hydration ───────────────────────────────────────────────────────
+// Set on <html> by the inline script in Hero.tsx when the intro will play:
+// paint the sealed state instead of flashing the finished hero. GSAP's inline
+// styles take over (and remove the class) as soon as it runs.
+.lp-intro-armed {
+  .lp-hero__stage {
+    display: block;
+  }
+
+  .lp-hero__bg,
+  .lp-hero__dots,
+  .lp-hero__pill,
+  .lp-hero__words,
+  .lp-hero__pop,
+  .lp-hero__dot,
+  .lp-hero__lede,
+  .lp-hero__actions,
+  .lp-hero__drop,
+  .lp-hero__popper,
+  .lp-hero__scroll,
+  .lp-hero__more,
+  .lp-header__logo,
+  .lp-header__nav {
+    opacity: 0;
+  }
+}
+
+// ── Follow-ups ─────────────────────────────────────────────────────────────
+// The card's clip box: as wide and tall as needed above the envelope, but it
+// ends at the envelope's bottom edge. The intro sets overflow: visible once
+// the card is out (it then grows into the hero background).
+.lp-env__card-clip {
+  position: absolute;
+  left: -1000px;
+  right: -1000px;
+  top: -1000px;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  > .lp-env__card {
+    left: 1030px;
+    top: 1030px;
+  }
+}
+
+// The envelope screen gets the same animated mouse cue as the hero.
+.lp-hero__hint {
+  bottom: 28px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+
+  @media (min-width: 1024px) {
+    display: flex;
+  }
+}
+
+// Desktop: the hero's "scroll to explore" sits at the bottom of the screen.
+@media (min-width: 1024px) {
+  .lp-hero__scroll.lp-hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    margin: 0;
+    translate: -50% 0;
+  }
+}
+
+// Hero confetti keeps drifting gently, scroll or no scroll. Uses the
+// `translate`/`rotate` properties so it never fights GSAP's transforms.
+.lp-hero__confetti {
+  animation: lp-drift-a 9s ease-in-out infinite;
+
+  &--2 {
+    animation-name: lp-drift-b;
+    animation-duration: 11s;
+  }
+  &--3 {
+    animation-name: lp-drift-b; // translate only: keeps its CSS tilt
+    animation-duration: 10s;
+  }
+  &--4 {
+    animation-name: lp-drift-b;
+    animation-duration: 12s;
+    animation-direction: reverse;
+  }
+  &--5 {
+    animation-name: lp-drift-c;
+    animation-duration: 8s;
+    animation-direction: reverse;
+  }
+}
+
+.lp-hero__burst-piece {
+  animation: lp-drift-a 10s ease-in-out infinite;
+
+  &:nth-child(3n + 1) {
+    animation-name: lp-drift-b;
+    animation-duration: 12s;
+  }
+  &:nth-child(3n + 2) {
+    animation-name: lp-drift-c;
+    animation-duration: 9s;
+  }
+  &:nth-child(4n) {
+    animation-direction: reverse;
+  }
+  &:nth-child(5n) {
+    animation-delay: -4s;
+  }
+  &:nth-child(7n) {
+    animation-delay: -7s;
+  }
+}
+
+@keyframes lp-drift-a {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  25% {
+    translate: 16px -12px;
+    rotate: 12deg;
+  }
+  50% {
+    translate: -6px -22px;
+    rotate: -6deg;
+  }
+  75% {
+    translate: -16px 6px;
+    rotate: 8deg;
+  }
+}
+
+@keyframes lp-drift-b {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  33% {
+    translate: -18px 10px;
+  }
+  66% {
+    translate: 12px 18px;
+  }
+}
+
+@keyframes lp-drift-c {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  30% {
+    translate: 10px 16px;
+    rotate: -10deg;
+  }
+  60% {
+    translate: 20px -8px;
+    rotate: 6deg;
+  }
+}
+
+// Extra background confetti (Hero.tsx SPECKS), drifting like the rest.
+.lp-hero__speck {
+  position: absolute;
+  opacity: 0.85;
+  pointer-events: none;
+  animation: lp-drift-b 11s ease-in-out infinite;
+
+  &:nth-child(3n) {
+    animation-name: lp-drift-a;
+    animation-duration: 9s;
+  }
+  &:nth-child(3n + 1) {
+    animation-name: lp-drift-c;
+    animation-duration: 13s;
+  }
+  &:nth-child(2n) {
+    animation-direction: reverse;
+  }
+  &:nth-child(5n) {
+    animation-delay: -3s;
+  }
+  &:nth-child(7n) {
+    animation-delay: -6s;
+  }
+}
+
+// The whole envelope is clickable (opens it), not only the seal.
+.lp-env {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+// Click-to-open: the hint shows on every screen size, and the seal pulses
+// gently to invite the click (`scale` property, so GSAP's transforms on the
+// seal halves are unaffected).
+.lp-hero__hint {
+  display: flex;
+  font-size: 12px;
+}
+
+.lp-env__seal {
+  animation: lp-seal-pulse 2s ease-in-out infinite; // "breathes" so it looks tappable
+}
+
+// The breathing stops before the seal starts to crack.
+.lp-opening .lp-env__seal {
+  animation: none;
+}
+
+@keyframes lp-seal-pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.06;
+  }
+}
+
+// ── "Open me!" handwritten note (replaces the bottom hint) ─────────────────
+// Lives in envelope units (520×340), so it scales with the envelope.
+.lp-env__note {
+  position: absolute;
+  left: 300px;
+  top: 52px; // inside the envelope, up and right of the seal
+  width: 170px;
+  height: 200px;
+  z-index: 5;
+  pointer-events: none;
+  animation: lp-note-nudge 2.4s 2.6s ease-in-out infinite;
+}
+
+.lp-env__note-text {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  font-family: "Caveat", "Comic Sans MS", cursive;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ui-color-terracotta);
+  rotate: -9deg;
+  // The reveal box reaches past the text so the slanted "!" is never cut.
+  padding: 4px 10px 6px 0;
+  clip-path: inset(-12px 100% -12px -12px);
+  animation: lp-note-write 0.9s 0.5s ease-out forwards;
+}
+
+.lp-env__note-arrow {
+  position: absolute;
+  left: -32px;
+  top: 46px;
+  width: 80px;
+  height: 70px;
+  overflow: visible;
+
+  path {
+    stroke: var(--ui-color-terracotta);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+}
+
+.lp-env__note-line {
+  animation: lp-note-draw 0.8s 1.3s ease-out forwards;
+}
+
+.lp-env__note-head {
+  animation: lp-note-draw 0.25s 2.05s ease-out forwards;
+}
+
+@keyframes lp-note-write {
+  to {
+    clip-path: inset(-12px -16px -12px -12px);
+  }
+}
+
+@keyframes lp-note-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+// A small "this way" nudge toward the seal, after it's drawn.
+@keyframes lp-note-nudge {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: -5px 4px;
+  }
+}
+
+// ── "there's more" scroll hint (replaces the mouse cue) ────────────────────
+// Handwritten, like the envelope's "Open me!", under the photos on the right.
+.lp-hero__more {
+  position: absolute;
+  right: 8px;
+  top: calc(50% + 120px);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--ui-color-terracotta);
+  animation: lp-more-bob 2.6s ease-in-out infinite;
+
+  &:hover {
+    color: var(--ui-color-clay-deep);
+  }
+
+  @media (max-width: 1023px) {
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-self: end;
+    margin-top: -12px;
+  }
+}
+
+.lp-hero__more-text {
+  font-family: "Caveat", "Comic Sans MS", cursive;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+  white-space: nowrap;
+  rotate: -6deg;
+}
+
+.lp-hero__more-arrow {
+  width: 30px;
+  height: 76px;
+  overflow: visible;
+
+  path {
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 100;
+  }
+}
+
+// The squiggle draws, the head follows, both hold, then fade and redraw.
+.lp-hero__more-line {
+  animation: lp-more-line 3.6s ease-in-out infinite;
+}
+
+.lp-hero__more-head {
+  animation: lp-more-head 3.6s ease-in-out infinite;
+}
+
+@keyframes lp-more-line {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 1;
+  }
+  40%,
+  82% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes lp-more-head {
+  0%,
+  38% {
+    stroke-dashoffset: 100;
+    opacity: 1;
+  }
+  52%,
+  82% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes lp-more-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-hero__more,
+  .lp-hero__more-line,
+  .lp-hero__more-head {
+    animation: none;
+  }
+
+  .lp-hero__more-arrow path {
+    stroke-dashoffset: 0;
+  }
+}
+
+// ── Confetti vs. readability ───────────────────────────────────────────────
+// After the opening, the burst confetti stays as light background: behind
+// the headline, text and buttons (the grid is z-index 2), at 30%.
+.lp-hero__burst.is-settled {
+  z-index: 1;
+  opacity: 0.3 !important; // overrides the inline opacity kept from the intro
+}
+
+// Phones: the copy spans the full width, so drop the extra scattered pieces.
+@media (max-width: 720px) {
+  .lp-hero__speck {
+    display: none;
+  }
+}
+
+// ── Clear zone for confetti (hero/confettiZone.ts) ─────────────────────────
+.lp-hero__speck,
+.lp-hero__burst-piece {
+  transition: opacity 0.6s ease;
+}
+
+.lp-hero__speck.is-clear,
+.lp-hero__burst-piece.is-clear {
+  opacity: 0 !important;
+}
+
+// "there's more" sits at the bottom centre of the hero, arrow below.
+// (Centred with auto margins: the bob animation owns `translate`.)
+.lp-hero > .lp-hero__more {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: 18px;
+  width: max-content;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  .lp-hero__more-arrow {
+    height: 56px;
+  }
+
+  @media (max-width: 1023px) {
+    position: relative;
+    bottom: auto;
+    margin: 28px auto 0;
+  }
+}
+
+// ── Sealed-envelope screen: heading, language switch, seal button ──────────
+// Only visible while the stage is (i.e. before / during the opening).
+.lp-env {
+  top: 50%;
+}
+
+.lp-seal-screen__lang {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 6;
+  pointer-events: auto;
+}
+
+.lp-seal-screen__head {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(16px, 6vh, 64px);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.lp-seal-screen__brand {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ui-color-terracotta);
+}
+
+.lp-seal-screen__title {
+  margin: 0;
+  font-family: var(--ui-font-heading);
+  font-weight: 600;
+  font-size: clamp(30px, 4.4vw, 52px);
+  line-height: 1.1;
+  color: var(--ui-color-ink);
+}
+
+// "Break the seal": a pill with a mini wax seal that turns on hover.
+.lp-seal-btn {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(16px, 5vh, 56px);
+  z-index: 6;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 7px 28px 7px 8px;
+  border: 0;
+  border-radius: var(--ui-radius-pill);
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(181, 80, 47, 0.2);
+  font: inherit;
+  font-family: var(--ui-font-heading);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ui-color-ink);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s var(--ui-ease-bounce);
+
+  &__seal {
+    width: 46px;
+    height: 46px;
+    display: block;
+    filter: drop-shadow(0 3px 4px rgba(80, 30, 10, 0.3));
+    transition: rotate 0.6s var(--ui-ease-bounce);
+  }
+
+  &:hover {
+    box-shadow: 0 18px 40px rgba(181, 80, 47, 0.28);
+    transform: translateY(-2px);
+
+    .lp-seal-btn__seal {
+      rotate: -25deg;
+    }
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--ui-color-terracotta);
+    outline-offset: 3px;
+  }
+}
+
+// Confetti scattered around the envelope on this screen.
+.lp-seal-screen__confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  span {
+    position: absolute;
+    animation: lp-drift-b 9s ease-in-out infinite;
+
+    &:nth-child(2n) {
+      animation-name: lp-drift-c;
+      animation-duration: 11s;
+    }
+    &:nth-child(3n) {
+      animation-direction: reverse;
+    }
+  }
+}
+
+// Phones: the language switch sits in the fixed header area, the envelope
+// tilts a little, and the button spans the width at the bottom.
+@media (max-width: 720px) {
+  .lp-seal-screen__lang {
+    top: 12px;
+    right: 16px;
+  }
+
+  .lp-seal-screen__head {
+    top: 72px;
+  }
+
+
+  .lp-seal-btn {
+    left: 16px;
+    right: 16px;
+    translate: none;
+    justify-content: center;
+    min-height: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-seal-btn,
+  .lp-seal-btn__seal {
+    transition: none;
+  }
+}
+
+// ── Sealed screen: toggle at the very top; only the envelope on phones ─────
+// <html>.lp-sealed is set while the envelope waits to be opened
+// (.lp-intro-armed covers the moment before the script takes over).
+.lp-intro__pin {
+  position: relative;
+}
+
+.lp-seal-screen__lang.lp-seal-screen__lang {
+  display: none;
+  top: 16px;
+  right: 24px;
+  z-index: 70; // above the (empty) header bar
+}
+
+.lp-sealed,
+.lp-intro-armed {
+  .lp-seal-screen__lang.lp-seal-screen__lang {
+    display: block;
+  }
+
+  .lp-header {
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .lp-seal-screen__lang.lp-seal-screen__lang {
+    position: fixed;
+    top: 14px;
+    right: 16px;
+  }
+
+  .lp-sealed,
+  .lp-opening,
+  .lp-intro-armed {
+    // No header bar or line: just the envelope screen, filling the viewport.
+    .lp-header {
+      background: transparent;
+      border-bottom-color: transparent;
+    }
+
+    .lp-hero {
+      min-height: calc(100svh - 72px);
+    }
+
+    .lp-seal-screen__head {
+      top: 4px;
+    }
+  }
+}
+
+// ── Sealed envelope "wants out": a nudge every 6s ──────────────────────────
+// Uses the rotate/translate properties so it composes with GSAP's transform
+// on the same element. Rests tilted −3°; on open the class goes away and the
+// transition eases it straight (0.45s) before the flap opens.
+.lp-env__nudge {
+  --lp-nudge: 16px;
+  position: absolute;
+  inset: 0;
+}
+
+.lp-sealed .lp-env__nudge,
+.lp-intro-armed .lp-env__nudge {
+  transform: rotate(-3deg);
+  animation: lp-env-nudge 6s ease-in-out infinite;
+}
+
+@media (max-width: 720px) {
+  .lp-env__nudge {
+    --lp-nudge: 12px;
+  }
+}
+
+@keyframes lp-env-nudge {
+  0%,
+  78%,
+  100% {
+    transform: rotate(-3deg) translateY(0);
+  }
+  82% {
+    transform: rotate(-6deg) translateY(calc(var(--lp-nudge) * -1));
+  }
+  86% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(-4deg);
+  }
+  94% {
+    transform: rotate(-2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-sealed .lp-env__nudge {
+    animation: none;
+  }
+}
+
+// While the opening plays, the language switch area stays clickable-free
+// and the header keeps out of the way.
+.lp-opening .lp-header {
+  pointer-events: none;
+}
+
+// While the envelope is showing (sealed, opening, or before the script runs),
+// it fills the whole screen at every width, so nothing below peeks in. The
+// extra height covers the next section's rounded overlap.
+.lp-sealed,
+.lp-opening,
+.lp-intro-armed {
+  .lp-intro__pin {
+    min-height: calc(100vh + 48px);
+    min-height: calc(100svh + 48px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lp-hero {
+    flex: 1 0 auto;
+  }
+}

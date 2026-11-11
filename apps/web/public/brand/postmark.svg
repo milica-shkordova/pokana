@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 120" width="210" height="120" aria-hidden="true">
+              <defs>
+                <path id="stampArc" d="M 150 60 m -37 0 a 37 37 0 1 1 74 0 a 37 37 0 1 1 -74 0"></path>
+                <filter id="stampInk" x="-5%" y="-5%" width="110%" height="110%">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise"></feTurbulence>
+                  <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.9" result="speckle"></feColorMatrix>
+                  <feComposite in="SourceGraphic" in2="speckle" operator="in"></feComposite>
+                </filter>
+              </defs>
+              <g filter="url(#stampInk)" fill="none" stroke="#A8694B" stroke-linecap="round">
+                <path d="M4 38 Q 18 30 32 38 T 60 38 T 88 38 T 108 36" stroke-width="2.4"></path>
+                <path d="M2 52 Q 16 44 30 52 T 58 52 T 86 52 T 106 50" stroke-width="2.4"></path>
+                <path d="M2 66 Q 16 58 30 66 T 58 66 T 86 66 T 106 66" stroke-width="2.4"></path>
+                <path d="M4 80 Q 18 72 32 80 T 60 80 T 88 80 T 108 82" stroke-width="2.4"></path>
+                <circle cx="150" cy="60" r="52" stroke-width="3"></circle>
+                <circle cx="150" cy="60" r="27" stroke-width="1.6"></circle>
+                <text font-family="Manrope, sans-serif" font-weight="800" font-size="9.5" fill="#A8694B" stroke="none"><textPath href="#stampArc" startOffset="0" textLength="228" lengthAdjust="spacing">• MOMENTELO • DIGITAL INVITES</textPath></text>
+                <text x="150" y="59" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="10.5" fill="#A8694B" stroke="none">SKOPJE</text>
+                <text x="150" y="72" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="8.5" letter-spacing="1" fill="#A8694B" stroke="none">2026</text>
+              </g>
+            </svg>
