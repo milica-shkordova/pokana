@@ -11,8 +11,8 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PrismaClient, type Prisma } from "@prisma/client";
-import { same, zonedToUtc, type EventContent, type TemplateCategory, type TemplateStatus } from "@momentelo/shared";
-import { defaultSections, defaultTheme, getDefinition, templateList, type TemplateDefinition } from "@momentelo/templates/definitions";
+import { zonedToUtc, type EventContent, type TemplateCategory, type TemplateStatus } from "@momentelo/shared";
+import { defaultSections, defaultTheme, templateList, type TemplateDefinition } from "@momentelo/templates/definitions";
 
 const db = new PrismaClient();
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -162,50 +162,6 @@ async function main() {
       isDemo: true,
     });
     await db.template.updateMany({ where: { id: def.id, demoEventId: null }, data: { demoEventId: event.id } });
-  }
-
-  // The first real client, migrated from src/clients/tatjana-i-dragan.ts.
-  const elegant = getDefinition("elegant-wedding");
-  if (elegant) {
-    const L = (mk: string) => same(mk, ["mk"]);
-    await seedEvent(elegant, {
-      slug: "tatjana-i-dragan",
-      name: "Татјана & Драган",
-      date: "2026-06-28",
-      time: "15:15",
-      languages: ["mk"],
-      isDemo: false,
-      clientName: "Татјана & Драган",
-      status: "past",
-      content: {
-        ...elegant.defaultContent,
-        names: L("Татјана & Драган"),
-        partnerOne: L("Татјана"),
-        partnerTwo: L("Драган"),
-        program: {
-          heading: L("Програма"),
-          items: [
-            { id: "p1", time: "15:15", title: L('Црква „Рождество на Пресвета Богородица"') },
-            { id: "p2", time: "18:30", title: L('Матично (ресторан „Ксантика")') },
-            { id: "p3", time: "19:00 - 19:30", title: L("Прием на гости 🥂") },
-          ],
-        },
-        rsvp: { ...elegant.defaultContent.rsvp!, menuOptions: ["Регуларно", "Вегетаријанско", "Веганско", "Детско"] },
-        location: {
-          heading: L("Локација"),
-          venues: [
-            {
-              id: "v1",
-              name: L('Ресторан „Ксантика"'),
-              address: L("1640 9, Хиподром, Скопје"),
-              mapsQuery: "Ресторан Ксантика, Хиподром, Скопје",
-            },
-          ],
-        },
-        music: { mediaId: await seedAsset("music.mp3") },
-        photos: { hero: await seedAsset("1.jpg"), mid: await seedAsset("2.jpg"), beforeLocation: await seedAsset("3.jpg") },
-      },
-    });
   }
 }
 

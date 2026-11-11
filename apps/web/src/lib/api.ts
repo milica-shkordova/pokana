@@ -16,5 +16,6 @@ export const browserApi = createApiClient("");
 /** Public origin of this site (absolute URLs for OG tags, sitemap, robots). */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 
-/** Admin origin allowed to drive /preview via postMessage and to frame it. */
-export const ADMIN_URL = (process.env.NEXT_PUBLIC_ADMIN_URL ?? "http://localhost:3001").replace(/\/$/, "");
+/** Admin URL (e.g. https://momentelo.mk/admin). Its origin may frame /preview and drive it via postMessage. */
+export const ADMIN_URL = (process.env.NEXT_PUBLIC_ADMIN_URL ?? "http://localhost:3001/admin").replace(/\/$/, "");
+export const ADMIN_ORIGIN = new URL(ADMIN_URL).origin;

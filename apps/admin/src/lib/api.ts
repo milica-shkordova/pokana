@@ -3,15 +3,19 @@ import { ApiError, createApiClient } from "@momentelo/shared";
 
 const base = createApiClient("");
 
+/** The admin's URL prefix (basePath in next.config.ts). */
+export const BASE_PATH = "/admin";
+
 /** Any 401 sends the user to the login page, remembering where they were. */
 async function guard<T>(promise: Promise<T>): Promise<T> {
   try {
     return await promise;
   } catch (err) {
     if (err instanceof ApiError && err.status === 401 && typeof window !== "undefined") {
-      const p = window.location.pathname;
+      // Path inside the admin (without /admin): login's ?next= goes through the router, which adds it back.
+      const p = window.location.pathname.slice(BASE_PATH.length) || "/";
       if (!p.startsWith("/login") && !p.startsWith("/accept-invite")) {
-        window.location.href = `/login?next=${encodeURIComponent(p + window.location.search)}`;
+        window.location.href = `${BASE_PATH}/login?next=${encodeURIComponent(p + window.location.search)}`;
       }
     }
     throw err;

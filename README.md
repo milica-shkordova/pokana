@@ -109,7 +109,7 @@ npm-workspaces monorepo:
 ```
 apps/
   web/     Next.js (Pages Router): landing "/", invitations "/<slug>", previews, OG images      :3000
-  admin/   Next.js (Pages Router): team admin (events, editor, templates, leads, media, settings) :3001
+  admin/   Next.js (Pages Router): team admin, served at <site>/admin (events, editor, …)       :3001
   api/     Hono + Prisma: REST API, email queue, media processing, background jobs             :4000
 packages/
   ui/         @momentelo/ui: design system (tokens + React components) shared by landing and admin
@@ -124,7 +124,7 @@ packages/
           admin ⇄ web /preview iframe (postMessage live preview)
 ```
 
-- **Same-origin proxy.** Both Next apps proxy `/api` to the API, so there's no CORS and the session cookie is first-party.
+- **One address.** The public site shows the admin at `/admin` (a Next.js rewrite to the admin app, which has `basePath: "/admin"`) and proxies `/api/public/*` and `/api/admin/*` to the API. Everything is same-origin: no CORS, and the session cookie is first-party.
 - **Static invitations.** Invitations are statically generated per slug (ISR). The API asks the site to revalidate the affected pages whenever something is published or edited.
 - **Live preview.** The editor's preview is the real template, rendered by the public site in an iframe (`/preview/<id>?token=…&embed=1`). The admin pushes unsaved changes into it with `postMessage` (`momentelo:preview` ⇄ `momentelo:preview-ready`), and only messages from `NEXT_PUBLIC_ADMIN_URL` are accepted.
 
@@ -188,11 +188,11 @@ npm install
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env.local
 cp apps/admin/.env.example apps/admin/.env.local
-npm run setup        # migrate + seed: owner account, settings, catalog, 9 demos, the Татјана & Драган event
+npm run setup        # migrate + seed: owner account, settings, catalog, template demos
 npm run dev          # api :4000 · web :3000 · admin :3001
 ```
 
-Sign in at http://localhost:3001 with `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `apps/api/.env`.
+Sign in at http://localhost:3000/admin with `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `apps/api/.env`.
 
 Without `RESEND_API_KEY`, emails are printed in the API console. The full flow (test email, RSVP email, invites) still works locally.
 
@@ -236,7 +236,7 @@ If you see "Prisma Client did not initialize", run `npm run postinstall -w @mome
 | App | File | Variables |
 | --- | --- | --- |
 | api | `apps/api/.env` | `DATABASE_URL`, `AUTH_SECRET`, `WEB_URL`, `ADMIN_URL`, `REVALIDATE_SECRET`, `ADMIN_EMAIL`/`ADMIN_PASSWORD`/`ADMIN_NAME` (seed), `RESEND_API_KEY`, `MEDIA_DRIVER` + `S3_*`/`MEDIA_PUBLIC_URL`, `MEDIA_QUOTA_GB`, `DIGEST_HOUR` |
-| web | `apps/web/.env.local` | `API_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL` |
+| web | `apps/web/.env.local` | `API_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL` (e.g. `https://momentelo.mk/admin`), `ADMIN_APP_URL` (where the admin app runs) |
 | admin | `apps/admin/.env.local` | `API_URL`, `NEXT_PUBLIC_WEB_URL` |
 
 ## Deploying
@@ -245,7 +245,9 @@ If you see "Prisma Client did not initialize", run `npm run postinstall -w @mome
   - For production, switch `provider` in `schema.prisma` to `postgresql`, set `DATABASE_URL`, and generate a fresh migration.
   - Use `MEDIA_DRIVER=s3` (R2).
   - Run a single instance (jobs and rate limits are in-process), or set `JOBS=off` on extra instances.
-- **web / admin:** any Next.js host (e.g. Vercel), with `API_URL` pointing at the API. Keep the admin private if you can.
+- **web (Netlify):** the main site, configured by [`netlify.toml`](netlify.toml) at the root. Set `API_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL=<site>/admin` and `ADMIN_APP_URL`.
+- **admin (second Netlify site):** same repo, Base directory empty, Package directory `apps/admin` (uses [`apps/admin/netlify.toml`](apps/admin/netlify.toml)). Set `API_URL` and `NEXT_PUBLIC_WEB_URL`. Put its Netlify URL in the main site's `ADMIN_APP_URL`; people use it at `<site>/admin`.
+- **API:** set `WEB_URL=<site>` and `ADMIN_URL=<site>/admin` (links in emails).
 - **Email:** verify the sending domain (e.g. `momentelo.mk` for `rsvp@momentelo.mk`) in Resend.
 
 ## Owner TODOs (placeholders kept on purpose)

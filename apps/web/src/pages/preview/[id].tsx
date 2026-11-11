@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { GetServerSideProps } from "next";
 import { ApiError, type PublicEvent } from "@momentelo/shared";
 import InvitationView from "@/components/invitation/InvitationView";
-import { ADMIN_URL, serverApi } from "@/lib/api";
+import { ADMIN_ORIGIN, serverApi } from "@/lib/api";
 
 interface Props {
   event: PublicEvent;
@@ -24,14 +24,14 @@ export default function PreviewPage({ event: initial, embed }: Props) {
   useEffect(() => {
     if (!embed || window.parent === window) return;
     const onMessage = (e: MessageEvent) => {
-      if (e.origin !== ADMIN_URL) return;
+      if (e.origin !== ADMIN_ORIGIN) return;
       const data = e.data as { type?: string; event?: PublicEvent } | null;
       if (data?.type === "momentelo:preview" && data.event && typeof data.event.templateId === "string") {
         setEvent({ ...data.event, preview: true });
       }
     };
     window.addEventListener("message", onMessage);
-    window.parent.postMessage({ type: "momentelo:preview-ready", id: initial.id }, ADMIN_URL);
+    window.parent.postMessage({ type: "momentelo:preview-ready", id: initial.id }, ADMIN_ORIGIN);
     return () => window.removeEventListener("message", onMessage);
   }, [embed, initial.id]);
 

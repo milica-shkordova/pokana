@@ -25,7 +25,7 @@ const schema = z.object({
   /** Public site, e.g. https://momentelo.mk (preview links, revalidation, emails). */
   WEB_URL: z.string().url().default("http://localhost:3000"),
   /** Admin panel (invite links). */
-  ADMIN_URL: z.string().url().default("http://localhost:3001"),
+  ADMIN_URL: z.string().url().default("http://localhost:3000/admin"),
   REVALIDATE_SECRET: z.string().optional(),
 
   /** Resend API key. Without it, emails are printed to the console (dev). */
