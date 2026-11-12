@@ -71,7 +71,7 @@ function LandingPage({ templates, settings }: Props) {
         <Faq />
         <Contact templates={templates} contactEmail={settings.contactEmail} />
       </main>
-      <Footer businessName={settings.businessName} instagram={settings.instagram} logoUrl={settings.logoUrl} />
+      <Footer businessName={settings.businessName} instagram={settings.instagram} />
       <Cursor />
     </div>
   );

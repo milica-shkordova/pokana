@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import type { GetServerSideProps } from "next";
-import { ApiError, isPreviewMessage, PREVIEW_READY_MESSAGE, type PreviewReadyMessage, type PublicEvent } from "@pokanito/shared";
+import { ApiError, type PublicEvent } from "@pokanito/shared";
 import InvitationView from "@/components/invitation/InvitationView";
-import { ADMIN_ORIGIN, serverPublicApi } from "@/lib/api";
+import { usePreviewBridge } from "@/components/invitation/hooks/usePreviewBridge";
+import { serverPublicApi } from "@/lib/api";
 
 interface Props {
   event: PublicEvent;
@@ -17,20 +17,7 @@ interface Props {
  * Messages from any origin other than the admin are ignored.
  */
 export default function PreviewPage({ event: initial, embed }: Props) {
-  const [event, setEvent] = useState<PublicEvent>(initial);
-
-  useEffect(() => setEvent(initial), [initial]);
-
-  useEffect(() => {
-    if (!embed || window.parent === window) return;
-    const onMessage = (e: MessageEvent) => {
-      if (e.origin !== ADMIN_ORIGIN) return;
-      if (isPreviewMessage(e.data)) setEvent({ ...e.data.event, preview: true });
-    };
-    window.addEventListener("message", onMessage);
-    window.parent.postMessage({ type: PREVIEW_READY_MESSAGE, id: initial.id } satisfies PreviewReadyMessage, ADMIN_ORIGIN);
-    return () => window.removeEventListener("message", onMessage);
-  }, [embed, initial.id]);
+  const event = usePreviewBridge(initial, embed);
 
   // Remount the template when it changes so template-local state resets cleanly.
   return <InvitationView key={event.templateId} event={event} />;

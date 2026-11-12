@@ -1,14 +1,8 @@
 import { useRef, type CSSProperties } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { SectionHeading, MEDIA } from "@pokanito/ui";
+import { SectionHeading } from "@pokanito/ui";
 import { stepMeta } from "@/content/landing";
 import { useLang } from "./i18n";
-import { setupJourney } from "./journey/setupJourney";
-
-const DESKTOP = MEDIA.desktopMotion;
-const MOBILE = MEDIA.mobileMotion;
+import { useJourney } from "./journey/useJourney";
 
 /**
  * "How it works" (HANDOFF-ANIMATIONS B3): a ribbon snakes through the three
@@ -21,19 +15,7 @@ const MOBILE = MEDIA.mobileMotion;
 export default function HowItWorks() {
   const section = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const root = section.current;
-      if (!root) return;
-      gsap.registerPlugin(ScrollTrigger);
-      const mm = gsap.matchMedia();
-      mm.add({ desktop: DESKTOP, mobile: MOBILE }, (ctx) =>
-        setupJourney(root, ctx.conditions?.desktop ? "desktop" : "mobile"),
-      );
-      return () => mm.revert();
-    },
-    { scope: section },
-  );
+  useJourney(section);
 
   const h = useLang().t.how;
   const steps = stepMeta.map((m, i) => ({ ...m, ...h.steps[i] }));

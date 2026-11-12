@@ -1,25 +1,14 @@
-import { useEffect, useState } from "react";
-import { ApiError, type LeadInput, type TemplateSummary } from "@pokanito/shared";
+import { useEffect } from "react";
 import { Alert, Button, Dialog, Field, Input, Select, HoneypotField } from "@pokanito/ui";
-import { publicApi } from "@/lib/api";
 import { useLang } from "./i18n";
-
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  templates: TemplateSummary[];
-  initialTemplateId: string;
-}
+import { useLeadForm } from "./contact/useLeadForm";
+import type { NotifyDialogProps } from "./contact/types";
 
 /** "Notify me" for coming-soon templates → a Lead with source=notify-me. */
-export default function NotifyDialog({ open, onClose, templates, initialTemplateId }: Props) {
+export default function NotifyDialog({ open, onClose, templates, initialTemplateId }: NotifyDialogProps) {
   const n = useLang().t.notify;
-  const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
-  const [templateId, setTemplateId] = useState(initialTemplateId);
-  const [website, setWebsite] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [error, setError] = useState<string | null>(null);
+  const { name, setName, contact, setContact, templateId, setTemplateId, website, setWebsite, status, setStatus, error, setError, submit } =
+    useLeadForm("notify-me", { initialTemplateId, errorMessage: n.error });
 
   useEffect(() => {
     if (open) {
@@ -27,28 +16,7 @@ export default function NotifyDialog({ open, onClose, templates, initialTemplate
       setStatus("idle");
       setError(null);
     }
-  }, [open, initialTemplateId, templates]);
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    setError(null);
-    try {
-      await publicApi.lead({
-        source: "notify-me",
-        name,
-        contact,
-        templateId: templateId || undefined,
-        website,
-      } satisfies LeadInput);
-      setStatus("sent");
-      setName("");
-      setContact("");
-    } catch (err) {
-      setStatus("idle");
-      setError(err instanceof ApiError && err.status === 429 ? err.message : n.error);
-    }
-  };
+  }, [open, initialTemplateId, templates, setTemplateId, setStatus, setError]);
 
   const chosen = templates.find((t) => t.id === templateId);
 

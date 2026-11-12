@@ -11,12 +11,10 @@
  */
 
 import { rnd } from "@/lib/random";
+import { CRUMB_COLORS } from "./constants";
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const io = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
-
-// Matched to the Pokanito wax (wax-seal.svg): ember, flame, highlight.
-const CRUMB_COLORS = ["#8A2A0C", "#C9461A", "#F07A40"];
 
 /** Fixed pseudo-random numbers (lib/random), so the crumbs look the same every time. */
 export const SEAL_CRUMBS = Array.from({ length: 9 }, (_, i) => ({

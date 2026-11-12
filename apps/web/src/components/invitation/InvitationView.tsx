@@ -1,28 +1,13 @@
-import { useCallback } from "react";
 import Head from "next/head";
-import { eventUrl, formatEventDate, ogImageUrl, type Locale, type PublicEvent, type RsvpInput } from "@pokanito/shared";
+import { eventUrl, formatEventDate, ogImageUrl } from "@pokanito/shared";
 import { Invitation } from "@pokanito/templates";
 import { templateDefinitions } from "@pokanito/templates/definitions";
-import { publicApi, SITE_URL } from "@/lib/api";
+import { SITE_URL } from "@/lib/api";
+import { useRsvpSubmit } from "./hooks/useRsvpSubmit";
+import type { InvitationHeadProps, InvitationViewProps } from "./types";
 
 /** Fonts, title, robots and link-preview tags for an invitation page. */
-export function InvitationHead({
-  templateId,
-  title,
-  slug,
-  eventDate,
-  locale,
-  noindex,
-  preview,
-}: {
-  templateId: string;
-  title: string;
-  slug: string;
-  eventDate: string;
-  locale: Locale;
-  noindex: boolean;
-  preview?: boolean;
-}) {
+export function InvitationHead({ templateId, title, slug, eventDate, locale, noindex, preview }: InvitationHeadProps) {
   const fonts = templateDefinitions[templateId]?.fonts.href;
   const description = formatEventDate(eventDate, locale, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   const url = eventUrl(SITE_URL, slug);
@@ -46,26 +31,9 @@ export function InvitationHead({
   );
 }
 
-interface Props {
-  event: PublicEvent;
-  /** Proof the guest entered the access code (locked invitations). */
-  unlockToken?: string | null;
-}
-
 /** Renders an invitation with its template and wires its RSVP form to the API. */
-export default function InvitationView({ event, unlockToken }: Props) {
-  const submitRsvp = useCallback(
-    async (input: RsvpInput) => {
-      if (event.preview) {
-        await new Promise((r) => setTimeout(r, 400)); // previews never post
-        return;
-      }
-      // 201 = stored, 202 = demo (accepted, not stored). Anything else throws
-      // an ApiError, which the template turns into its error message.
-      await publicApi.rsvp(event.slug, input, unlockToken);
-    },
-    [event.slug, event.preview, unlockToken],
-  );
+export default function InvitationView({ event, unlockToken }: InvitationViewProps) {
+  const submitRsvp = useRsvpSubmit(event, unlockToken);
 
   return (
     <>

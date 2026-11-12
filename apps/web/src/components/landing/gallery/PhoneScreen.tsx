@@ -2,10 +2,9 @@ import { useCallback, useState } from "react";
 import type { TemplateSummary } from "@pokanito/shared";
 import { thumbStyle } from "@pokanito/templates/definitions";
 import { FRAME_H, FRAME_W } from "./geometry";
+import { THUMB_FALLBACK } from "./constants";
 import { fmt } from "@/content/landing";
 import { useLang } from "../i18n";
-
-const THUMB_FALLBACK = { bg: "#E8E5D6", ink: "#4A4645" };
 
 /** Static stand-in until (or instead of) the live demo: preview photo, or the template's colours + monogram. */
 export function TemplateThumb({ t, className }: { t: TemplateSummary; className: string }) {

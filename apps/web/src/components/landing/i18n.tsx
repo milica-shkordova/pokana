@@ -8,19 +8,10 @@ import {
   type ReactNode,
 } from "react";
 import { useIsoLayoutEffect, useSlidingIndicator } from "@pokanito/ui";
-import { COPY, LANGS, type Copy, type Lang } from "@/content/landing";
+import { COPY, LANGS, type Lang } from "@/content/landing";
 import { requestScrollRefresh } from "./scrollRefresh";
-
-const STORAGE_KEY = "pokanito:lang";
-
-interface LangValue {
-  lang: Lang;
-  setLang: (lang: Lang) => void;
-  /** The landing copy in the current language. */
-  t: Copy;
-  /** True once the saved language has been restored (client only). */
-  ready: boolean;
-}
+import { STORAGE_KEY } from "./lang/constants";
+import type { LangValue } from "./lang/types";
 
 const LangContext = createContext<LangValue>({ lang: "en", setLang: () => undefined, t: COPY.en, ready: true });
 
