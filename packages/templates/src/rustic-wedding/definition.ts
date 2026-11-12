@@ -105,3 +105,6 @@ export const rusticWedding: TemplateDefinition = {
     },
   },
 };
+
+/** Catalog entries this design renders, in gallery order. */
+export const definitions: TemplateDefinition[] = [rusticWedding];

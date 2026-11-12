@@ -22,3 +22,6 @@ export function dateParts(iso: string) {
   const [y, m, d] = utcToZoned(iso).date.split("-");
   return { d, m, y, yy: y.slice(2) };
 }
+
+/** Joins the truthy class names: cx("a", on && "a--on") → "a a--on". */
+export const cx = (...names: (string | false | null | undefined)[]) => names.filter(Boolean).join(" ");

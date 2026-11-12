@@ -1,29 +1,20 @@
 // Kids Birthday — KidsBirthday.dc.html. Theme: --theme-sun (background), --theme-pop (accent).
+@use "../../styles/mixins" as *;
+
 $ink: #1d2a4d;
 $heading: "Comfortaa", sans-serif;
 
 .page {
-  min-height: 100vh;
-  background: var(--theme-sun, #ffd866);
+  @include page(var(--theme-sun, #ffd866));
 }
 
 .phone {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: var(--theme-sun, #ffd866);
-  font-family: "Nunito", system-ui, sans-serif;
-  color: $ink;
-  display: flex;
-  flex-direction: column;
+  @include phone-shell(var(--theme-sun, #ffd866), ("Nunito", system-ui, sans-serif), $ink);
   align-items: center;
   text-align: center;
   overflow: hidden;
 
-  :focus-visible {
-    outline: 3px solid $ink;
-    outline-offset: 2px;
-  }
+  @include focus-ring($ink, 3px);
 }
 
 // ── Hero ──
@@ -31,10 +22,8 @@ $heading: "Comfortaa", sans-serif;
   position: relative;
   width: 100%;
   padding: 56px 24px 0;
-  display: flex;
-  flex-direction: column;
+  @include stack(6px);
   align-items: center;
-  gap: 6px;
 }
 
 %blob {
@@ -210,9 +199,7 @@ $heading: "Comfortaa", sans-serif;
   background: #e8f8f1;
   border-radius: 20px;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  @include stack(10px);
 }
 
 .countdownRow {
@@ -229,7 +216,7 @@ $heading: "Comfortaa", sans-serif;
 .countdownNum {
   font-size: 36px;
   font-weight: 800;
-  font-variant-numeric: tabular-nums;
+  @include countdown-num;
 }
 
 .countdownUnit {
@@ -305,31 +292,26 @@ $heading: "Comfortaa", sans-serif;
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  @include stack(14px);
 }
 
 .label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  @include stack(6px);
   text-align: left;
   font-size: 13px;
   font-weight: 700;
 }
 
 .input {
+  @include field-input;
   min-height: 50px;
   padding: 0 16px;
   border: 0;
   border-radius: 14px;
-  font: inherit;
   font-weight: 400;
   font-size: 16px;
   color: $ink;
   background: #fff;
-  width: 100%;
 }
 
 .grid2 {
@@ -339,32 +321,26 @@ $heading: "Comfortaa", sans-serif;
 }
 
 .submit {
+  @include button-base;
   margin-top: 6px;
   min-height: 54px;
-  border: 0;
   border-radius: 999px;
   background: var(--theme-sun, #ffd866);
   color: $ink;
-  font: inherit;
   font-weight: 800;
   font-size: 17px;
-  cursor: pointer;
 
-  &:disabled {
-    opacity: 0.7;
-  }
+  @include dim-when-disabled;
 }
 
 .decline {
+  @include button-base;
   min-height: 44px;
-  border: 0;
   background: transparent;
   color: #d6e2fa;
-  font: inherit;
   font-size: 14px;
   font-weight: 700;
   text-decoration: underline;
-  cursor: pointer;
 }
 
 .error {
@@ -407,10 +383,7 @@ $heading: "Comfortaa", sans-serif;
 }
 
 .map {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+  @include map-fill;
 }
 
 .venueName {
@@ -433,9 +406,7 @@ $heading: "Comfortaa", sans-serif;
 .footer {
   margin-top: auto;
   padding: 48px 24px 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  @include stack(4px);
 }
 
 .footerTitle {

@@ -127,3 +127,6 @@ export const floralChristening: TemplateDefinition = {
   defaultContent: content(),
   demo: { slug: "demo-floral-christening", name: "Крштевање на Мила", date: "2027-01-09", time: "11:00", content: demoContent, photos: { hero: "slika.jpeg" } },
 };
+
+/** Catalog entries this design renders, in gallery order. */
+export const definitions: TemplateDefinition[] = [classicChristening, floralChristening];

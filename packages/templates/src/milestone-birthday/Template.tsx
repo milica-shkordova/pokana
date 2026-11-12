@@ -1,11 +1,23 @@
-import { Fragment } from "react";
-import { pad2, type SectionKind } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
-import { useCountdown, useRsvpDeadlineText } from "../engine/hooks";
-import { useRsvpForm } from "../engine/useRsvpForm";
-import { LanguageToggle, MapsLink, Multiline, MusicButton, Photo, PreviewNotice } from "../engine/components";
-import { cap, dateParts, TIME } from "../common/format";
+import { useCountdown, useFooter, useVenues } from "../engine/hooks";
+import { CountdownUnits, MapsLink, Multiline, OptionalText, Photo } from "../engine/components";
+import { RsvpNameField, RsvpResult, RsvpSection, RsvpSubmitDecline, type RsvpClasses } from "../engine/rsvp";
+import { TemplateShell } from "../engine/TemplateShell";
+import { cap, dateParts, TIME } from "../engine/format";
 import st from "./Template.module.scss";
+
+const rsvpClasses: RsvpClasses = {
+  section: st.rsvp,
+  heading: st.h2,
+  note: st.muted,
+  form: st.form,
+  label: st.label,
+  input: st.input,
+  error: st.error,
+  success: st.success,
+  submit: st.submit,
+  decline: st.decline,
+};
 
 function Hero() {
   const { t, event, date } = useInvitation();
@@ -13,7 +25,7 @@ function Hero() {
   const dp = dateParts(event.eventDate);
   return (
     <header className={st.hero}>
-      {t(c.eyebrow) && <span className={st.eyebrow}>{t(c.eyebrow)}</span>}
+      <OptionalText className={st.eyebrow}>{t(c.eyebrow)}</OptionalText>
       {c.age !== undefined && (
         <span className={st.age} aria-hidden>
           {c.age}
@@ -56,19 +68,7 @@ function Countdown() {
       <span className={st.smallCaps}>{c.done ? s.countdownDone : t(event.content.countdown?.heading)}</span>
       {!c.done && (
         <div className={st.countdownGrid} role="timer">
-          {(
-            [
-              [c.days, s.days],
-              [c.hours, s.hours],
-              [c.minutes, s.minutes],
-              [c.seconds, s.seconds],
-            ] as const
-          ).map(([n, unit], i) => (
-            <div key={unit} className={st.countdownCell}>
-              <span className={st.countdownNum}>{c.ready ? (i === 0 ? n : pad2(n)) : "–"}</span>
-              <span className={st.countdownUnit}>{unit}</span>
-            </div>
-          ))}
+          <CountdownUnits units={c.units} classes={{ item: st.countdownCell, num: st.countdownNum, unit: st.countdownUnit }} />
         </div>
       )}
     </section>
@@ -85,7 +85,7 @@ function Info() {
         <div key={it.id} className={st.infoCard} data-reveal>
           <span className={st.infoLabel}>{t(it.label)}</span>
           <span className={st.infoTitle}>{t(it.title)}</span>
-          {t(it.text) && <span className={st.infoText}>{t(it.text)}</span>}
+          <OptionalText className={st.infoText}>{t(it.text)}</OptionalText>
         </div>
       ))}
     </section>
@@ -93,31 +93,12 @@ function Info() {
 }
 
 function Rsvp() {
-  const { t, s, event } = useInvitation();
-  const f = useRsvpForm();
-  const deadline = useRsvpDeadlineText();
+  const { s } = useInvitation();
   return (
-    <section className={st.rsvp} aria-labelledby="ms-rsvp">
-      <h2 id="ms-rsvp" className={st.h2}>
-        {t(event.content.rsvp?.heading) || s.rsvpHeading}
-      </h2>
-      {!f.open ? (
-        <p className={st.muted}>{s.rsvpClosed}</p>
-      ) : (
-        <form
-          className={st.form}
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            void f.submitAs(true);
-          }}
-        >
-          {(t(event.content.rsvp?.note) || deadline) && <p className={st.muted}>{t(event.content.rsvp?.note) || deadline}</p>}
-          <label className={st.label}>
-            {s.name}
-            <input className={st.input} value={f.fields.name} onChange={(e) => f.set("name", e.target.value)} autoComplete="name" />
-          </label>
-          {f.error("name") && <span className={st.error}>{f.error("name")}</span>}
+    <RsvpSection id="ms-rsvp" classes={rsvpClasses}>
+      {(f) => (
+        <>
+          <RsvpNameField f={f} classes={rsvpClasses} />
           <label className={st.label}>
             {s.plusOne}
             <select className={st.input} value={f.fields.plusOne ? "1" : "0"} onChange={(e) => f.set("plusOne", e.target.value === "1")}>
@@ -125,32 +106,23 @@ function Rsvp() {
               <option value="1">{s.meAndOne}</option>
             </select>
           </label>
-          {f.resultText && (
-            <p className={f.failed ? st.error : st.success} role="status">
-              {f.resultText}
-            </p>
-          )}
-          <button type="submit" className={st.submit} disabled={f.sending}>
-            {f.sending ? s.sending : s.submit}
-          </button>
-          <button type="button" className={st.decline} disabled={f.sending} onClick={() => void f.submitAs(false)}>
-            {s.notAttending}
-          </button>
-        </form>
+          <RsvpResult f={f} classes={rsvpClasses} />
+          <RsvpSubmitDecline f={f} classes={rsvpClasses} />
+        </>
       )}
-    </section>
+    </RsvpSection>
   );
 }
 
 function Location() {
-  const { t, s, event } = useInvitation();
-  const loc = event.content.location;
+  const { t, s } = useInvitation();
+  const { heading, venues } = useVenues();
   return (
     <section className={st.location}>
-      {t(loc?.heading) && <span className={st.infoLabel}>{t(loc?.heading)}</span>}
-      {loc?.venues.map((v) => (
+      <OptionalText className={st.infoLabel}>{heading}</OptionalText>
+      {venues.map((v) => (
         <div key={v.id} className={st.venue} data-reveal>
-          {t(v.label) && <span className={st.muted}>{t(v.label)}</span>}
+          <OptionalText className={st.muted}>{t(v.label)}</OptionalText>
           <span className={st.venueName}>{t(v.name)}</span>
           <span className={st.muted}>{t(v.address)}</span>
           <MapsLink venue={v} className={st.mapLink}>
@@ -163,42 +135,35 @@ function Location() {
 }
 
 function Footer() {
-  const { t, event } = useInvitation();
-  const c = event.content;
+  const { event } = useInvitation();
+  const f = useFooter();
+  const age = event.content.age;
   return (
     <footer className={st.footer}>
-      <span className={st.footerTitle}>{t(c.footer?.text)}</span>
+      <span className={st.footerTitle}>{f.text}</span>
       <span className={st.footerSign}>
-        {t(c.names).toLocaleUpperCase()}
-        {c.age !== undefined && ` · ${c.age}`}
+        {f.names.toLocaleUpperCase()}
+        {age !== undefined && ` · ${age}`}
       </span>
-      {t(c.footer?.contact) && <span className={st.muted}>{t(c.footer?.contact)}</span>}
+      <OptionalText className={st.muted}>{f.contact}</OptionalText>
     </footer>
   );
 }
 
 /** Milestone Birthday — MilestoneBirthday.dc.html. */
 export default function MilestoneBirthday() {
-  const { sections, themeStyle } = useInvitation();
-  const render: Partial<Record<SectionKind, () => JSX.Element | null>> = {
-    welcome: () => <Welcome />,
-    countdown: () => <Countdown />,
-    info: () => <Info />,
-    rsvp: () => <Rsvp />,
-    location: () => <Location />,
-    footer: () => <Footer />,
-  };
   return (
-    <div className={st.page} style={themeStyle}>
-      <main className={st.phone}>
-        <PreviewNotice />
-        <LanguageToggle />
-        <MusicButton />
-        <Hero />
-        {sections.map((id) => (
-          <Fragment key={id}>{render[id]?.()}</Fragment>
-        ))}
-      </main>
-    </div>
+    <TemplateShell
+      classes={{ page: st.page, phone: st.phone }}
+      hero={<Hero />}
+      sections={{
+        welcome: () => <Welcome />,
+        countdown: () => <Countdown />,
+        info: () => <Info />,
+        rsvp: () => <Rsvp />,
+        location: () => <Location />,
+        footer: () => <Footer />,
+      }}
+    />
   );
 }

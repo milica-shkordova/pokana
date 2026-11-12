@@ -1,15 +1,4 @@
-// Invitation styles. Imported once by the public site's _app.
-// - engine.scss: runtime bits shared by all templates
-// - elegant-wedding/: the original template (global BEM under `.inv`)
-// Newer templates use CSS Modules colocated with their components
-// (src/<template>/*.module.scss), so nothing needs registering here.
+// Invitation runtime styles, imported once by the public site's _app.
+// Templates style themselves with CSS Modules colocated with their
+// components (src/<template>/*.module.scss), so nothing needs registering here.
 @import './engine';
-@import './elegant-wedding/base';
-@import './elegant-wedding/Overlay';
-@import './elegant-wedding/Hero';
-@import './elegant-wedding/Welcome';
-@import './elegant-wedding/Countdown';
-@import './elegant-wedding/Program';
-@import './elegant-wedding/RsvpForm';
-@import './elegant-wedding/Location';
-@import './elegant-wedding/Footer';

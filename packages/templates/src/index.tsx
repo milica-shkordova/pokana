@@ -1,32 +1,36 @@
 import { useRef, type ComponentType } from "react";
 import type { PublicEvent } from "@pokanito/shared";
-import { templateDefinitions } from "./definitions";
+import { designOf, templateDefinitions, type DesignId } from "./definitions";
 import { InvitationProvider, type SubmitRsvp } from "./engine/runtime";
 import { useParallax, useReveal } from "./engine/hooks";
-import ElegantWedding from "./elegant-wedding/Template";
-import RusticWedding from "./rustic-wedding/Template";
-import MinimalWedding from "./minimal-wedding/Template";
-import KidsBirthday from "./kids-birthday/Template";
-import MilestoneBirthday from "./milestone-birthday/Template";
-import Corporate from "./corporate/Template";
-import Christening from "./christening/Template";
+import * as elegantWedding from "./elegant-wedding";
+import * as rusticWedding from "./rustic-wedding";
+import * as minimalWedding from "./minimal-wedding";
+import * as kidsBirthday from "./kids-birthday";
+import * as milestoneBirthday from "./milestone-birthday";
+import * as corporate from "./corporate";
+import * as christening from "./christening";
 
 /**
- * Template components by id. A template component takes no props — it reads
- * everything from useInvitation(). Add new templates here AND in
- * `./definitions.ts`.
+ * Component of each design. Designs (and their catalog entries) are
+ * registered in `./definitions.ts`; this record must cover every one of them
+ * (the typecheck fails otherwise). A template component takes no props — it
+ * reads everything from useInvitation().
  */
-export const templateComponents: Record<string, ComponentType> = {
-  "elegant-wedding": ElegantWedding,
-  "rustic-wedding": RusticWedding,
-  "minimal-wedding": MinimalWedding,
-  "kids-birthday": KidsBirthday,
-  "milestone-birthday": MilestoneBirthday,
-  "conference-summit": Corporate,
-  "product-launch": Corporate,
-  "classic-christening": Christening,
-  "floral-christening": Christening,
+const designComponents: Record<DesignId, ComponentType> = {
+  "elegant-wedding": elegantWedding.Component,
+  "rustic-wedding": rusticWedding.Component,
+  "minimal-wedding": minimalWedding.Component,
+  "kids-birthday": kidsBirthday.Component,
+  "milestone-birthday": milestoneBirthday.Component,
+  corporate: corporate.Component,
+  christening: christening.Component,
 };
+
+/** Template components by template id. */
+export const templateComponents: Record<string, ComponentType> = Object.fromEntries(
+  Object.entries(designOf).map(([id, design]) => [id, designComponents[design]]),
+);
 
 interface InvitationProps {
   event: PublicEvent;
@@ -57,5 +61,7 @@ export { InvitationProvider, useInvitation, fill } from "./engine/runtime";
 export type { SubmitRsvp, InvitationContextValue } from "./engine/runtime";
 export * from "./engine/hooks";
 export * from "./engine/components";
+export * from "./engine/rsvp";
+export { TemplateShell, type SectionRenderer, type SectionRenderers } from "./engine/TemplateShell";
 export { useRsvpForm } from "./engine/useRsvpForm";
 export * from "./definitions";

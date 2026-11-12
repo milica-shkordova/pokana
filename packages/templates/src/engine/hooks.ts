@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
-import { countdownParts, formatEventDate } from "@pokanito/shared";
+import { countdownParts, formatEventDate, pad2 } from "@pokanito/shared";
 import { fill, useInvitation } from "./runtime";
 
 export function usePrefersReducedMotion(): boolean {
@@ -14,9 +14,33 @@ export function usePrefersReducedMotion(): boolean {
   return reduced;
 }
 
-/** Live countdown to the event, ticking every second. */
-export function useCountdown(iso?: string) {
-  const { event } = useInvitation();
+export type CountdownUnitKey = "days" | "hours" | "minutes" | "seconds";
+
+export interface CountdownUnit {
+  key: CountdownUnitKey;
+  /** Ready to render: "–" until mounted, then the number (padded per `pad`). */
+  value: string;
+  /** Localized unit label (UiStrings). */
+  label: string;
+}
+
+export interface CountdownOptions {
+  /** Target instant; defaults to the event date. */
+  iso?: string;
+  /** Which units `units` holds, in order. Default: days, hours, minutes, seconds. */
+  units?: CountdownUnitKey[];
+  /**
+   * Zero-padding: "time" pads every unit but the first (days can run past
+   * 99), "all" pads every unit, "none" pads nothing.
+   */
+  pad?: "time" | "all" | "none";
+}
+
+const ALL_UNITS: CountdownUnitKey[] = ["days", "hours", "minutes", "seconds"];
+
+/** Live countdown to the event, ticking every second. `units` is ready to render. */
+export function useCountdown({ iso, units = ALL_UNITS, pad = "time" }: CountdownOptions = {}) {
+  const { event, s } = useInvitation();
   const target = iso ?? event.eventDate;
   // Render zeros on the server, real values after mount (avoids hydration mismatch).
   const [now, setNow] = useState<number | null>(null);
@@ -26,7 +50,14 @@ export function useCountdown(iso?: string) {
     return () => clearInterval(t);
   }, []);
   const parts = countdownParts(target, now ?? new Date(target).getTime() + 1);
-  return { ...parts, ready: now !== null, done: now !== null && parts.done };
+  const ready = now !== null;
+  const format = (n: number, i: number) => (pad === "all" || (pad === "time" && i > 0) ? pad2(n) : String(n));
+  return {
+    ...parts,
+    ready,
+    done: ready && parts.done,
+    units: units.map((key, i): CountdownUnit => ({ key, value: ready ? format(parts[key], i) : "–", label: s[key] })),
+  };
 }
 
 /**
@@ -138,4 +169,23 @@ export function useMusic() {
     pause: () => ref.current?.pause(),
     toggle: () => (ref.current?.paused ? ref.current.play().catch(() => undefined) : ref.current?.pause()),
   };
+}
+
+/** Footer copy, resolved for the current locale. */
+export function useFooter() {
+  const { t, event } = useInvitation();
+  const c = event.content;
+  return {
+    text: t(c.footer?.text),
+    contact: t(c.footer?.contact),
+    names: t(c.names),
+    organizer: t(c.organizer),
+  };
+}
+
+/** The location section's heading and venues (empty list when unset). */
+export function useVenues() {
+  const { t, event } = useInvitation();
+  const loc = event.content.location;
+  return { heading: t(loc?.heading), venues: loc?.venues ?? [] };
 }

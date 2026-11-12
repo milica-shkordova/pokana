@@ -1,4 +1,6 @@
 // Rustic Wedding — RusticWedding.dc.html. Theme: --theme-accent, --theme-paper.
+@use "../../styles/mixins" as *;
+
 $serif: "Cormorant Garamond", serif;
 $text: #3b2a20;
 $soft: #6b5444;
@@ -8,19 +10,11 @@ $accent: var(--theme-accent, #8e4e32);
 $olive: #5e6b47;
 
 .page {
-  min-height: 100vh;
-  background: var(--theme-paper, #ede3d3);
+  @include page(var(--theme-paper, #ede3d3));
 }
 
 .phone {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: var(--theme-paper, #ede3d3);
-  font-family: "Lora", Georgia, serif;
-  color: $text;
-  display: flex;
-  flex-direction: column;
+  @include phone-shell(var(--theme-paper, #ede3d3), ("Lora", Georgia, serif), $text);
   align-items: center;
   text-align: center;
 
@@ -28,10 +22,7 @@ $olive: #5e6b47;
     color: $accent;
   }
 
-  :focus-visible {
-    outline: 2px solid $accent;
-    outline-offset: 2px;
-  }
+  @include focus-ring($accent);
 }
 
 .sprig {
@@ -40,8 +31,7 @@ $olive: #5e6b47;
 
 .hero {
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  @include stack;
   align-items: center;
 }
 
@@ -119,10 +109,8 @@ $olive: #5e6b47;
   width: 100%;
   background: #e3d6c2;
   padding: 36px 24px;
-  display: flex;
-  flex-direction: column;
+  @include stack(18px);
   align-items: center;
-  gap: 18px;
 }
 
 .countdownHeading {
@@ -152,7 +140,7 @@ $olive: #5e6b47;
   font-family: $serif;
   font-size: 32px;
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
+  @include countdown-num;
 }
 
 .countdownUnit {
@@ -251,9 +239,7 @@ $olive: #5e6b47;
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  @include stack(14px);
 }
 
 .muted {
@@ -302,41 +288,34 @@ $olive: #5e6b47;
 }
 
 .label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  @include stack(6px);
   text-align: left;
   font-size: 13px;
   color: $soft;
 }
 
 .input {
+  @include field-input;
   min-height: 48px;
   border: 0;
   border-bottom: 1px solid $line;
   background: transparent;
-  font: inherit;
   font-size: 15px;
   color: $text;
-  width: 100%;
 }
 
 .submit {
+  @include button-base;
   margin-top: 10px;
   min-height: 50px;
-  border: 0;
   border-radius: 999px;
   background: $text;
   color: #fbf6ee;
-  font: inherit;
   font-size: 14px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  cursor: pointer;
 
-  &:disabled {
-    opacity: 0.7;
-  }
+  @include dim-when-disabled;
 }
 
 .error {
@@ -391,10 +370,8 @@ $olive: #5e6b47;
 .footer {
   margin-top: auto;
   padding: 56px 0 48px;
-  display: flex;
-  flex-direction: column;
+  @include stack(10px);
   align-items: center;
-  gap: 10px;
 }
 
 .footerNames {

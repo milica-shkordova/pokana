@@ -1,15 +1,24 @@
 import { Fragment } from "react";
-import { pad2, type SectionKind } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
-import { useCountdown, useRsvpDeadlineText } from "../engine/hooks";
-import { useRsvpForm } from "../engine/useRsvpForm";
-import { LanguageToggle, MapEmbed, MapsLink, MusicButton, Photo, PreviewNotice } from "../engine/components";
-import { pick, TIME } from "../common/format";
+import { useCountdown, useFooter, useRsvpDeadlineText, useVenues } from "../engine/hooks";
+import { CountdownUnits, MapFrame, MapsLink, OptionalText, Photo } from "../engine/components";
+import { RsvpNameField, RsvpResult, RsvpSection, RsvpSubmitDecline, type RsvpClasses } from "../engine/rsvp";
+import { TemplateShell } from "../engine/TemplateShell";
+import { pick, TIME } from "../engine/format";
+import { COPY } from "./copy";
 import st from "./Template.module.scss";
 
-const COPY = {
-  en: { inviteOnly: "Invite only" },
-  mk: { inviteOnly: "Само со покана" },
+const rsvpClasses: RsvpClasses = {
+  section: st.register,
+  heading: st.registerTitle,
+  note: st.registerNote,
+  form: st.form,
+  label: st.label,
+  input: st.input,
+  error: st.error,
+  success: st.success,
+  submit: st.submit,
+  decline: st.decline,
 };
 
 function TopBar() {
@@ -29,7 +38,7 @@ function Hero() {
   const venue = c.location?.venues[0];
   return (
     <header className={st.hero}>
-      {t(c.eyebrow) && <span className={st.eyebrow}>{t(c.eyebrow)}</span>}
+      <OptionalText className={st.eyebrow}>{t(c.eyebrow)}</OptionalText>
       <h1 className={st.title}>
         {lines.map((line, i) => (
           <Fragment key={i}>
@@ -38,7 +47,9 @@ function Hero() {
           </Fragment>
         ))}
       </h1>
-      {t(c.tagline) && <p className={st.intro}>{t(c.tagline)}</p>}
+      <OptionalText as="p" className={st.intro}>
+        {t(c.tagline)}
+      </OptionalText>
       <div className={st.chips}>
         <span className={st.chip}>
           <b>{date({ day: "numeric", month: "short" })}</b> · {date(TIME)}
@@ -63,19 +74,7 @@ function Countdown() {
   if (c.done) return <p className={st.done}>{s.countdownDone}</p>;
   return (
     <div className={st.countdown} role="timer" data-reveal>
-      {(
-        [
-          [c.days, s.days],
-          [c.hours, s.hours],
-          [c.minutes, s.minutes],
-          [c.seconds, s.seconds],
-        ] as const
-      ).map(([n, unit], i) => (
-        <div key={unit} className={st.countdownBox}>
-          <span className={st.countdownNum}>{c.ready ? (i === 0 ? n : pad2(n)) : "–"}</span>
-          <span className={st.countdownUnit}>{unit}</span>
-        </div>
-      ))}
+      <CountdownUnits units={c.units} classes={{ item: st.countdownBox, num: st.countdownNum, unit: st.countdownUnit }} />
     </div>
   );
 }
@@ -120,7 +119,7 @@ function Speakers() {
               <Photo mediaId={p.photo} className={st.fill} sizes="140px" />
             </span>
             <span className={st.speakerName}>{t(p.name)}</span>
-            {t(p.role) && <span className={st.speakerRole}>{t(p.role)}</span>}
+            <OptionalText className={st.speakerRole}>{t(p.role)}</OptionalText>
           </li>
         ))}
       </ul>
@@ -130,31 +129,14 @@ function Speakers() {
 
 function Register() {
   const { t, s, event } = useInvitation();
-  const f = useRsvpForm();
   const deadline = useRsvpDeadlineText();
+  // Both lines, unlike the other designs (note, else deadline).
   const note = [t(event.content.rsvp?.note), deadline].filter(Boolean).join(" ");
   return (
-    <section className={st.register} aria-labelledby="corp-register">
-      <h2 id="corp-register" className={st.registerTitle}>
-        {t(event.content.rsvp?.heading) || s.rsvpHeading}
-      </h2>
-      {!f.open ? (
-        <p className={st.registerNote}>{s.rsvpClosed}</p>
-      ) : (
-        <form
-          className={st.form}
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            void f.submitAs(true);
-          }}
-        >
-          {note && <p className={st.registerNote}>{note}</p>}
-          <label className={st.label}>
-            {s.name}
-            <input className={st.input} value={f.fields.name} onChange={(e) => f.set("name", e.target.value)} autoComplete="name" />
-          </label>
-          {f.error("name") && <span className={st.error}>{f.error("name")}</span>}
+    <RsvpSection id="corp-register" classes={rsvpClasses} note={note}>
+      {(f) => (
+        <>
+          <RsvpNameField f={f} classes={rsvpClasses} />
           <label className={st.label}>
             {s.company}
             <input className={st.input} value={f.fields.company} onChange={(e) => f.set("company", e.target.value)} autoComplete="organization" />
@@ -173,36 +155,25 @@ function Register() {
             <input type="checkbox" checked={f.fields.dinner} onChange={(e) => f.set("dinner", e.target.checked)} />
             {s.dinner}
           </label>
-          {f.resultText && (
-            <p className={f.failed ? st.error : st.success} role="status">
-              {f.resultText}
-            </p>
-          )}
-          <button type="submit" className={st.submit} disabled={f.sending}>
-            {f.sending ? s.sending : s.submit}
-          </button>
-          <button type="button" className={st.decline} disabled={f.sending} onClick={() => void f.submitAs(false)}>
-            {s.notAttending}
-          </button>
-        </form>
+          <RsvpResult f={f} classes={rsvpClasses} />
+          <RsvpSubmitDecline f={f} classes={rsvpClasses} />
+        </>
       )}
-    </section>
+    </RsvpSection>
   );
 }
 
 function Venue() {
-  const { t, s, event } = useInvitation();
-  const loc = event.content.location;
+  const { t, s } = useInvitation();
+  const { heading, venues } = useVenues();
   return (
     <section className={st.venueSection}>
-      <h2 className={st.h2}>{t(loc?.heading) || s.location}</h2>
-      {loc?.venues.map((v) => (
+      <h2 className={st.h2}>{heading || s.location}</h2>
+      {venues.map((v) => (
         <div key={v.id} className={st.venue} data-reveal>
-          <div className={st.mapWrap}>
-            <MapEmbed venue={v} className={st.map} />
-          </div>
+          <MapFrame venue={v} classes={{ wrap: st.mapWrap, map: st.map }} />
           <span className={st.venueAddress}>{[t(v.name), t(v.address)].filter(Boolean).join(", ")}</span>
-          {t(v.note) && <span className={st.muted}>{t(v.note)}</span>}
+          <OptionalText className={st.muted}>{t(v.note)}</OptionalText>
           <MapsLink venue={v} className={st.directions}>
             {s.directions}
           </MapsLink>
@@ -213,39 +184,34 @@ function Venue() {
 }
 
 function Footer() {
-  const { t, event } = useInvitation();
-  const c = event.content;
+  const f = useFooter();
   return (
     <footer className={st.footer}>
-      <span className={st.footerCompany}>{t(c.organizer)}</span>
-      <span>{t(c.footer?.contact) || t(c.footer?.text)}</span>
+      <span className={st.footerCompany}>{f.organizer}</span>
+      <span>{f.contact || f.text}</span>
     </footer>
   );
 }
 
 /** Conference & Summit / Product Launch — CorporateLaunch.dc.html. */
 export default function Corporate() {
-  const { sections, themeStyle } = useInvitation();
-  const render: Partial<Record<SectionKind, () => JSX.Element | null>> = {
-    countdown: () => <Countdown />,
-    program: () => <Agenda />,
-    people: () => <Speakers />,
-    rsvp: () => <Register />,
-    location: () => <Venue />,
-    footer: () => <Footer />,
-  };
   return (
-    <div className={st.page} style={themeStyle}>
-      <main className={st.phone}>
-        <PreviewNotice />
-        <LanguageToggle />
-        <MusicButton />
-        <TopBar />
-        <Hero />
-        {sections.map((id) => (
-          <Fragment key={id}>{render[id]?.()}</Fragment>
-        ))}
-      </main>
-    </div>
+    <TemplateShell
+      classes={{ page: st.page, phone: st.phone }}
+      hero={
+        <>
+          <TopBar />
+          <Hero />
+        </>
+      }
+      sections={{
+        countdown: () => <Countdown />,
+        program: () => <Agenda />,
+        people: () => <Speakers />,
+        rsvp: () => <Register />,
+        location: () => <Venue />,
+        footer: () => <Footer />,
+      }}
+    />
   );
 }

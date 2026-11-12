@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { LOCALES, mapsEmbed, mapsLink, venueMapsQuery, type Venue } from "@pokanito/shared";
 import { useInvitation } from "./runtime";
-import { useMusic } from "./hooks";
+import { useMusic, type CountdownUnit } from "./hooks";
 
 // Headless-ish building blocks. They carry behaviour and accessibility;
 // templates pass classNames/styles for the look.
@@ -163,6 +163,49 @@ export function Multiline({ text, className }: { text: string; className?: strin
             </span>
           ))}
         </p>
+      ))}
+    </>
+  );
+}
+
+/** `text` in a `<Tag>`, or nothing when it's empty (`{t(x) && <span>{t(x)}</span>}`). */
+export function OptionalText({
+  as: Tag = "span",
+  className,
+  children,
+}: {
+  as?: "span" | "p" | "h2";
+  className?: string;
+  children: string | null | undefined;
+}) {
+  if (!children) return null;
+  return <Tag className={className}>{children}</Tag>;
+}
+
+/** `<MapEmbed>` in a wrapper (the wrapper renders even when there's no map query). */
+export function MapFrame({ venue, classes }: { venue: Venue; classes: { wrap?: string; map?: string } }) {
+  return (
+    <div className={classes.wrap}>
+      <MapEmbed venue={venue} className={classes.map} />
+    </div>
+  );
+}
+
+/** Count-down cells: `<div class=item><span class=num/><span class=unit/></div>` per unit. */
+export function CountdownUnits({
+  units,
+  classes,
+}: {
+  units: CountdownUnit[];
+  classes: { item?: string; num?: string; unit?: string };
+}) {
+  return (
+    <>
+      {units.map((u) => (
+        <div key={u.label} className={classes.item}>
+          <span className={classes.num}>{u.value}</span>
+          <span className={classes.unit}>{u.label}</span>
+        </div>
       ))}
     </>
   );

@@ -97,3 +97,6 @@ export const milestoneBirthday: TemplateDefinition = {
     },
   },
 };
+
+/** Catalog entries this design renders, in gallery order. */
+export const definitions: TemplateDefinition[] = [milestoneBirthday];

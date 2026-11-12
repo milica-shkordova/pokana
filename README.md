@@ -143,10 +143,13 @@ Each template is reusable code plus per-event content:
 
 ```
 src/engine/            runtime (useInvitation), hooks (countdown, reveal, parallax, music),
-                       useRsvpForm (5 RSVP modes), Photo/Map/LanguageToggle/MusicButton, checklist
-src/<template>/        definition.ts (React-free) + Template.tsx + Template.module.scss
-src/definitions.ts     React-free registry, used by the API and the admin
-src/index.tsx          component registry + <Invitation event submitRsvp />
+                       useRsvpForm (5 RSVP modes) + RSVP parts (rsvp.tsx), TemplateShell,
+                       Photo/Map/LanguageToggle/MusicButton/CountdownUnits, sections, checklist
+src/<template>/        definition.ts (React-free) + Template.tsx + Template.module.scss,
+                       index.ts (definitions + Component), optional copy.ts / ornaments.tsx
+styles/_mixins.scss    SCSS mixins shared by the template modules
+src/definitions.ts     React-free registry (`designs`), used by the API and the admin
+src/index.tsx          design → component map + <Invitation event submitRsvp />
 ```
 
 - An **Event** stores `templateId`, `content` (one shared content model, `packages/shared/src/content.ts`, with guest text per locale `{ mk, en }`), `theme` (colour levers with preset swatches), and `sections` (order plus on/off).
@@ -183,8 +186,8 @@ src/index.tsx          component registry + <Invitation event submitRsvp />
 
 ### Adding a template (new layout, needs code)
 
-1. Create `packages/templates/src/<id>/` with `definition.ts`, `Template.tsx` and `Template.module.scss`. Copy the closest existing template.
-2. Register it in `src/definitions.ts` (`templateList`) and in `src/index.tsx` (`templateComponents`).
+1. Create `packages/templates/src/<id>/` with `definition.ts`, `Template.tsx`, `Template.module.scss` and `index.ts`. Copy the closest existing template; compose it from the engine (`TemplateShell`, `RsvpSection` and friends, `useCountdown().units`).
+2. Add its folder to `designs` in `src/definitions.ts`; the typecheck then asks for its component in `src/index.tsx`. (A second catalog entry for an existing component only goes into that folder's `definitions` list.)
 3. Add a catalog row to `CATALOG` in `apps/api/prisma/seed.ts`, then run `npm run db:seed`. This creates `/demo-<id>`.
 4. Set its status (Live / Coming soon / Hidden) in Admin › Templates.
 

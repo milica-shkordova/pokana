@@ -119,3 +119,6 @@ export const elegantWedding: TemplateDefinition = {
     },
   },
 };
+
+/** Catalog entries this design renders, in gallery order. */
+export const definitions: TemplateDefinition[] = [elegantWedding];

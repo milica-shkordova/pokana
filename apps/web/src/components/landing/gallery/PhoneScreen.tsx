@@ -1,9 +1,11 @@
 import { useCallback, useState } from "react";
 import type { TemplateSummary } from "@pokanito/shared";
-import { templateDefinitions } from "@pokanito/templates/definitions";
+import { thumbStyle } from "@pokanito/templates/definitions";
 import { FRAME_H, FRAME_W } from "./geometry";
 import { fmt } from "@/content/landing";
 import { useLang } from "../i18n";
+
+const THUMB_FALLBACK = { bg: "#E8E5D6", ink: "#4A4645" };
 
 /** Static stand-in until (or instead of) the live demo: preview photo, or the template's colours + monogram. */
 export function TemplateThumb({ t, className }: { t: TemplateSummary; className: string }) {
@@ -15,11 +17,11 @@ export function TemplateThumb({ t, className }: { t: TemplateSummary; className:
     );
   }
   // Variants render with their layout; colour overrides come from Admin › Templates.
-  const thumb = templateDefinitions[t.layoutId ?? t.id]?.thumb;
+  const s = thumbStyle(t, THUMB_FALLBACK);
   return (
-    <div className={className} style={{ background: t.thumb?.bg ?? thumb?.bg ?? "#E8E5D6" }} aria-hidden>
-      <span className="lp-card__mono" style={{ color: t.thumb?.ink ?? thumb?.ink ?? "#4A4645", fontFamily: thumb?.font }}>
-        {t.isVariant ? t.thumb.label : (thumb?.mono ?? t.name.split(" ")[0])}
+    <div className={className} style={{ background: s.bg }} aria-hidden>
+      <span className="lp-card__mono" style={{ color: s.ink, fontFamily: s.font }}>
+        {t.isVariant ? s.label : (s.mono ?? t.name.split(" ")[0])}
       </span>
     </div>
   );

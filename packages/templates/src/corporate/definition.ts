@@ -232,3 +232,6 @@ export const conferenceSummit: TemplateDefinition = {
     photos: { visual: "1.jpg" },
   },
 };
+
+/** Catalog entries this design renders, in gallery order. */
+export const definitions: TemplateDefinition[] = [conferenceSummit, productLaunch];
