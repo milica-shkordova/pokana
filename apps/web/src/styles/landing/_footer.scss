@@ -132,7 +132,9 @@
 }
 
 // ── Language toggle, text variant (footer): EN / MK with a sliding underline ──
-.lp-lang--text {
+// `.lp-lang.lp-lang--text`: the base pill (.lp-lang in _motion.scss) loads
+// after this file, so the variant needs the extra class to win.
+.lp-lang.lp-lang--text {
   padding: 0;
   gap: 2px;
   border: 0;
