@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ApiError, type LeadInput, type TemplateSummary } from "@momentelo/shared";
-import { Alert, Button, Dialog, Field, Input, Select } from "@momentelo/ui";
+import { ApiError, type LeadInput, type TemplateSummary } from "@pokanito/shared";
+import { Alert, Button, Dialog, Field, Input, Select } from "@pokanito/ui";
 import { browserApi } from "@/lib/api";
 import { useLang } from "./i18n";
 

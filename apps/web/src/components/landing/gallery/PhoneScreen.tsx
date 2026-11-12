@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
-import type { TemplateSummary } from "@momentelo/shared";
-import { templateDefinitions } from "@momentelo/templates/definitions";
+import type { TemplateSummary } from "@pokanito/shared";
+import { templateDefinitions } from "@pokanito/templates/definitions";
 import { FRAME_H, FRAME_W } from "./geometry";
+import { fmt } from "@/content/landing";
 import { useLang } from "../i18n";
 
 /** Static stand-in until (or instead of) the live demo: preview photo, or the template's colours + monogram. */
@@ -60,7 +61,7 @@ export default function PhoneScreen({
         <div className="lp-gallery__frame" ref={makeInert} aria-hidden>
           <iframe
             src={`/${t.demoSlug}?embed=1`}
-            title={frameTitle(t.name)}
+            title={fmt(frameTitle, { name: t.name })}
             width={FRAME_W}
             height={FRAME_H}
             loading="lazy"

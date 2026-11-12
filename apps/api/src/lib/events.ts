@@ -13,7 +13,7 @@ import {
   type PublicEventMeta,
   type SectionState,
   type Settings,
-} from "@momentelo/shared";
+} from "@pokanito/shared";
 import {
   defaultSections,
   defaultTheme,
@@ -21,7 +21,7 @@ import {
   getPublishChecklist,
   resolveSections,
   type TemplateDefinition,
-} from "@momentelo/templates/definitions";
+} from "@pokanito/templates/definitions";
 import { db } from "../db";
 import { resolveMedia, thumbUrl } from "./media";
 import { ValidationError } from "./http";

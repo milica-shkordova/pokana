@@ -79,7 +79,7 @@ interface InputGroupProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "p
   suffix?: ReactNode;
 }
 
-/** Input with a fixed prefix/suffix, e.g. "momentelo.mk/" … "Available". */
+/** Input with a fixed prefix/suffix, e.g. "pokanito.mk/" … "Available". */
 export const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(function InputGroup(
   { prefix, suffix, className, ...rest },
   ref,

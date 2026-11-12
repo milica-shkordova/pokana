@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import type { PublicEvent } from "@momentelo/shared";
-import { Spinner, cx } from "@momentelo/ui";
+import type { PublicEvent } from "@pokanito/shared";
+import { Spinner, cx } from "@pokanito/ui";
 import { api, errorMessage } from "@/lib/api";
 
 const DESKTOP_WIDTH = 1280;
@@ -14,8 +14,8 @@ const MORPH_MS = 460;
 /**
  * The real template on the public site, in an iframe. Unsaved edits are
  * pushed into it with postMessage:
- *   iframe → admin  { type: "momentelo:preview-ready" }
- *   admin  → iframe { type: "momentelo:preview", event: PublicEvent }
+ *   iframe → admin  { type: "pokanito:preview-ready" }
+ *   admin  → iframe { type: "pokanito:preview", event: PublicEvent }
  */
 export default function LivePreview({ eventId, event, device }: { eventId: string; event: PublicEvent; device: "phone" | "desktop" }) {
   const [urls, setUrls] = useState<{ url: string; embedUrl: string } | null>(null);
@@ -34,14 +34,14 @@ export default function LivePreview({ eventId, event, device }: { eventId: strin
 
   const send = () => {
     if (!origin) return;
-    frame.current?.contentWindow?.postMessage({ type: "momentelo:preview", event: latest.current }, origin);
+    frame.current?.contentWindow?.postMessage({ type: "pokanito:preview", event: latest.current }, origin);
   };
 
   // Initial state once the template is ready.
   useEffect(() => {
     if (!origin) return;
     const onMessage = (e: MessageEvent) => {
-      if (e.origin === origin && (e.data as { type?: string } | null)?.type === "momentelo:preview-ready") send();
+      if (e.origin === origin && (e.data as { type?: string } | null)?.type === "pokanito:preview-ready") send();
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);

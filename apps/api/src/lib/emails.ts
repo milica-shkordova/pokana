@@ -1,4 +1,4 @@
-import type { Settings } from "@momentelo/shared";
+import type { Settings } from "@pokanito/shared";
 import { env } from "../env";
 import type { MailMessage } from "./mailer";
 
@@ -56,7 +56,7 @@ const RSVP_LABELS = {
     email: "E-mail",
     dinner: "Вечера",
     plusOne: "Плус еден",
-    footer: "Пратено од Momentelo · одговорите ги чуваме и во админ панелот.",
+    footer: "Пратено од Pokanito · одговорите ги чуваме и во админ панелот.",
     test: "ТЕСТ — ова е пробна потврда за да провериме дека пораките пристигнуваат.",
   },
   en: {
@@ -73,7 +73,7 @@ const RSVP_LABELS = {
     email: "Email",
     dinner: "Dinner",
     plusOne: "Plus one",
-    footer: "Sent by Momentelo · replies are also kept in the admin panel.",
+    footer: "Sent by Pokanito · replies are also kept in the admin panel.",
     test: "TEST — this is a sample reply to check that emails arrive.",
   },
 };
@@ -145,7 +145,7 @@ export function digestEmail(
       }`,
   );
   const text = [title, "", head.replace(/<[^>]+>/g, ""), "", ...items.map((i) => i.replace(/<[^>]+>/g, ""))].join("\n");
-  return { from: from(settings), to, subject: title, html: layout(title, [head, ...items], "Momentelo"), text };
+  return { from: from(settings), to, subject: title, html: layout(title, [head, ...items], "Pokanito"), text };
 }
 
 export function leadEmail(settings: Settings, lead: { name: string; contact: string; source: string; template?: string | null; eventDate?: string | null; guestCount?: number | null; message: string }): MailMessage {
@@ -164,7 +164,7 @@ export function leadEmail(settings: Settings, lead: { name: string; contact: str
       ...(lead.message ? [esc(lead.message).replace(/\n/g, "<br>")] : []),
       `<a href="${env.ADMIN_URL}/leads" style="color:#2A2522">Open in the admin →</a>`,
     ],
-    "Momentelo",
+    "Pokanito",
   );
   const text = [title, "", ...rows.map(([k, v]) => `${k}: ${v}`), "", lead.message, "", `${env.ADMIN_URL}/leads`].join("\n");
   const replyTo = lead.contact.includes("@") ? lead.contact : undefined;

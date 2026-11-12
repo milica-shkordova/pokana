@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { GetServerSideProps } from "next";
-import { ApiError, type PublicEvent } from "@momentelo/shared";
+import { ApiError, type PublicEvent } from "@pokanito/shared";
 import InvitationView from "@/components/invitation/InvitationView";
 import { ADMIN_ORIGIN, serverApi } from "@/lib/api";
 
@@ -13,7 +13,7 @@ interface Props {
  * Draft preview for the admin editor (by id, so slug edits don't break it).
  * With `embed=1` it runs inside the editor's phone frame: it tells the parent
  * it's ready, then re-renders whenever the editor posts unsaved changes:
- *   parent → iframe: { type: "momentelo:preview", event: PublicEvent }
+ *   parent → iframe: { type: "pokanito:preview", event: PublicEvent }
  * Messages from any origin other than the admin are ignored.
  */
 export default function PreviewPage({ event: initial, embed }: Props) {
@@ -26,12 +26,12 @@ export default function PreviewPage({ event: initial, embed }: Props) {
     const onMessage = (e: MessageEvent) => {
       if (e.origin !== ADMIN_ORIGIN) return;
       const data = e.data as { type?: string; event?: PublicEvent } | null;
-      if (data?.type === "momentelo:preview" && data.event && typeof data.event.templateId === "string") {
+      if (data?.type === "pokanito:preview" && data.event && typeof data.event.templateId === "string") {
         setEvent({ ...data.event, preview: true });
       }
     };
     window.addEventListener("message", onMessage);
-    window.parent.postMessage({ type: "momentelo:preview-ready", id: initial.id }, ADMIN_ORIGIN);
+    window.parent.postMessage({ type: "pokanito:preview-ready", id: initial.id }, ADMIN_ORIGIN);
     return () => window.removeEventListener("message", onMessage);
   }, [embed, initial.id]);
 

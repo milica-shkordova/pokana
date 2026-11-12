@@ -230,10 +230,12 @@
 
   &__mark {
     position: relative;
-    width: clamp(110px, 16vw, 190px);
+    // The P is taller than wide and has no confetti above it like the old M,
+    // so it runs narrower and keeps a gap to the word below.
+    width: clamp(72px, 10vw, 120px);
     height: auto;
     display: block;
-    margin-bottom: -20px;
+    margin-bottom: 14px;
   }
 
   &__word {
@@ -554,7 +556,7 @@ html:has(.lp) {
   }
 }
 
-// Footer row: "© 2026 Momentelo" and the language switch, side by side.
+// Footer row: "© 2026 Pokanito" and the language switch, side by side.
 .lp-footer .lp-footer__row {
   gap: 16px;
 }

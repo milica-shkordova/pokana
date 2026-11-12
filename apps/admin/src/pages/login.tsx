@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import type { CurrentUser } from "@momentelo/shared";
-import { Alert, Button, Card, Field, Input, Wordmark } from "@momentelo/ui";
+import type { CurrentUser } from "@pokanito/shared";
+import { Alert, Button, Card, Field, Input, Wordmark } from "@pokanito/ui";
 import { api, errorMessage } from "@/lib/api";
 import { useSession } from "@/lib/session";
 
@@ -31,7 +31,7 @@ export default function LoginPage() {
   return (
     <main className="admin-login ui-root">
       <Head>
-        <title>Sign in · Momentelo Admin</title>
+        <title>Sign in · Pokanito Admin</title>
       </Head>
       <Card className="admin-login__card">
         <form className="admin-stack" onSubmit={handleSubmit}>

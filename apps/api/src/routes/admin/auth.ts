@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { acceptInviteSchema, loginSchema, passwordChangeSchema, type CurrentUser } from "@momentelo/shared";
+import { acceptInviteSchema, loginSchema, passwordChangeSchema, type CurrentUser } from "@pokanito/shared";
 import { db } from "../../db";
 import { endSession, requireUser, startSession, toTeamMember, type AuthEnv } from "../../auth";
 import { hashPassword, verifyPassword } from "../../lib/crypto";

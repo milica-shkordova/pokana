@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { LEAD_STAGES, leadUpdateSchema, type Lead, type LeadSource, type LeadStage } from "@momentelo/shared";
-import { getDefinition } from "@momentelo/templates/definitions";
+import { LEAD_STAGES, leadUpdateSchema, type Lead, type LeadSource, type LeadStage } from "@pokanito/shared";
+import { getDefinition } from "@pokanito/templates/definitions";
 import type { Lead as DbLead } from "@prisma/client";
 import { db } from "../../db";
 import type { AuthEnv } from "../../auth";
@@ -51,7 +51,7 @@ leadRoutes.get("/export.csv", async (c) => {
     ),
   ];
   c.header("Content-Type", "text/csv; charset=utf-8");
-  c.header("Content-Disposition", `attachment; filename="momentelo-leads.csv"`);
+  c.header("Content-Disposition", `attachment; filename="pokanito-leads.csv"`);
   return c.body("﻿" + lines.join("\r\n"));
 });
 

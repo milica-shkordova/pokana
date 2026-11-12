@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { RsvpInput, RsvpMode } from "@momentelo/shared";
+import type { RsvpInput, RsvpMode } from "@pokanito/shared";
 import { useInvitation } from "./runtime";
 
 export interface GuestRow {

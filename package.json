@@ -1,5 +1,5 @@
 {
-  "name": "momentelo",
+  "name": "pokanito",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,15 +9,15 @@
   ],
   "scripts": {
     "dev": "concurrently -k -n api,web,admin -c blue,magenta,green \"npm:dev:api\" \"npm:dev:web\" \"npm:dev:admin\"",
-    "dev:api": "npm run dev -w @momentelo/api",
-    "dev:web": "npm run dev -w @momentelo/web",
-    "dev:admin": "npm run dev -w @momentelo/admin",
-    "build": "npm run build -w @momentelo/api && npm run build -w @momentelo/web && npm run build -w @momentelo/admin",
+    "dev:api": "npm run dev -w @pokanito/api",
+    "dev:web": "npm run dev -w @pokanito/web",
+    "dev:admin": "npm run dev -w @pokanito/admin",
+    "build": "npm run build -w @pokanito/api && npm run build -w @pokanito/web && npm run build -w @pokanito/admin",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
-    "db:migrate": "npm run db:migrate -w @momentelo/api",
-    "db:seed": "npm run db:seed -w @momentelo/api",
-    "db:studio": "npm run db:studio -w @momentelo/api",
+    "db:migrate": "npm run db:migrate -w @pokanito/api",
+    "db:seed": "npm run db:seed -w @pokanito/api",
+    "db:studio": "npm run db:studio -w @pokanito/api",
     "setup": "npm run db:migrate && npm run db:seed"
   },
   "devDependencies": {

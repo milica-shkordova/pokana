@@ -393,16 +393,17 @@
   display: block;
   flex: 0 0 auto;
   width: auto;
-  // The confetti above the icon takes ~40% of the logo's height, so the
-  // full logo runs taller than the wordmark alone.
-  height: 44px;
+  // The lockup's box is cropped symmetrically around the letters' x-height,
+  // so with align-items: center the word lines up with nav text; the P mark
+  // spans the same ascender-to-descender height as the letters.
+  height: 28px;
 
   &--sm {
-    height: 34px;
+    height: 22px;
   }
 
   &--lg {
-    height: 62px;
+    height: 44px;
   }
 
   &--wordmark {

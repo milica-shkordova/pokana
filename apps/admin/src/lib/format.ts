@@ -1,4 +1,4 @@
-import { EVENT_TIMEZONE } from "@momentelo/shared";
+import { EVENT_TIMEZONE } from "@pokanito/shared";
 
 const dateFmt = new Intl.DateTimeFormat("en-GB", { timeZone: EVENT_TIMEZONE, day: "numeric", month: "short", year: "numeric" });
 const dateTimeFmt = new Intl.DateTimeFormat("en-GB", {

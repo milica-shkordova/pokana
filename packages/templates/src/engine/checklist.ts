@@ -1,4 +1,4 @@
-import { findPlaceholders, isBlank, type ChecklistItem, type EventContent, type Locale, type SectionState } from "@momentelo/shared";
+import { findPlaceholders, isBlank, type ChecklistItem, type EventContent, type Locale, type SectionState } from "@pokanito/shared";
 import { resolveSections, type TemplateDefinition } from "./types";
 
 export interface ChecklistInput {

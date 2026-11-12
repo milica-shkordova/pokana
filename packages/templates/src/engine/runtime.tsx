@@ -8,7 +8,7 @@ import {
   type ResolvedMedia,
   type RsvpInput,
   type SectionKind,
-} from "@momentelo/shared";
+} from "@pokanito/shared";
 import { baseStrings, type UiStrings } from "./strings";
 import { resolveSections, type TemplateDefinition } from "./types";
 

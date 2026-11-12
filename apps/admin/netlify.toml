@@ -2,7 +2,7 @@
 # directory empty). The public site shows it at /admin by proxying
 # /admin/* to this site's URL (ADMIN_APP_URL on the public site).
 [build]
-  command = "npm run build -w @momentelo/admin"
+  command = "npm run build -w @pokanito/admin"
   publish = "apps/admin/.next"
 
 [build.environment]

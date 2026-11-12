@@ -8,7 +8,7 @@ const ADMIN_APP_URL = (process.env.ADMIN_APP_URL ?? "http://localhost:3001").rep
 
 const nextConfig: NextConfig = {
   // Workspace packages ship TypeScript/SCSS source; Next compiles them.
-  transpilePackages: ["@momentelo/ui", "@momentelo/templates", "@momentelo/shared"],
+  transpilePackages: ["@pokanito/ui", "@pokanito/templates", "@pokanito/shared"],
   sassOptions: {
     silenceDeprecations: ["legacy-js-api", "import", "global-builtin"],
   },

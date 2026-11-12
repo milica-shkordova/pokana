@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
-import { countdownParts, formatEventDate } from "@momentelo/shared";
+import { countdownParts, formatEventDate } from "@pokanito/shared";
 import { fill, useInvitation } from "./runtime";
 
 export function usePrefersReducedMotion(): boolean {

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { bodyLimit } from "hono/body-limit";
-import { mediaUpdateSchema, type MediaLibrary } from "@momentelo/shared";
+import { mediaUpdateSchema, type MediaLibrary } from "@pokanito/shared";
 import { db } from "../../db";
 import type { AuthEnv } from "../../auth";
 import { env } from "../../env";

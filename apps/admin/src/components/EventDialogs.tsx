@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import type { EventSummary } from "@momentelo/shared";
-import { Button, Dialog, Input } from "@momentelo/ui";
+import type { EventSummary } from "@pokanito/shared";
+import { Button, Dialog, Input } from "@pokanito/ui";
 import { WEB_HOST } from "@/lib/api";
 import { IconArchive, IconPause, IconTrash } from "./Icons";
 

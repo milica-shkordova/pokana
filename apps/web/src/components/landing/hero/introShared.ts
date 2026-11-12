@@ -5,7 +5,7 @@
 export const REMEMBER_INTRO = false;
 
 /** sessionStorage flag: the envelope intro was already played this session. */
-export const INTRO_SEEN_KEY = "momentelo:hero-intro-seen";
+export const INTRO_SEEN_KEY = "pokanito:hero-intro-seen";
 
 /** Class on <html> while the intro is pending (set before hydration). */
 export const INTRO_ARMED_CLASS = "lp-intro-armed";

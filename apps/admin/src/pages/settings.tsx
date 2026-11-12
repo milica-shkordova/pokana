@@ -5,7 +5,7 @@ import {
   type Settings,
   type TeamMember,
   type UserRole,
-} from "@momentelo/shared";
+} from "@pokanito/shared";
 import {
   Alert,
   Avatar,
@@ -21,7 +21,7 @@ import {
   SwitchRow,
   useToast,
   Wordmark,
-} from "@momentelo/ui";
+} from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
 import LoadState, { IssueList } from "@/components/LoadState";
 import { UploadButton } from "@/components/MediaPicker";
@@ -142,7 +142,7 @@ export default function SettingsPage() {
               <Card id="business" className="admin-stack">
                 <CardHeader
                   title="Business profile"
-                  subtitle="Shown on the landing page, in emails and in the small “Made with Momentelo” footer."
+                  subtitle="Shown on the landing page, in emails and in the small “Made with Pokanito” footer."
                 />
                 <div className="admin-logo">
                   <div className="admin-logo__tile">
@@ -167,7 +167,7 @@ export default function SettingsPage() {
                       variant="ghost"
                       onClick={() => set("logoMediaId", null)}
                     >
-                      Use the Momentelo logo
+                      Use the Pokanito logo
                     </Button>
                   )}
                 </div>
@@ -197,7 +197,7 @@ export default function SettingsPage() {
                   </Field>
                   <Field label="Instagram">
                     <Input
-                      placeholder="@momentelo.mk"
+                      placeholder="@pokanito.mk"
                       value={form.instagram}
                       onChange={(e) => set("instagram", e.target.value)}
                     />

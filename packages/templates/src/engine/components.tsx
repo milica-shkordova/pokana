@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { LOCALES, type Venue } from "@momentelo/shared";
+import { LOCALES, type Venue } from "@pokanito/shared";
 import { useInvitation } from "./runtime";
 import { useMusic } from "./hooks";
 
@@ -107,7 +107,7 @@ export function LanguageToggle({ className }: { className?: string }) {
   const { event, locale, setLocale, s } = useInvitation();
   if (event.languages.length < 2) return null;
   return (
-    <div className={className ?? "momentelo-lang"} role="group" aria-label={s.language}>
+    <div className={className ?? "pokanito-lang"} role="group" aria-label={s.language}>
       {LOCALES.filter((l) => event.languages.includes(l)).map((l) => (
         <button key={l} type="button" aria-pressed={l === locale} onClick={() => setLocale(l)} lang={l}>
           {l.toUpperCase()}
@@ -125,7 +125,7 @@ export function MusicButton({ className }: { className?: string }) {
   return (
     <button
       type="button"
-      className={className ?? "momentelo-music"}
+      className={className ?? "pokanito-music"}
       aria-pressed={music.playing}
       aria-label={music.playing ? s.pauseMusic : s.playMusic}
       onClick={music.toggle}
@@ -150,7 +150,7 @@ export function MusicButton({ className }: { className?: string }) {
 export function PreviewNotice() {
   const { preview, s } = useInvitation();
   if (!preview) return null;
-  return <div className="momentelo-preview-notice">{s.previewNotice}</div>;
+  return <div className="pokanito-preview-notice">{s.previewNotice}</div>;
 }
 
 /** Multi-line text: blank lines become paragraphs, single newlines become <br>. */

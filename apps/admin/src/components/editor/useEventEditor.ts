@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import type { EventContent, EventDetail, EventUpdateInput } from "@momentelo/shared";
+import type { EventContent, EventDetail, EventUpdateInput } from "@pokanito/shared";
 import { api } from "@/lib/api";
 
 /** Top-level fields the editor can change (autosaved via PATCH). */

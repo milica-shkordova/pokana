@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ApiError, type EventSummary, type MediaItem, type MediaLibrary } from "@momentelo/shared";
-import { Badge, Button, Card, Dialog, EmptyState, Field, Input, Progress, Select, Tabs, cx, useToast } from "@momentelo/ui";
+import { ApiError, type EventSummary, type MediaItem, type MediaLibrary } from "@pokanito/shared";
+import { Badge, Button, Card, Dialog, EmptyState, Field, Input, Progress, Select, Tabs, cx, useToast } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
 import LoadState from "@/components/LoadState";
 import { ACCEPT, UploadButton, uploadFiles } from "@/components/MediaPicker";

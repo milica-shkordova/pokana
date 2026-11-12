@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { settingsSchema, type Settings } from "@momentelo/shared";
+import { settingsSchema, type Settings } from "@pokanito/shared";
 import { db } from "../../db";
 import type { AuthEnv } from "../../auth";
 import { body } from "../../lib/http";

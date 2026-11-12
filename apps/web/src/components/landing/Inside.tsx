@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { cx } from "@momentelo/ui";
-import { INVITE_SAMPLE, type Copy, type Lang } from "@/content/landing";
+import { cx } from "@pokanito/ui";
+import { INVITE_SAMPLE, fmt, plural, type Copy, type Lang } from "@/content/landing";
 import { useLang } from "./i18n";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -111,6 +111,7 @@ function CardFoot({ title, text }: { title: string; text: string }) {
 const pad = (n: number) => String(n).padStart(2, "0");
 
 function CountdownCard({ c }: { c: InsideCopy }) {
+  const { lang } = useLang();
   const ref = useRef<HTMLDivElement>(null);
   // Computed on the client only (the server render shows placeholders), then
   // ticks every second while the card is on screen.
@@ -157,7 +158,11 @@ function CountdownCard({ c }: { c: InsideCopy }) {
         <div
           className="ic-count__grid"
           role="group"
-          aria-label={parts ? c.countdown.aria(parts.days, parts.hours, parts.min) : c.countdown.title}
+          aria-label={parts ? fmt(c.countdown.aria, {
+                  days: plural(lang, c.countdown.ariaDays, parts.days),
+                  hours: plural(lang, c.countdown.ariaHours, parts.hours),
+                  minutes: plural(lang, c.countdown.ariaMinutes, parts.min),
+                }) : c.countdown.title}
         >
           {tile("days", parts ? String(parts.days) : "–")}
           {tile("hours", parts ? pad(parts.hours) : "–")}
@@ -172,6 +177,7 @@ function CountdownCard({ c }: { c: InsideCopy }) {
 
 // ── 2 · RSVP ───────────────────────────────────────────────────────────────
 function RsvpCard({ c }: { c: InsideCopy }) {
+  const { lang } = useLang();
   const [answer, setAnswer] = useState<"yes" | "no" | null>(null);
   const [guests, setGuests] = useState(2);
   const r = c.rsvp;
@@ -218,7 +224,7 @@ function RsvpCard({ c }: { c: InsideCopy }) {
           {r.no}
         </button>
         <p className={cx("ic-rsvp__done", answer && "is-shown")} aria-live="polite">
-          {answer === "yes" ? `${r.sentYes} · ${r.guestCount(guests)}` : answer === "no" ? r.sentNo : ""}
+          {answer === "yes" ? `${r.sentYes} · ${plural(lang, r.guestCount, guests)}` : answer === "no" ? r.sentNo : ""}
         </p>
       </div>
       <CardFoot title={r.title} text={r.text} />

@@ -1,11 +1,11 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
-import { formatEventDate, type PublicEventResponse } from "@momentelo/shared";
+import { formatEventDate, type PublicEventResponse } from "@pokanito/shared";
 import { OG_LOGO, OG_LOGO_SIZE } from "@/lib/og-logo";
 
 // Link preview image for WhatsApp / Viber / Messenger: the event's names and
-// date on cream paper, signed with the Momentelo logo. Unknown slugs (and the
-// landing page, which uses /api/og/_) get a generic Momentelo card.
+// date on cream paper, signed with the Pokanito logo. Unknown slugs (and the
+// landing page, which uses /api/og/_) get a generic Pokanito card.
 
 export const config = { runtime: "edge" };
 
@@ -164,7 +164,7 @@ export default async function handler(req: NextRequest) {
       />
       <img
         src={OG_LOGO}
-        alt="Momentelo"
+        alt="Pokanito"
         width={OG_LOGO_SIZE.width}
         height={OG_LOGO_SIZE.height}
         style={{ position: "absolute", bottom: 52 }}

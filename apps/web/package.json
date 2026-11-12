@@ -1,5 +1,5 @@
 {
-  "name": "@momentelo/web",
+  "name": "@pokanito/web",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@momentelo/shared": "*",
-    "@momentelo/templates": "*",
-    "@momentelo/ui": "*",
+    "@pokanito/shared": "*",
+    "@pokanito/templates": "*",
+    "@pokanito/ui": "*",
     "gsap": "^3.14.2",
     "next": "^16.0.7",
     "react": "^18.3.1",

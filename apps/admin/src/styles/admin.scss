@@ -1,5 +1,5 @@
 // Admin layout. Visual primitives (buttons, cards, tables, fields, badges,
-// tabs) come from @momentelo/ui; this file lays out the screens from the designs
+// tabs) come from @pokanito/ui; this file lays out the screens from the designs
 // (design/Main, EventEditor, Templates, Leads, Media, Settings).
 
 body {
@@ -2253,7 +2253,7 @@ body {
   }
 }
 
-// ── Fixes on top of @momentelo/ui ──────────────────────────────────────────────
+// ── Fixes on top of @pokanito/ui ──────────────────────────────────────────────
 
 // Template thumbnails use the template's own (often Cormorant) font, whose
 // default figures are old-style ("1" reads as "I").

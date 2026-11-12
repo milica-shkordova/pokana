@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import type { CurrentUser } from "@momentelo/shared";
-import { Alert, Button, Card, Field, Input, Spinner, Wordmark } from "@momentelo/ui";
+import type { CurrentUser } from "@pokanito/shared";
+import { Alert, Button, Card, Field, Input, Spinner, Wordmark } from "@pokanito/ui";
 import { api, errorMessage } from "@/lib/api";
 import { useSession } from "@/lib/session";
 
@@ -48,7 +48,7 @@ export default function AcceptInvitePage() {
   return (
     <main className="admin-login ui-root">
       <Head>
-        <title>Join the team · Momentelo Admin</title>
+        <title>Join the team · Pokanito Admin</title>
       </Head>
       <Card className="admin-login__card">
         <div className="admin-login__brand">

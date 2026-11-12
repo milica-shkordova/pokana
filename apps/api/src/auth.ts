@@ -1,13 +1,13 @@
 import type { Context, MiddlewareHandler } from "hono";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 import type { User } from "@prisma/client";
-import type { TeamMember, UserRole } from "@momentelo/shared";
+import type { TeamMember, UserRole } from "@pokanito/shared";
 import { db } from "./db";
 import { env } from "./env";
 import { createToken, verifyToken } from "./lib/crypto";
 import { errorBody } from "./lib/http";
 
-export const SESSION_COOKIE = "momentelo_admin";
+export const SESSION_COOKIE = "pokanito_admin";
 const SESSION_TTL = 60 * 60 * 24 * 14; // 14 days
 const SESSION_PURPOSE = "admin-session";
 

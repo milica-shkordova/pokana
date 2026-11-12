@@ -22,7 +22,7 @@ const schema = z.object({
     .default(isProd ? "" : DEV_SECRET)
     .refine((v) => !isProd || v !== DEV_SECRET, "Set a real AUTH_SECRET in production"),
 
-  /** Public site, e.g. https://momentelo.mk (preview links, revalidation, emails). */
+  /** Public site, e.g. https://pokanito.mk (preview links, revalidation, emails). */
   WEB_URL: z.string().url().default("http://localhost:3000"),
   /** Admin panel (invite links). */
   ADMIN_URL: z.string().url().default("http://localhost:3000/admin"),

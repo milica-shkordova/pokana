@@ -5,7 +5,7 @@ import type {
   SectionKind,
   SectionState,
   TemplateCategory,
-} from "@momentelo/shared";
+} from "@pokanito/shared";
 import type { UiStrings } from "./strings";
 
 // React-free description of a template. The API (validation, seeding,

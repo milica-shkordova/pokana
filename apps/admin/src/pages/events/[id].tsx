@@ -11,9 +11,9 @@ import {
   type ResolvedMedia,
   type Rsvp,
   type SectionState,
-} from "@momentelo/shared";
-import { getDefinition, getPublishChecklist, resolveSections } from "@momentelo/templates/definitions";
-import { Alert, Button, ButtonLink, Dialog, EventStatusBadge, Segmented, Switch, useToast } from "@momentelo/ui";
+} from "@pokanito/shared";
+import { getDefinition, getPublishChecklist, resolveSections } from "@pokanito/templates/definitions";
+import { Alert, Button, ButtonLink, Dialog, EventStatusBadge, Segmented, Switch, useToast } from "@pokanito/ui";
 import { AuthGate } from "@/components/AdminLayout";
 import LoadState from "@/components/LoadState";
 import { MediaPicker } from "@/components/MediaPicker";

@@ -6,9 +6,9 @@ import {
   type EventDetail,
   type SectionKind,
   type SectionState,
-} from "@momentelo/shared";
-import type { TemplateDefinition } from "@momentelo/templates/definitions";
-import { Checkbox, Dot, cx } from "@momentelo/ui";
+} from "@pokanito/shared";
+import type { TemplateDefinition } from "@pokanito/templates/definitions";
+import { Checkbox, Dot, cx } from "@pokanito/ui";
 import { IconAlert, IconCheck } from "../Icons";
 
 export type Pane = "basics" | "photos" | "theme" | "client" | "replies" | SectionKind;

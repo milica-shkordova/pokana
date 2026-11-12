@@ -1,4 +1,4 @@
-import type { Locale } from "@momentelo/shared";
+import type { Locale } from "@pokanito/shared";
 
 /**
  * Fixed guest-facing UI copy. Templates override any key per locale in their

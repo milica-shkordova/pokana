@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from "react";
-import { ButtonLink, Heading, Lede } from "@momentelo/ui";
+import { ButtonLink, Heading, Lede } from "@pokanito/ui";
 import { LangToggle, useLang } from "./i18n";
 import { CONFETTI_SETTLE_EVENT, keepConfettiClear } from "./hero/confettiZone";
 import Envelope from "./hero/Envelope";

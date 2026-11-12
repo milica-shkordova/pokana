@@ -1,9 +1,9 @@
-// Momentelo data model. SQLite for zero-setup local development — switch the
+// Pokanito data model. SQLite for zero-setup local development — switch the
 // provider to "postgresql" (and DATABASE_URL) for production; nothing here is
 // SQLite-specific. Lists are stored as Json because SQLite has no arrays.
 //
 // String "enums" (status, stage, role…) are validated by the API with the
-// constants in @momentelo/shared, so the allowed values live in one place.
+// constants in @pokanito/shared, so the allowed values live in one place.
 
 generator client {
   provider = "prisma-client-js"
@@ -195,17 +195,17 @@ model Lead {
 /// Singleton (id = "settings").
 model Settings {
   id                      String    @id @default("settings")
-  businessName            String    @default("Momentelo")
-  contactEmail            String    @default("hello@momentelo.mk")
+  businessName            String    @default("Pokanito")
+  contactEmail            String    @default("hello@pokanito.mk")
   phone                   String    @default("")
   instagram               String    @default("")
   logoMediaId             String?
-  senderName              String    @default("Momentelo покани")
-  fromAddress             String    @default("rsvp@momentelo.mk")
+  senderName              String    @default("Pokanito покани")
+  fromAddress             String    @default("rsvp@pokanito.mk")
   subjectTemplate         String    @default("Нова потврда: {гостин} — {настан}")
   ccOwnerOnRsvp           Boolean   @default(true)
   clientDailyDigest       Boolean   @default(false)
-  domain                  String    @default("momentelo.mk")
+  domain                  String    @default("pokanito.mk")
   keepOnlineMonths        Int       @default(6)
   defaultNoindex          Boolean   @default(true)
   defaultPassword         Boolean   @default(false)

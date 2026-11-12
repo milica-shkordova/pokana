@@ -1,5 +1,5 @@
 import type { Prisma, Template } from "@prisma/client";
-import { getDefinition, type TemplateDefinition } from "@momentelo/templates/definitions";
+import { getDefinition, type TemplateDefinition } from "@pokanito/templates/definitions";
 import { db } from "../db";
 import { HTTPException } from "hono/http-exception";
 import { newEventData, uniqueSlug } from "./events";

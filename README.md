@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="apps/web/public/brand/momentelo-mark.png" alt="" width="96">
+  <img src="apps/web/public/brand/pokanito-mark.svg" alt="" width="88">
 </p>
 
-<h1 align="center">Momentelo</h1>
+<h1 align="center">Pokanito</h1>
 
 <p align="center">
   <strong>Invitations your guests actually want to open.</strong><br>
@@ -10,20 +10,20 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/landing-envelope.jpg" alt="The Momentelo landing page opens as a sealed envelope with a wax seal and a “Break the seal” button" width="860">
+  <img src="docs/images/landing-envelope.jpg" alt="The Pokanito landing page opens as a sealed envelope with a wax seal and a “Break the seal” button" width="860">
 </p>
 
 ---
 
 ## What it is
 
-Momentelo turns an invitation into a small, beautiful website. Each one lives at its own link, such as `momentelo.mk/ana-marko`. Guests open it on their phone, watch the countdown tick, read the program, find the venue in one tap and RSVP. Every reply lands straight in the host's inbox.
+Pokanito turns an invitation into a small, beautiful website. Each one lives at its own link, such as `pokanito.mk/ana-marko`. Guests open it on their phone, watch the countdown tick, read the program, find the venue in one tap and RSVP. Every reply lands straight in the host's inbox.
 
 There's nothing to install and nothing to print, and the host never has to log in anywhere:
 
 1. **Choose a template.** The host browses the gallery and taps any design to open its live demo.
 2. **Tell us about it.** They send names, date, venue and photos through the contact form.
-3. **We personalize it.** The Momentelo team builds their version in the admin and sends a preview link.
+3. **We personalize it.** The Pokanito team builds their version in the admin and sends a preview link.
 4. **It goes live.** The invitation is published at its own link, ready to share.
 
 <p align="center">
@@ -87,6 +87,12 @@ The team runs everything from one workspace: events, templates, leads, media and
     <td><sub><strong>Archive.</strong> Optionally keep the invitation link online.</sub></td>
     <td><sub><strong>How it works.</strong> The landing page's scroll-driven journey.</sub></td>
   </tr>
+  <tr>
+    <td colspan="2"><img src="docs/images/landing-finale.jpg" alt="Landing page finale: the P mark above a large lowercase “pokanito.” wordmark with falling confetti"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><sub><strong>Finale.</strong> The landing page signs off with the mark and the wordmark spelled out letter by letter.</sub></td>
+  </tr>
 </table>
 
 ## Brand
@@ -94,8 +100,11 @@ The team runs everything from one workspace: events, templates, leads, media and
 | | |
 | --- | --- |
 | **Voice** | Warm, personal, a little playful. Short sentences, no jargon. |
-| **Colours** | Terracotta `#B5502F` · linen `#FBE6E0` · cream `#FFF9F3` · honey `#FCEFD9` · ink `#2A2522`, with sage and marigold accents. Tokens live in [`packages/ui/src/styles/_tokens.scss`](packages/ui/src/styles/_tokens.scss). |
-| **Assets** | Logo, mark, wordmark, wax seal and postmark in [`apps/web/public/brand/`](apps/web/public/brand/). |
+| **Logo** | The folded-paper **P** mark plus the lowercase `pokanito` wordmark with a tangerine dot. The site and admin use `pokanito-lockup.svg`, where the P is scaled to the letters' height and the box is cropped so the word centres on nav text; the designer's original lockup (`pokanito-logo.svg`, larger P) stays in the kit. Use the `-on-dark` versions on plum/dark backgrounds and the mono versions where gradients can't be used. Keep clear space of at least the height of the "o"; minimum 96 px wide for the logo, 16 px for the P alone. Don't recolour, stretch, rotate or add shadows. |
+| **Brand colours** | Plum ink `#350F1F` · tangerine `#FF5606` · flame `#E8460C` · ember `#B92E10` · coral pink `#FF8486` · peach `#FFD9B8` · sunshine `#FFBA34` · blush cream `#FDF0EB`. |
+| **UI colours** | The site and admin still use the terracotta palette: terracotta `#B5502F` · linen `#FBE6E0` · cream `#FFF9F3` · honey `#FCEFD9` · ink `#2A2522`, with sage and marigold accents. Tokens live in [`packages/ui/src/styles/_tokens.scss`](packages/ui/src/styles/_tokens.scss). |
+| **Assets** | Source files (SVG logo, mark and wordmark in colour, on-dark and mono; app icons; wax seal; seal crack; favicons; PNG exports and the 1200×630 link-preview image) and the full brand guide are in [`packages/ui/brand/`](packages/ui/brand/). Each app serves what it uses from its own `public/brand/`; the `<Wordmark />` component in `@pokanito/ui` renders them (`variant="logo" \| "wordmark" \| "icon"`, `tone="dark"`). |
+| **Name** | "Pokanito", capitalised in sentences; lowercase only inside the logo. |
 | **Languages** | Macedonian (default) and English across the landing page and invitations. |
 
 ---
@@ -112,9 +121,9 @@ apps/
   admin/   Next.js (Pages Router): team admin, served at <site>/admin (events, editor, …)       :3001
   api/     Hono + Prisma: REST API, email queue, media processing, background jobs             :4000
 packages/
-  ui/         @momentelo/ui: design system (tokens + React components) shared by landing and admin
-  templates/  @momentelo/templates: template engine + the 9 invitation templates
-  shared/     @momentelo/shared: domain constants, content model, zod schemas, API types, date helpers
+  ui/         @pokanito/ui: design system (tokens + React components) shared by landing and admin
+  templates/  @pokanito/templates: template engine + the 9 invitation templates
+  shared/     @pokanito/shared: domain constants, content model, zod schemas, API types, date helpers
 ```
 
 ```
@@ -126,7 +135,7 @@ packages/
 
 - **One address.** The public site shows the admin at `/admin` (a Next.js rewrite to the admin app, which has `basePath: "/admin"`) and proxies `/api/public/*` and `/api/admin/*` to the API. Everything is same-origin: no CORS, and the session cookie is first-party.
 - **Static invitations.** Invitations are statically generated per slug (ISR). The API asks the site to revalidate the affected pages whenever something is published or edited.
-- **Live preview.** The editor's preview is the real template, rendered by the public site in an iframe (`/preview/<id>?token=…&embed=1`). The admin pushes unsaved changes into it with `postMessage` (`momentelo:preview` ⇄ `momentelo:preview-ready`), and only messages from `NEXT_PUBLIC_ADMIN_URL` are accepted.
+- **Live preview.** The editor's preview is the real template, rendered by the public site in an iframe (`/preview/<id>?token=…&embed=1`). The admin pushes unsaved changes into it with `postMessage` (`pokanito:preview` ⇄ `pokanito:preview-ready`), and only messages from `NEXT_PUBLIC_ADMIN_URL` are accepted.
 
 ## The template engine (`packages/templates`)
 
@@ -196,7 +205,7 @@ Sign in at http://localhost:3000/admin with `ADMIN_EMAIL` / `ADMIN_PASSWORD` fro
 
 Without `RESEND_API_KEY`, emails are printed in the API console. The full flow (test email, RSVP email, invites) still works locally.
 
-If you see "Prisma Client did not initialize", run `npm run postinstall -w @momentelo/api`. npm ≥ 11 may skip dependency install scripts.
+If you see "Prisma Client did not initialize", run `npm run postinstall -w @pokanito/api`. npm ≥ 11 may skip dependency install scripts.
 
 | Script | |
 | --- | --- |
@@ -236,19 +245,19 @@ If you see "Prisma Client did not initialize", run `npm run postinstall -w @mome
 | App | File | Variables |
 | --- | --- | --- |
 | api | `apps/api/.env` | `DATABASE_URL`, `AUTH_SECRET`, `WEB_URL`, `ADMIN_URL`, `REVALIDATE_SECRET`, `ADMIN_EMAIL`/`ADMIN_PASSWORD`/`ADMIN_NAME` (seed), `RESEND_API_KEY`, `MEDIA_DRIVER` + `S3_*`/`MEDIA_PUBLIC_URL`, `MEDIA_QUOTA_GB`, `DIGEST_HOUR` |
-| web | `apps/web/.env.local` | `API_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL` (e.g. `https://momentelo.mk/admin`), `ADMIN_APP_URL` (where the admin app runs) |
+| web | `apps/web/.env.local` | `API_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL` (e.g. `https://pokanito.mk/admin`), `ADMIN_APP_URL` (where the admin app runs) |
 | admin | `apps/admin/.env.local` | `API_URL`, `NEXT_PUBLIC_WEB_URL` |
 
 ## Deploying
 
-- **API:** `npm run build -w @momentelo/api && npm run db:deploy -w @momentelo/api && npm run start -w @momentelo/api`.
+- **API:** `npm run build -w @pokanito/api && npm run db:deploy -w @pokanito/api && npm run start -w @pokanito/api`.
   - For production, switch `provider` in `schema.prisma` to `postgresql`, set `DATABASE_URL`, and generate a fresh migration.
   - Use `MEDIA_DRIVER=s3` (R2).
   - Run a single instance (jobs and rate limits are in-process), or set `JOBS=off` on extra instances.
 - **web (Netlify):** the main site, configured by [`netlify.toml`](netlify.toml) at the root. Set `API_URL`, `REVALIDATE_SECRET`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_ADMIN_URL=<site>/admin` and `ADMIN_APP_URL`.
 - **admin (second Netlify site):** same repo, Base directory empty, Package directory `apps/admin` (uses [`apps/admin/netlify.toml`](apps/admin/netlify.toml)). Set `API_URL` and `NEXT_PUBLIC_WEB_URL`. Put its Netlify URL in the main site's `ADMIN_APP_URL`; people use it at `<site>/admin`.
 - **API:** set `WEB_URL=<site>` and `ADMIN_URL=<site>/admin` (links in emails).
-- **Email:** verify the sending domain (e.g. `momentelo.mk` for `rsvp@momentelo.mk`) in Resend.
+- **Email:** verify the sending domain (e.g. `pokanito.mk` for `rsvp@pokanito.mk`) in Resend.
 
 ## Owner TODOs (placeholders kept on purpose)
 

@@ -1,5 +1,5 @@
-import type { Locale, RsvpGuest } from "@momentelo/shared";
-import { EVENT_TIMEZONE, utcToZoned } from "@momentelo/shared";
+import type { Locale, RsvpGuest } from "@pokanito/shared";
+import { EVENT_TIMEZONE, utcToZoned } from "@pokanito/shared";
 import { db } from "./db";
 import { env } from "./env";
 import { digestEmail, rsvpEmail, type RsvpEmailData } from "./lib/emails";
