@@ -48,25 +48,32 @@ export default function Footer({ businessName, instagram }: FooterProps) {
           ))}
         </p>
         <p className="lp-finale__tag">{f.tagline}</p>
-      </div>
 
-      <div className="lp-wrap lp-footer__row">
+        {/* Instagram teaser: a reason to follow. Only when a handle is set in Settings. */}
         {handle && (
-          <a
-            className="lp-footer__social"
-            href={`https://instagram.com/${handle}`}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`Instagram @${handle}`}
-          >
-            <IconInstagram size={16} />
-            <span>@{handle}</span>
+          <a className="lp-finale__ig" href={`https://instagram.com/${handle}`} target="_blank" rel="noreferrer">
+            <span className="lp-finale__ig-badge" aria-hidden>
+              <IconInstagram size={22} />
+            </span>
+            <span className="lp-finale__ig-text">
+              <span className="lp-finale__ig-title">{f.instagram}</span>
+              <span className="lp-finale__ig-handle">@{handle}</span>
+            </span>
+            <span className="lp-finale__ig-arrow" aria-hidden>
+              →
+            </span>
           </a>
         )}
+      </div>
+
+      <div className="lp-footer__meta">
         <span>{fmt(f.rights, { year: new Date().getFullYear(), name: businessName })}</span>
         {/* Phones: the fixed header already has the toggle (hidden in CSS). */}
         <span className="lp-footer__lang">
-          <LangToggle />
+          <span className="lp-footer__sep" aria-hidden>
+            ·
+          </span>
+          <LangToggle variant="text" />
         </span>
       </div>
     </footer>

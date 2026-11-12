@@ -215,7 +215,8 @@
   },
   "footer": {
     "tagline": "Дигитални покани за моменти што вредат да се паметат.",
-    "rights": "© {year} {name}"
+    "rights": "© {year} {name}",
+    "instagram": "Погледнете вистински покани на Instagram"
   },
   "cursor": { "open": "Отвори" }
 }

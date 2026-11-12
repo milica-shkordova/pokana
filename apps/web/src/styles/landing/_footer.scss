@@ -1,32 +1,170 @@
+@use "@pokanito/ui/tools" as ui;
+
 // ── Footer ─────────────────────────────────────────────────────────────────
+// The finale (mark, wordmark, tagline, Instagram card) lives in _motion.scss
+// with the rest of the animated sections; this is the small line under it.
 .lp-footer {
   padding: 24px;
   background: var(--ui-color-cream);
   border-top: 1px solid var(--ui-color-border-soft);
 
-  &__row {
+  // "© 2026 Pokanito · EN MK", centred under the finale.
+  &__meta {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
+    gap: 6px 12px;
+    padding: 8px 24px 28px;
     font-size: 13px;
     color: var(--ui-color-muted);
+  }
 
-    a {
-      color: var(--ui-color-muted);
+  &__lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__sep {
+    opacity: 0.6;
+  }
+}
+
+// ── Instagram teaser card (inside the finale, under the tagline) ───────────
+.lp-finale__ig {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: min(420px, 100%);
+  padding: 14px 22px 14px 14px;
+  border-radius: var(--ui-radius-lg);
+  background: var(--ui-color-white);
+  box-shadow: 0 10px 30px rgba(var(--ui-color-terracotta-rgb), 0.1);
+  text-align: left;
+  color: var(--ui-color-ink);
+  text-decoration: none;
+  transition:
+    transform var(--ui-duration-fast) var(--ui-ease-out),
+    box-shadow var(--ui-duration-fast) var(--ui-ease-out);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px rgba(var(--ui-color-terracotta-rgb), 0.16);
+  }
+
+  &:focus-visible {
+    @include ui.focus-ring;
+  }
+
+  &-badge {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: var(--ui-gradient-instagram);
+    color: var(--ui-color-white);
+  }
+
+  &-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  &-handle {
+    font-size: 14px;
+    color: var(--ui-color-muted);
+  }
+
+  &-arrow {
+    flex: none;
+    font-size: 18px;
+    color: var(--ui-color-terracotta);
+    transition: transform var(--ui-duration-fast) var(--ui-ease-out);
+  }
+
+  &:hover &-arrow {
+    transform: translateX(3px);
+  }
+
+  @include ui.down(mobile) {
+    gap: 12px;
+    padding: 12px 16px 12px 12px;
+
+    &-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+
+    &-title {
+      font-size: 15px;
+    }
+
+    &-handle {
+      font-size: 13px;
     }
   }
 
-  // Instagram link: icon + handle.
-  &__social {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    transition: color var(--ui-duration-fast) var(--ui-ease-out);
+  @include ui.reduced-motion {
+    &,
+    &-arrow {
+      transition: none;
+    }
+
+    &:hover,
+    &:hover .lp-finale__ig-arrow {
+      transform: none;
+    }
+  }
+}
+
+// ── Language toggle, text variant (footer): EN / MK with a sliding underline ──
+.lp-lang--text {
+  padding: 0;
+  gap: 4px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+
+  .lp-lang__opt {
+    min-width: 0;
+    min-height: 28px;
+    padding: 0 6px;
+    border-radius: 0;
+    font-size: 13px;
+    color: var(--ui-color-muted);
 
     &:hover {
       color: var(--ui-color-terracotta);
     }
+  }
+
+  .lp-lang__opt--on,
+  .lp-lang__opt--on:hover {
+    color: var(--ui-color-ink);
+  }
+
+  // The pill becomes a 2px underline under the chosen language. It's measured
+  // from the whole button, so clip the 6px side padding off: text width only.
+  .lp-lang__thumb {
+    top: auto;
+    bottom: 0;
+    height: 2px;
+    border-radius: 1px;
+    box-shadow: none;
+    clip-path: inset(0 6px);
   }
 }

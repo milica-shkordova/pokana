@@ -296,7 +296,7 @@
   }
 }
 
-// The finale fills the viewport together with the small copyright row under it.
+// The finale fills the viewport together with the small © / language line under it.
 .lp-footer {
   min-height: 100vh;
   min-height: 100svh;
@@ -304,13 +304,6 @@
   border-top: 0;
   display: flex;
   flex-direction: column;
-
-  .lp-footer__row {
-    padding: 24px;
-    border-top: 0;
-    justify-content: center;
-    text-align: center;
-  }
 }
 
 // ── B8 Custom cursor ───────────────────────────────────────────────────────
@@ -556,11 +549,6 @@ html:has(.lp) {
     top: 8px;
     right: 56px;
   }
-}
-
-// Footer row: "© 2026 Pokanito" and the language switch, side by side.
-.lp-footer .lp-footer__row {
-  gap: 16px;
 }
 
 // Cursor: a small outlined ring (not a solid dot), so it never reads as

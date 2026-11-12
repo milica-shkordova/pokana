@@ -62,7 +62,7 @@ export function useLang(): LangValue {
  * МК / EN switch for the header. A terracotta pill slides behind the chosen
  * language (measured from the buttons, so it fits either label exactly).
  */
-export function LangToggle({ className }: { className?: string }) {
+export function LangToggle({ className, variant = "pill" }: { className?: string; variant?: "pill" | "text" }) {
   const { lang, setLang, t } = useLang();
   const [placed, setPlaced] = useState(false);
 
@@ -78,7 +78,7 @@ export function LangToggle({ className }: { className?: string }) {
   return (
     <div
       ref={group}
-      className={`lp-lang${placed ? " lp-lang--placed" : ""}${className ? ` ${className}` : ""}`}
+      className={`lp-lang${variant === "text" ? " lp-lang--text" : ""}${placed ? " lp-lang--placed" : ""}${className ? ` ${className}` : ""}`}
       role="group"
       aria-label={t.lang.label}
     >

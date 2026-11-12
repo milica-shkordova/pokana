@@ -36,7 +36,7 @@ export function useFooterFinale(root: RefObject<HTMLElement>) {
             0.3 + i * 0.08,
           );
         });
-        tl.fromTo(".lp-finale__tag", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "none" }, ">-0.2");
+        tl.fromTo(".lp-finale__tag, .lp-finale__ig", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "none" }, ">-0.2");
 
         // Confetti rain only runs while the footer is on screen.
         ScrollTrigger.create({
