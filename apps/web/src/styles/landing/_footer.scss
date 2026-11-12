@@ -17,4 +17,16 @@
       color: var(--ui-color-muted);
     }
   }
+
+  // Instagram link: icon + handle.
+  &__social {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color var(--ui-duration-fast) var(--ui-ease-out);
+
+    &:hover {
+      color: var(--ui-color-terracotta);
+    }
+  }
 }

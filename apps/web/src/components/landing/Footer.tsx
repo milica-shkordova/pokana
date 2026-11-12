@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { IconInstagram } from "@pokanito/ui";
 import { fmt } from "@/content/landing";
 import { LangToggle, useLang } from "./i18n";
 import { RAIN } from "./footer/constants";
@@ -51,8 +52,15 @@ export default function Footer({ businessName, instagram }: FooterProps) {
 
       <div className="lp-wrap lp-footer__row">
         {handle && (
-          <a href={`https://instagram.com/${handle}`} target="_blank" rel="noreferrer">
-            @{handle}
+          <a
+            className="lp-footer__social"
+            href={`https://instagram.com/${handle}`}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Instagram @${handle}`}
+          >
+            <IconInstagram size={16} />
+            <span>@{handle}</span>
           </a>
         )}
         <span>{fmt(f.rights, { year: new Date().getFullYear(), name: businessName })}</span>

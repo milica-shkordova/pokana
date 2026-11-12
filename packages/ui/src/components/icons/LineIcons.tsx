@@ -180,3 +180,10 @@ export const IconTrash = ({ size }: { size?: number }) => (
     <path d="M18 6 6 18M6 6l12 12" />
   </svg>
 );
+export const IconInstagram = ({ size }: { size?: number }) => (
+  <svg {...base(size)}>
+    <rect x="3" y="3" width="18" height="18" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
+  </svg>
+);
