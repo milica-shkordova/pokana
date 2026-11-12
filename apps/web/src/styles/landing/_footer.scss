@@ -14,7 +14,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 6px 12px;
+    gap: 6px 8px;
     padding: 8px 24px 28px;
     font-size: 13px;
     color: var(--ui-color-muted);
@@ -23,7 +23,7 @@
   &__lang {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
   }
 
   &__sep {
@@ -134,15 +134,17 @@
 // ── Language toggle, text variant (footer): EN / MK with a sliding underline ──
 .lp-lang--text {
   padding: 0;
-  gap: 4px;
+  gap: 2px;
   border: 0;
   border-radius: 0;
   background: transparent;
 
   .lp-lang__opt {
     min-width: 0;
-    min-height: 28px;
-    padding: 0 6px;
+    min-height: 0;
+    // The bottom padding is the space between the letters and the underline.
+    padding: 2px 5px 5px;
+    line-height: 1.2;
     border-radius: 0;
     font-size: 13px;
     color: var(--ui-color-muted);
@@ -157,12 +159,13 @@
     color: var(--ui-color-ink);
   }
 
-  // The pill becomes a 2px underline under the chosen language. It's measured
-  // from the whole button, so clip the 6px side padding off: text width only.
+  // The pill becomes a thin underline ~3px under the chosen language. It's
+  // measured from the whole button, so clip the 5px side padding (plus 1px)
+  // off: a touch shorter than the text.
   .lp-lang__thumb {
     top: auto;
     bottom: 0;
-    height: 2px;
+    height: 1.5px;
     border-radius: 1px;
     box-shadow: none;
     clip-path: inset(0 6px);
