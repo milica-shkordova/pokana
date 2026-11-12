@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { PublicEvent } from "@pokanito/shared";
+import { isPreviewReadyMessage, PREVIEW_MESSAGE, type PreviewMessage, type PublicEvent } from "@pokanito/shared";
 import { Spinner, cx, errorMessage, prefersReducedMotion } from "@pokanito/ui";
 import { api } from "@/lib/api";
 
@@ -13,7 +13,7 @@ const MORPH_MS = 460;
 
 /**
  * The real template on the public site, in an iframe. Unsaved edits are
- * pushed into it with postMessage:
+ * pushed into it with postMessage (@pokanito/shared preview-protocol):
  *   iframe → admin  { type: "pokanito:preview-ready" }
  *   admin  → iframe { type: "pokanito:preview", event: PublicEvent }
  */
@@ -34,14 +34,14 @@ export default function LivePreview({ eventId, event, device }: { eventId: strin
 
   const send = () => {
     if (!origin) return;
-    frame.current?.contentWindow?.postMessage({ type: "pokanito:preview", event: latest.current }, origin);
+    frame.current?.contentWindow?.postMessage({ type: PREVIEW_MESSAGE, event: latest.current } satisfies PreviewMessage, origin);
   };
 
   // Initial state once the template is ready.
   useEffect(() => {
     if (!origin) return;
     const onMessage = (e: MessageEvent) => {
-      if (e.origin === origin && (e.data as { type?: string } | null)?.type === "pokanito:preview-ready") send();
+      if (e.origin === origin && isPreviewReadyMessage(e.data)) send();
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);

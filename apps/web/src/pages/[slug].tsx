@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ApiError, type PublicEvent, type PublicEventMeta, type PublicEventResponse } from "@pokanito/shared";
+import { ApiError, eventMetaOf, type PublicEvent, type PublicEventMeta, type PublicEventResponse } from "@pokanito/shared";
 import InvitationView from "@/components/invitation/InvitationView";
 import {
   EndedView,
@@ -12,23 +12,11 @@ import {
   unlock,
   UnpublishedView,
 } from "@/components/invitation/StatePages";
-import { browserApi, serverApi } from "@/lib/api";
+import { publicApi, serverPublicApi } from "@/lib/api";
 
 interface Props {
   response: PublicEventResponse;
 }
-
-const metaOf = (r: PublicEventResponse): PublicEventMeta =>
-  r.state === "live"
-    ? {
-        slug: r.event.slug,
-        name: r.event.name,
-        templateId: r.event.templateId,
-        eventDate: r.event.eventDate,
-        languages: r.event.languages,
-        noindex: r.event.noindex,
-      }
-    : r.meta;
 
 /** `?preview=TOKEN` — the client's approval link; works for drafts too. Fetched client-side. */
 function PreviewInvitation({ meta, token }: { meta: PublicEventMeta; token: string }) {
@@ -36,8 +24,8 @@ function PreviewInvitation({ meta, token }: { meta: PublicEventMeta; token: stri
   const [failed, setFailed] = useState(false);
   useEffect(() => {
     let cancelled = false;
-    browserApi
-      .get<PublicEvent>(`/api/public/events/${encodeURIComponent(meta.slug)}/preview?token=${encodeURIComponent(token)}`)
+    publicApi
+      .eventPreview(meta.slug, token)
       .then((e) => !cancelled && setEvent({ ...e, preview: true }))
       .catch(() => !cancelled && setFailed(true));
     return () => {
@@ -76,7 +64,7 @@ export default function InvitationPage({ response }: Props) {
   const preview = router.isReady && typeof router.query.preview === "string" ? router.query.preview : null;
   // `?embed=1`: shown inside the landing gallery phones (no splash, no music).
   const embed = router.isReady && router.query.embed === "1";
-  const meta = metaOf(response);
+  const meta = eventMetaOf(response);
 
   if (preview) return <PreviewInvitation meta={meta} token={preview} />;
 
@@ -108,7 +96,7 @@ export const getStaticPaths: GetStaticPaths = async () => ({ paths: [], fallback
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug ?? "");
   try {
-    const response = await serverApi.get<PublicEventResponse>(`/api/public/events/${encodeURIComponent(slug)}`);
+    const response = await serverPublicApi.event(slug);
     return { props: { response }, revalidate: 300 };
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) return { notFound: true, revalidate: 60 };

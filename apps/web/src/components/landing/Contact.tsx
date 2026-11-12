@@ -15,7 +15,7 @@ import {
   Textarea,
   prefersReducedMotion,
 } from "@pokanito/ui";
-import { browserApi } from "@/lib/api";
+import { publicApi } from "@/lib/api";
 import { fmt } from "@/content/landing";
 import { useLang } from "./i18n";
 
@@ -119,7 +119,7 @@ export default function Contact({ templates, contactEmail }: Props) {
     setStatus("sending");
     setError(null);
     try {
-      await browserApi.post("/api/public/leads", {
+      await publicApi.lead({
         source: "contact-form",
         name,
         contact,

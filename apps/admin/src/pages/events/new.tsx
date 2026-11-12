@@ -3,6 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   CATEGORY_LABELS,
+  eventUrl,
+  formatDate,
+  guessDate,
   TEMPLATE_CATEGORIES,
   type EventCreateInput,
   type EventDetail,
@@ -28,18 +31,6 @@ import {
 import AdminLayout from "@/components/AdminLayout";
 import { thumbStyle } from "@/components/TemplateThumb";
 import { api, useResource, WEB_URL } from "@/lib/api";
-import { formatDate } from "@/lib/format";
-
-/** Tries to read "12 Jun 2027", "2027-06-12", "12.06.2027" from a lead (noon UTC, so the Skopje day stays right). */
-function guessDate(text: string | null | undefined): string | undefined {
-  if (!text) return undefined;
-  const dmy = text.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-  const iso = dmy ? `${dmy[3]}-${dmy[2].padStart(2, "0")}-${dmy[1].padStart(2, "0")}` : null;
-  const t = Date.parse(iso ?? text);
-  if (Number.isNaN(t)) return undefined;
-  const d = new Date(t);
-  return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 12)).toISOString();
-}
 
 type Cat = "all" | TemplateCategory;
 
@@ -253,7 +244,7 @@ export default function NewEventPage() {
               <div className="admin-new__stage" key={pick.id} style={{ background: thumbStyle(pick).bg }}>
                 <PhoneThumb t={pick} size="lg" />
                 {pick.demoSlug && (
-                  <a className="admin-new__demo" href={`${WEB_URL}/${pick.demoSlug}`} target="_blank" rel="noreferrer">
+                  <a className="admin-new__demo" href={eventUrl(WEB_URL, pick.demoSlug)} target="_blank" rel="noreferrer">
                     Open live demo ↗
                   </a>
                 )}

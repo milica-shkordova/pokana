@@ -8,11 +8,12 @@
 // shown as-is until then. Template names and descriptions come from the admin
 // (Templates screen) and are not translated here.
 
-import type { TemplateCategory } from "@pokanito/shared";
+import type { Locale, TemplateCategory } from "@pokanito/shared";
 import en from "./locales/en.json";
 import mk from "./locales/mk.json";
 
-export type Lang = "en" | "mk";
+/** The landing page languages (= the invitation locales); English first for the toggle. */
+export type Lang = Locale;
 export const LANGS: Lang[] = ["en", "mk"];
 
 // ── Shared, non-text data ───────────────────────────────────────────────────

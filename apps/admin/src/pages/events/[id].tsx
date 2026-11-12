@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   ApiError,
+  timeAgo,
   type EventDetail,
   type MediaItem,
   type MediaKind,
@@ -45,7 +46,6 @@ import { SectionForm } from "@/components/editor/SectionForms";
 import LivePreview from "@/components/editor/LivePreview";
 import type { FormProps } from "@/components/editor/context";
 import { api, useResource } from "@/lib/api";
-import { timeAgo } from "@/lib/format";
 import { useSession } from "@/lib/session";
 
 const toResolved = (m: MediaItem): ResolvedMedia => ({

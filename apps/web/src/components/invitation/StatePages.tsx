@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { ApiError, formatEventDate, type Locale, type PublicEvent, type PublicEventMeta } from "@pokanito/shared";
 import { Alert, Button, Input, Spinner } from "@pokanito/ui";
-import { browserApi } from "@/lib/api";
+import { publicApi } from "@/lib/api";
 import { InvitationHead } from "./InvitationView";
 
 const COPY = {
@@ -96,10 +96,7 @@ export function rememberedCode(slug: string): string | null {
 }
 
 export async function unlock(slug: string, code: string) {
-  const res = await browserApi.post<{ event: PublicEvent; token: string }>(
-    `/api/public/events/${encodeURIComponent(slug)}/unlock`,
-    { code },
-  );
+  const res = await publicApi.unlock(slug, code);
   try {
     sessionStorage.setItem(storageKey(slug), code);
   } catch {

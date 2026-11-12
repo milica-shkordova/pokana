@@ -2,11 +2,14 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import {
   leadInputSchema,
+  PUBLIC_ROUTES,
   rsvpInputSchema,
+  UNLOCK_TOKEN_HEADER,
   unlockSchema,
   type PublicEventResponse,
   type RsvpInput,
   type TemplateSummary,
+  type PublicUnlockResponse,
 } from "@pokanito/shared";
 import { getDefinition, resolveSections } from "@pokanito/templates/definitions";
 import { db } from "../db";
@@ -27,16 +30,16 @@ export const publicRoutes = new Hono();
 const formLimiter = rateLimit({ name: "public-forms", windowMs: 10 * 60_000, max: 20 });
 const unlockLimiter = rateLimit({ name: "unlock", windowMs: 10 * 60_000, max: 15 });
 
-publicRoutes.get("/settings", async (c) => c.json(await getPublicSettings()));
+publicRoutes.get(PUBLIC_ROUTES.settings, async (c) => c.json(await getPublicSettings()));
 
 /** Live + coming-soon templates for the landing page (hidden/draft are left out). */
-publicRoutes.get("/templates", async (c) => {
+publicRoutes.get(PUBLIC_ROUTES.templates, async (c) => {
   const all = await toTemplateSummaries();
   return c.json<TemplateSummary[]>(all.filter((t) => t.status === "live" || t.status === "coming-soon"));
 });
 
 /** The invitation, or why it can't be shown (locked / ended / not published). */
-publicRoutes.get("/events/:slug", async (c) => {
+publicRoutes.get(PUBLIC_ROUTES.event, async (c) => {
   const e = await db.event.findUnique({ where: { slug: c.req.param("slug") } });
   if (!e || e.isDefaults) notFound("Invitation");
   const meta = toPublicMeta(e);
@@ -46,18 +49,18 @@ publicRoutes.get("/events/:slug", async (c) => {
   return c.json<PublicEventResponse>({ state: "live", event: await toPublicEvent(e) });
 });
 
-publicRoutes.post("/events/:slug/unlock", unlockLimiter, async (c) => {
+publicRoutes.post(PUBLIC_ROUTES.unlock, unlockLimiter, async (c) => {
   const { code } = await body(c, unlockSchema);
   const e = await db.event.findUnique({ where: { slug: c.req.param("slug") } });
   if (!e || !isViewable(e)) notFound("Invitation");
   if (!e.accessCode || e.accessCode.toLowerCase() !== code.toLowerCase()) {
     return c.json(errorBody("That code doesn't match"), 403);
   }
-  return c.json({ event: await toPublicEvent(e), token: createUnlockToken(e.id) });
+  return c.json<PublicUnlockResponse>({ event: await toPublicEvent(e), token: createUnlockToken(e.id) });
 });
 
 /** Shareable preview: /<slug>?preview=TOKEN (works for drafts). */
-publicRoutes.get("/events/:slug/preview", async (c) => {
+publicRoutes.get(PUBLIC_ROUTES.eventPreview, async (c) => {
   const e = await db.event.findUnique({ where: { slug: c.req.param("slug") } });
   if (!e || !verifyPreviewToken(c.req.query("token"), e.id)) {
     throw new HTTPException(403, { message: "Preview link is invalid or has expired" });
@@ -66,7 +69,7 @@ publicRoutes.get("/events/:slug/preview", async (c) => {
 });
 
 /** Editor live-preview iframe (by id, so slug edits don't break it). */
-publicRoutes.get("/preview/:id", async (c) => {
+publicRoutes.get(PUBLIC_ROUTES.preview, async (c) => {
   const id = c.req.param("id");
   if (!verifyPreviewToken(c.req.query("token"), id)) {
     throw new HTTPException(403, { message: "Preview link is invalid or has expired" });
@@ -84,12 +87,12 @@ function totalGuests(input: RsvpInput): number {
   return input.guestCount || 1;
 }
 
-publicRoutes.post("/events/:slug/rsvp", formLimiter, async (c) => {
+publicRoutes.post(PUBLIC_ROUTES.rsvp, formLimiter, async (c) => {
   const input = await body(c, rsvpInputSchema);
   const e = await db.event.findUnique({ where: { slug: c.req.param("slug") } });
   if (!e || e.status !== "live") notFound("Invitation");
   if (input.website) return c.json({ ok: true }, 201); // honeypot
-  if (e.accessCode && !verifyUnlockToken(c.req.header("x-unlock-token"), e.id)) {
+  if (e.accessCode && !verifyUnlockToken(c.req.header(UNLOCK_TOKEN_HEADER), e.id)) {
     return c.json(errorBody("This invitation is protected"), 403);
   }
   if (!rsvpOpen(e)) return c.json(errorBody("RSVPs for this invitation are closed"), 409);
@@ -126,7 +129,7 @@ publicRoutes.post("/events/:slug/rsvp", formLimiter, async (c) => {
   return c.json({ ok: true }, 201);
 });
 
-publicRoutes.post("/leads", formLimiter, async (c) => {
+publicRoutes.post(PUBLIC_ROUTES.leads, formLimiter, async (c) => {
   const input = await body(c, leadInputSchema);
   if (input.website) return c.json({ ok: true }, 201); // honeypot
 
@@ -153,7 +156,7 @@ publicRoutes.post("/leads", formLimiter, async (c) => {
 });
 
 /** Media files (local storage driver, or proxied from S3 when there's no public bucket URL). */
-publicRoutes.get("/media/*", async (c) => {
+publicRoutes.get(PUBLIC_ROUTES.media, async (c) => {
   const key = decodeURIComponent(c.req.path.replace(/^\/api\/public\/media\//, ""));
   if (!key.startsWith("media/")) notFound("File");
   const range = parseRange(c.req.header("range"));

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import type { SectionKind } from "@pokanito/shared";
+import { pad2, type SectionKind } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
 import { useCountdown, useRsvpDeadlineText } from "../engine/hooks";
 import { useRsvpForm } from "../engine/useRsvpForm";
@@ -86,7 +86,7 @@ function Countdown() {
               ] as const
             ).map(([n, unit]) => (
               <div key={unit} className={st.countdownItem}>
-                <span className={st.countdownNum}>{c.ready ? String(n).padStart(2, "0") : "–"}</span>
+                <span className={st.countdownNum}>{c.ready ? pad2(n) : "–"}</span>
                 <span className={st.countdownUnit}>{unit}</span>
               </div>
             ))}

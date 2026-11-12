@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import {
+  isEmail,
+  LOCALE_LABELS,
+  LOCALES,
+  parseEmails,
   slugSchema,
   utcToZoned,
   zonedToUtc,
@@ -19,12 +23,10 @@ import {
   IconMail,
 } from "@pokanito/ui";
 import { api, WEB_HOST } from "@/lib/api";
-import { parseEmails } from "@/lib/format";
 import { EditorCard, LocalizedField } from "./fields";
 import { setContent, type FormProps } from "./context";
 
-type LangChoice = "mk" | "en" | "both";
-const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+type LangChoice = Locale | "both";
 
 export default function BasicsForm(
   props: FormProps & {
@@ -107,7 +109,7 @@ export default function BasicsForm(
   const lang: LangChoice =
     languages.length > 1 ? "both" : (languages[0] as LangChoice);
   const setLang = (v: LangChoice) =>
-    update({ languages: v === "both" ? (["mk", "en"] as Locale[]) : [v] });
+    update({ languages: v === "both" ? [...LOCALES] : [v] });
 
   const isWedding = def.category === "wedding";
 
@@ -179,8 +181,11 @@ export default function BasicsForm(
             value={lang}
             onChange={(e) => setLang(e.target.value as LangChoice)}
           >
-            <option value="mk">Македонски</option>
-            <option value="en">English</option>
+            {LOCALES.map((l) => (
+              <option key={l} value={l}>
+                {LOCALE_LABELS[l]}
+              </option>
+            ))}
             <option value="both">Both (toggle)</option>
           </Select>
         </Field>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { LOCALES, pad2 } from "@pokanito/shared";
 import { cx, MEDIA } from "@pokanito/ui";
 import { INVITE_SAMPLE, fmt, plural, type Copy, type Lang } from "@/content/landing";
 import { useLang } from "./i18n";
@@ -108,7 +109,6 @@ function CardFoot({ title, text }: { title: string; text: string }) {
 }
 
 // ── 1 · Live countdown ─────────────────────────────────────────────────────
-const pad = (n: number) => String(n).padStart(2, "0");
 
 function CountdownCard({ c }: { c: InsideCopy }) {
   const { lang } = useLang();
@@ -165,9 +165,9 @@ function CountdownCard({ c }: { c: InsideCopy }) {
                 }) : c.countdown.title}
         >
           {tile("days", parts ? String(parts.days) : "–")}
-          {tile("hours", parts ? pad(parts.hours) : "–")}
-          {tile("min", parts ? pad(parts.min) : "–")}
-          {tile("sec", parts ? pad(parts.sec) : "–", true)}
+          {tile("hours", parts ? pad2(parts.hours) : "–")}
+          {tile("min", parts ? pad2(parts.min) : "–")}
+          {tile("sec", parts ? pad2(parts.sec) : "–", true)}
         </div>
       </div>
       <CardFoot title={c.countdown.title} text={c.countdown.text} />
@@ -278,7 +278,7 @@ function LanguageCard({ c, pageLang }: { c: InsideCopy; pageLang: Lang }) {
     <div className="ic-card ic-card--mist" style={{ "--tilt": "2deg" } as React.CSSProperties}>
       <div className="ic-card__demo ic-lang">
         <div className="ic-lang__switch" role="group" aria-label={c.language.switchLabel}>
-          {(["mk", "en"] as const).map((l) => (
+          {LOCALES.map((l) => (
             <button key={l} type="button" className={cx(lang === l && "is-on")} aria-pressed={lang === l} onClick={() => setLang(l)}>
               {l === "mk" ? "MK" : "EN"}
             </button>

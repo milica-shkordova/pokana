@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ApiError, type EventSummary, type MediaItem, type MediaLibrary } from "@pokanito/shared";
+import { ApiError, formatBytes, formatDuration, MEDIA_ACCEPT, type EventSummary, type MediaItem, type MediaLibrary } from "@pokanito/shared";
 import {
   Badge,
   Button,
@@ -21,9 +21,8 @@ import {
   errorMessage,
 } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
-import { ACCEPT, UploadButton, uploadFiles } from "@/components/MediaPicker";
+import { UploadButton, uploadFiles } from "@/components/MediaPicker";
 import { api, useResource } from "@/lib/api";
-import { formatBytes, formatDuration } from "@/lib/format";
 
 type TypeTab = "all" | "photo" | "audio" | "unused";
 
@@ -213,7 +212,7 @@ function UploadDropZone({ eventId, onUploaded }: { eventId: string | null; onUpl
   };
   return (
     <>
-      <input ref={input} type="file" hidden multiple accept={`${ACCEPT.photo},${ACCEPT.audio}`} onChange={(e) => void upload(e.target.files).then(() => (e.target.value = ""))} />
+      <input ref={input} type="file" hidden multiple accept={`${MEDIA_ACCEPT.photo},${MEDIA_ACCEPT.audio}`} onChange={(e) => void upload(e.target.files).then(() => (e.target.value = ""))} />
       <DropZone onClick={() => input.current?.click()} onFiles={(files) => void upload(files)} disabled={busy}>
         {busy ? "Uploading…" : <IconPlus size={20} />}
         {!busy && "Drop files here"}
@@ -336,7 +335,7 @@ function MediaDetail({ item, onChange, onDelete }: { item: MediaItem; onChange: 
           ref={replaceInput}
           type="file"
           hidden
-          accept={isPhoto ? ACCEPT.photo : ACCEPT.audio}
+          accept={isPhoto ? MEDIA_ACCEPT.photo : MEDIA_ACCEPT.audio}
           onChange={async (e) => {
             const f = e.target.files?.[0];
             if (!f) return;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { LEAD_PIPELINE, LEAD_STAGE_LABELS, type Lead, type LeadStage } from "@pokanito/shared";
+import { contactHref, formatDate, LEAD_PIPELINE, LEAD_STAGE_LABELS, timeAgo, type Lead, type LeadStage } from "@pokanito/shared";
 import {
   Button,
   Card,
@@ -16,10 +16,7 @@ import {
 } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
 import { api, useResource } from "@/lib/api";
-import { formatDate, timeAgo } from "@/lib/format";
 import { useSession } from "@/lib/session";
-
-const contactHref = (contact: string) => (contact.includes("@") ? `mailto:${contact}` : `tel:${contact.replace(/[^\d+]/g, "")}`);
 
 export default function LeadsPage() {
   const router = useRouter();

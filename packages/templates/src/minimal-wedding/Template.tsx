@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import type { SectionKind } from "@pokanito/shared";
+import { pad2, type SectionKind } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
 import { useCountdown, useRsvpDeadlineText } from "../engine/hooks";
 import { useRsvpForm } from "../engine/useRsvpForm";
@@ -16,7 +16,7 @@ const COPY = {
 function Label({ n, text }: { n: number; text: string }) {
   return (
     <span className={st.label}>
-      {String(n).padStart(2, "0")} — {text}
+      {pad2(n)} — {text}
     </span>
   );
 }

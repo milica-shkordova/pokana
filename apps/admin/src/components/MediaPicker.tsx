@@ -1,13 +1,7 @@
 import { useRef, useState } from "react";
-import type { MediaItem, MediaKind } from "@pokanito/shared";
+import { formatDuration, MEDIA_ACCEPT, type MediaItem, type MediaKind } from "@pokanito/shared";
 import { Button, Dialog, EmptyState, Tabs, cx, useToast, errorMessage, IconMusic, IconUpload } from "@pokanito/ui";
 import { api } from "@/lib/api";
-import { formatDuration } from "@/lib/format";
-
-export const ACCEPT: Record<MediaKind, string> = {
-  photo: "image/jpeg,image/png,image/heic,image/heif,image/webp,.heic,.heif,.jpg,.jpeg,.png",
-  audio: "audio/mpeg,.mp3",
-};
 
 export async function uploadFiles(files: FileList | File[], eventId: string | null): Promise<MediaItem[]> {
   const form = new FormData();
@@ -37,7 +31,7 @@ export function UploadButton({
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const toast = useToast();
-  const accept = kind === "any" ? `${ACCEPT.photo},${ACCEPT.audio}` : ACCEPT[kind];
+  const accept = kind === "any" ? `${MEDIA_ACCEPT.photo},${MEDIA_ACCEPT.audio}` : MEDIA_ACCEPT[kind];
   return (
     <>
       <input

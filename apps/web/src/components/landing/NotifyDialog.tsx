@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ApiError, type LeadInput, type TemplateSummary } from "@pokanito/shared";
 import { Alert, Button, Dialog, Field, Input, Select, HoneypotField } from "@pokanito/ui";
-import { browserApi } from "@/lib/api";
+import { publicApi } from "@/lib/api";
 import { useLang } from "./i18n";
 
 interface Props {
@@ -34,7 +34,7 @@ export default function NotifyDialog({ open, onClose, templates, initialTemplate
     setStatus("sending");
     setError(null);
     try {
-      await browserApi.post("/api/public/leads", {
+      await publicApi.lead({
         source: "notify-me",
         name,
         contact,

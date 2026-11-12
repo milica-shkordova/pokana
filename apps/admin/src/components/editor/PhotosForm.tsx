@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
+import { MEDIA_ACCEPT } from "@pokanito/shared";
 import { Button, useToast, errorMessage, IconUpload } from "@pokanito/ui";
-import { ACCEPT, UploadButton, uploadFiles } from "../MediaPicker";
+import { UploadButton, uploadFiles } from "../MediaPicker";
 import { EditorCard } from "./fields";
 import type { FormProps } from "./context";
 
@@ -101,7 +102,7 @@ function SlotTile({
           ref={input}
           type="file"
           hidden
-          accept={ACCEPT.photo}
+          accept={MEDIA_ACCEPT.photo}
           onChange={async (e) => {
             const f = e.target.files?.[0];
             if (!f) return;

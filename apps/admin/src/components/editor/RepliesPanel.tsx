@@ -1,4 +1,4 @@
-import type { EventDetail, Rsvp } from "@pokanito/shared";
+import { formatDateTime, type EventDetail, type Rsvp } from "@pokanito/shared";
 import {
   Badge,
   Button,
@@ -11,7 +11,6 @@ import {
   errorMessage,
 } from "@pokanito/ui";
 import { api, useResource } from "@/lib/api";
-import { formatDateTime } from "@/lib/format";
 import { EditorCard } from "./fields";
 
 export default function RepliesPanel({ event }: { event: EventDetail }) {

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   CATEGORY_LABELS,
+  eventUrl,
+  formatDate,
   TEMPLATE_CATEGORIES,
   type EventDetail,
   type EventStatus,
@@ -42,7 +44,7 @@ import {
 import AdminLayout from "@/components/AdminLayout";
 import EventDialogs, { type EventAction } from "@/components/EventDialogs";
 import { api, useResource, WEB_HOST, WEB_URL } from "@/lib/api";
-import { formatDate, toneFor } from "@/lib/format";
+import { toneFor } from "@/lib/format";
 import { useSession } from "@/lib/session";
 
 type Tab = "all" | Extract<EventStatus, "live" | "draft" | "in-review" | "past" | "archived">;
@@ -58,7 +60,7 @@ const TABS: { value: Tab; label: string }[] = [
 /** QR code PNG for an invitation link, downloaded right away. */
 async function downloadQr(e: EventSummary) {
   const QRCode = (await import("qrcode")).default;
-  const url = await QRCode.toDataURL(`${WEB_URL}/${e.slug}`, {
+  const url = await QRCode.toDataURL(eventUrl(WEB_URL, e.slug), {
     width: 1024,
     margin: 2,
     errorCorrectionLevel: "M",
@@ -184,12 +186,12 @@ export default function EventsPage() {
     if (e.status === "live" || e.status === "past") {
       return [
         open,
-        { label: "View live page", icon: <IconExternal />, onSelect: () => void window.open(`${WEB_URL}/${e.slug}`, "_blank", "noopener") },
+        { label: "View live page", icon: <IconExternal />, onSelect: () => void window.open(eventUrl(WEB_URL, e.slug), "_blank", "noopener") },
         {
           label: "Copy link",
           icon: <IconLink />,
           onSelect: () =>
-            void copyText(`${WEB_URL}/${e.slug}`).then((ok) => toast(ok ? "Link copied" : "Couldn't copy", ok ? "default" : "error")),
+            void copyText(eventUrl(WEB_URL, e.slug)).then((ok) => toast(ok ? "Link copied" : "Couldn't copy", ok ? "default" : "error")),
         },
         {
           label: "Download QR code",
@@ -339,7 +341,7 @@ export default function EventsPage() {
                       {e.status === "archived" && e.archivedOnline && <div className="ui-muted admin-small">Link still online</div>}
                     </td>
                     <td>
-                      <a className="admin-link-muted" href={`${WEB_URL}/${e.slug}`} target="_blank" rel="noreferrer">
+                      <a className="admin-link-muted" href={eventUrl(WEB_URL, e.slug)} target="_blank" rel="noreferrer">
                         {WEB_HOST}/{e.slug}
                       </a>
                     </td>

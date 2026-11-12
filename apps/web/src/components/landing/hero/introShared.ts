@@ -1,4 +1,5 @@
 import { CONFETTI_VARS, MEDIA } from "@pokanito/ui";
+import { rnd } from "@/lib/random";
 
 /**
  * Play the intro only once per browser tab? Off: it plays on every visit
@@ -41,12 +42,6 @@ export function writeIntroSeen() {
     // Private mode / blocked storage: the intro simply plays again next time.
   }
 }
-
-/** Deterministic pseudo-random (same as the prototype), so SSR and CSR match. */
-export const rnd = (i: number, k: number) => {
-  const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
-  return x - Math.floor(x);
-};
 
 export interface BurstPiece {
   /** Direction (radians) and speed (px at 1440px wide) of the radial spread. */

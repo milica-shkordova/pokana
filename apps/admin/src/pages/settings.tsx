@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import {
+  fillSubject,
+  LOCALE_LABELS,
+  LOCALES,
+  publicApiPaths,
   type MediaItem,
   type PublicSettings,
   type Settings,
@@ -43,11 +47,6 @@ const SECTIONS = [
 
 const SECTION_IDS = SECTIONS.map((s) => s.id);
 
-const fillSubject = (t: string, guest: string, ev: string) =>
-  t
-    .replace(/\{гостин\}|\{guest\}/g, guest)
-    .replace(/\{настан\}|\{event\}/g, ev);
-
 export default function SettingsPage() {
   const toast = useToast();
   const { user } = useSession();
@@ -58,7 +57,7 @@ export default function SettingsPage() {
   const [error, setError] = useState<unknown>(null);
   // The admin settings only store the logo media id; the public settings
   // resolve it to an image URL. A freshly uploaded logo previews from upload.
-  const publicSettings = useResource<PublicSettings>("/api/public/settings");
+  const publicSettings = useResource<PublicSettings>(publicApiPaths.settings());
   const [uploadedLogo, setUploadedLogo] = useState<MediaItem | null>(null);
 
   useEffect(() => {
@@ -332,8 +331,11 @@ export default function SettingsPage() {
                         )
                       }
                     >
-                      <option value="mk">Македонски</option>
-                      <option value="en">English</option>
+                      {LOCALES.map((l) => (
+                        <option key={l} value={l}>
+                          {LOCALE_LABELS[l]}
+                        </option>
+                      ))}
                       <option value="both">Both (toggle)</option>
                     </Select>
                   </Field>

@@ -3,7 +3,7 @@ import sharp from "sharp";
 import heicConvert from "heic-convert";
 import { parseBuffer } from "music-metadata";
 import type { Media } from "@prisma/client";
-import { PHOTO_WIDTHS, type MediaItem, type MediaKind, type ResolvedMedia } from "@pokanito/shared";
+import { PHOTO_WIDTHS, type AudioMime, type MediaItem, type MediaKind, type PhotoMime, type ResolvedMedia } from "@pokanito/shared";
 import { db } from "../db";
 import { publicUrl, storage } from "./storage";
 import { ValidationError } from "./http";
@@ -11,14 +11,15 @@ import { ValidationError } from "./http";
 export const MAX_PHOTO_BYTES = 30 * 1024 * 1024;
 export const MAX_AUDIO_BYTES = 25 * 1024 * 1024;
 
+// Accepted types (PHOTO_MIME / AUDIO_MIME in @pokanito/shared) → stored extension.
 const PHOTO_TYPES: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/png": "png",
   "image/webp": "webp",
   "image/heic": "heic",
   "image/heif": "heic",
-};
-const AUDIO_TYPES: Record<string, string> = { "audio/mpeg": "mp3", "audio/mp3": "mp3" };
+} satisfies Record<PhotoMime, string>;
+const AUDIO_TYPES: Record<string, string> = { "audio/mpeg": "mp3", "audio/mp3": "mp3" } satisfies Record<AudioMime, string>;
 
 /** Browsers often send HEIC as application/octet-stream — fall back to the extension. */
 function detectType(file: File): { kind: MediaKind; mime: string; ext: string } {

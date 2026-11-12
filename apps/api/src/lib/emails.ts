@@ -1,4 +1,4 @@
-import type { Settings } from "@pokanito/shared";
+import { fillSubject, type Locale, type Settings } from "@pokanito/shared";
 import { env } from "../env";
 import type { MailMessage } from "./mailer";
 
@@ -21,15 +21,9 @@ ${rows.map((r) => `<p style="margin:0 0 8px;font-size:15px;line-height:1.6">${r}
 
 const from = (s: Settings) => `${s.senderName} <${s.fromAddress}>`;
 
-export function fillSubject(template: string, guest: string, eventName: string) {
-  return template
-    .replace(/\{гостин\}|\{guest\}/g, guest)
-    .replace(/\{настан\}|\{event\}/g, eventName);
-}
-
 export interface RsvpEmailData {
   eventName: string;
-  locale: "mk" | "en";
+  locale: Locale;
   name: string;
   attending: boolean;
   totalGuests: number;
@@ -112,7 +106,7 @@ export function rsvpEmail(settings: Settings, to: string[], cc: string[], d: Rsv
   return { from: from(settings), to, cc, subject, html: layout(title, htmlRows, esc(L.footer)), text };
 }
 
-export const sampleRsvp = (eventName: string, locale: "mk" | "en", menus: string[]): RsvpEmailData => ({
+export const sampleRsvp = (eventName: string, locale: Locale, menus: string[]): RsvpEmailData => ({
   eventName,
   locale,
   name: locale === "mk" ? "Јована Петрова" : "Jovana Petrova",
@@ -129,7 +123,7 @@ export function digestEmail(
   settings: Settings,
   to: string[],
   eventName: string,
-  locale: "mk" | "en",
+  locale: Locale,
   rows: RsvpEmailData[],
   totals: { responses: number; attendingGuests: number; declined: number },
 ): MailMessage {

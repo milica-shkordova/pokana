@@ -4,15 +4,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { CONFETTI_COLORS, MEDIA } from "@pokanito/ui";
 import { fmt } from "@/content/landing";
+import { rnd } from "@/lib/random";
 import { LangToggle, useLang } from "./i18n";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Deterministic "random" so server and client render the same confetti.
-const rnd = (i: number, k: number) => {
-  const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
-  return x - Math.floor(x);
-};
+// Deterministic "random" (lib/random) so server and client render the same confetti.
 const RAIN = Array.from({ length: 30 }, (_, i) => ({
   left: `${(rnd(i, 8) * 100).toFixed(1)}%`,
   strip: rnd(i, 7) > 0.5,

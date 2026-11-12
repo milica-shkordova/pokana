@@ -3,7 +3,8 @@ import { ButtonLink, Heading, Lede, CONFETTI_VARS } from "@pokanito/ui";
 import { LangToggle, useLang } from "./i18n";
 import { CONFETTI_SETTLE_EVENT, keepConfettiClear } from "./hero/confettiZone";
 import Envelope from "./hero/Envelope";
-import { BURST, INTRO_ARM_SCRIPT, rnd } from "./hero/introShared";
+import { rnd } from "@/lib/random";
+import { BURST, INTRO_ARM_SCRIPT } from "./hero/introShared";
 
 // Confetti around the envelope on the sealed screen (kept to the edges).
 const SEAL_CONFETTI = [

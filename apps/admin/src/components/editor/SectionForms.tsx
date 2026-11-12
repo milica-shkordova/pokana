@@ -1,6 +1,11 @@
 import {
+  formatDuration,
+  mapsLink,
+  moveItem,
   newId,
+  RSVP_MODE_LABELS,
   utcToZoned,
+  venueMapsQuery,
   zonedToUtc,
   type InfoItem,
   type Person,
@@ -10,17 +15,8 @@ import {
 } from "@pokanito/shared";
 import { Button, Checkbox, Field, FormGrid, Input, IconMusic, IconPlus } from "@pokanito/ui";
 import { UploadButton } from "../MediaPicker";
-import { formatDuration } from "@/lib/format";
-import { EditorCard, LocalizedField, LocalizedInline, RowControls, move } from "./fields";
+import { EditorCard, LocalizedField, LocalizedInline, RowControls } from "./fields";
 import { setContent, type FormProps } from "./context";
-
-const RSVP_MODE_LABELS: Record<string, string> = {
-  "guests-with-menu": "One row per guest, with a menu choice",
-  "guest-count": "Name + number of guests",
-  kids: "Child's name, number of children and adults, allergies",
-  "plus-one": "Name + plus one",
-  registration: "Name, company, work email, staying for dinner",
-};
 
 export function SectionForm(props: FormProps & { section: SectionKind; label: string }) {
   switch (props.section) {
@@ -123,7 +119,7 @@ function ProgramForm({ event, languages, updateContent, label }: P) {
             />
             <LocalizedInline label={`Description, item ${i + 1}`} placeholder="Description" value={item.title} languages={languages} onChange={(v) => patch(i, { title: v })} />
             <LocalizedInline label={`Place, item ${i + 1}`} placeholder="Place (optional)" value={item.place} languages={languages} onChange={(v) => patch(i, { place: v })} />
-            <RowControls index={i} count={p.items.length} label={`item ${i + 1}`} onMove={(a, b) => set(move(p.items, a, b))} onRemove={() => set(p.items.filter((_, j) => j !== i))} />
+            <RowControls index={i} count={p.items.length} label={`item ${i + 1}`} onMove={(a, b) => set(moveItem(p.items, a, b))} onRemove={() => set(p.items.filter((_, j) => j !== i))} />
           </div>
         ))}
       </div>
@@ -151,7 +147,7 @@ function InfoForm({ event, languages, updateContent, label }: P) {
         <div className="admin-subcard" key={item.id}>
           <div className="admin-subcard__head">
             <strong>Card {i + 1}</strong>
-            <RowControls index={i} count={info.items.length} label={`card ${i + 1}`} onMove={(a, b) => set(move(info.items, a, b))} onRemove={() => set(info.items.filter((_, j) => j !== i))} />
+            <RowControls index={i} count={info.items.length} label={`card ${i + 1}`} onMove={(a, b) => set(moveItem(info.items, a, b))} onRemove={() => set(info.items.filter((_, j) => j !== i))} />
           </div>
           <FormGrid>
             <LocalizedField label="Label" placeholder="DRESS CODE" value={item.label} languages={languages} onChange={(v) => patch(i, { label: v })} />
@@ -197,7 +193,7 @@ function PeopleForm({ event, languages, updateContent, label, mediaById, pick }:
               <LocalizedField label="Role" value={person.role} languages={languages} onChange={(v) => patch(i, { role: v })} />
             </FormGrid>
             <div className="ui-stack--8">
-              <RowControls index={i} count={people.items.length} label={`person ${i + 1}`} onMove={(a, b) => set(move(people.items, a, b))} onRemove={() => set(people.items.filter((_, j) => j !== i))} />
+              <RowControls index={i} count={people.items.length} label={`person ${i + 1}`} onMove={(a, b) => set(moveItem(people.items, a, b))} onRemove={() => set(people.items.filter((_, j) => j !== i))} />
               {photo && (
                 <Button size="sm" variant="ghost" onClick={() => patch(i, { photo: null })}>
                   Remove photo
@@ -257,7 +253,7 @@ function GalleryForm({ event, languages, updateContent, label, mediaById, pick, 
               <div className="admin-photo__frame" style={{ aspectRatio: "1" }}>
                 {m ? <img src={m.thumbUrl} alt={m.alt} /> : <span className="ui-muted">Missing file</span>}
               </div>
-              <RowControls index={i} count={g.photos.length} label={`photo ${i + 1}`} onMove={(a, b) => set(move(g.photos, a, b))} onRemove={() => set(g.photos.filter((_, j) => j !== i))} />
+              <RowControls index={i} count={g.photos.length} label={`photo ${i + 1}`} onMove={(a, b) => set(moveItem(g.photos, a, b))} onRemove={() => set(g.photos.filter((_, j) => j !== i))} />
             </figure>
           );
         })}
@@ -325,7 +321,7 @@ function LocationForm({ event, languages, updateContent, label }: P) {
         <div className="admin-subcard" key={v.id}>
           <div className="admin-subcard__head">
             <strong>Venue {i + 1}</strong>
-            <RowControls index={i} count={loc.venues.length} label={`venue ${i + 1}`} onMove={(a, b) => set(move(loc.venues, a, b))} onRemove={() => set(loc.venues.filter((_, j) => j !== i))} />
+            <RowControls index={i} count={loc.venues.length} label={`venue ${i + 1}`} onMove={(a, b) => set(moveItem(loc.venues, a, b))} onRemove={() => set(loc.venues.filter((_, j) => j !== i))} />
           </div>
           <FormGrid>
             <LocalizedField label="Name" value={v.name} languages={languages} onChange={(x) => patch(i, { name: x })} />
@@ -341,7 +337,7 @@ function LocationForm({ event, languages, updateContent, label }: P) {
           {(v.mapsQuery || v.name.mk || v.name.en) && (
             <a
               className="admin-link-strong"
-              href={`https://maps.google.com/?q=${encodeURIComponent(v.mapsQuery || [v.name.mk ?? v.name.en, v.address.mk ?? v.address.en].filter(Boolean).join(", "))}`}
+              href={mapsLink(venueMapsQuery(v, (x) => x.mk ?? x.en ?? ""))}
               target="_blank"
               rel="noreferrer"
             >

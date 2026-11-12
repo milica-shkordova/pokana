@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
-import { formatEventDate, type PublicEventResponse } from "@pokanito/shared";
+import { eventMetaOf, formatEventDate, LANDING_OG_SLUG, publicApiPaths, type PublicEventResponse } from "@pokanito/shared";
 import { colors } from "@pokanito/ui/tokens";
+import { API_URL } from "@/lib/api";
 import { OG_LOGO, OG_LOGO_SIZE } from "@/lib/og-logo";
 
 // Link preview image for WhatsApp / Viber / Messenger: the event's names and
@@ -9,8 +10,6 @@ import { OG_LOGO, OG_LOGO_SIZE } from "@/lib/og-logo";
 // landing page, which uses /api/og/_) get a generic Pokanito card.
 
 export const config = { runtime: "edge" };
-
-const API_URL = process.env.API_URL ?? "http://localhost:4000";
 
 /** Loads a Google Font subset (TTF) containing just `text` — needed for Cyrillic names. */
 async function loadFont(
@@ -36,26 +35,19 @@ async function loadFont(
 }
 
 async function getEvent(slug: string) {
-  if (!slug || slug === "_") return null;
+  if (!slug || slug === LANDING_OG_SLUG) return null;
   try {
-    const res = await fetch(
-      `${API_URL}/api/public/events/${encodeURIComponent(slug)}`,
-      { signal: AbortSignal.timeout(4000) },
-    );
+    const res = await fetch(`${API_URL}${publicApiPaths.event(slug)}`, {
+      signal: AbortSignal.timeout(4000),
+    });
     if (!res.ok) return null;
     const body = (await res.json()) as PublicEventResponse;
-    if (body.state === "live") {
-      return {
-        name: body.event.name,
-        date: body.event.eventDate,
-        locale: body.event.languages[0] ?? "mk",
-      };
-    }
     if (body.state === "unpublished") return null; // don't leak drafts
+    const meta = eventMetaOf(body);
     return {
-      name: body.meta.name,
-      date: body.meta.eventDate,
-      locale: body.meta.languages[0] ?? "mk",
+      name: meta.name,
+      date: meta.eventDate,
+      locale: meta.languages[0] ?? "mk",
     };
   } catch {
     return null;

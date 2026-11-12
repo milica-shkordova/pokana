@@ -1,6 +1,7 @@
 import type { Event, Media, Prisma } from "@prisma/client";
 import {
   EVENT_TIMEZONE,
+  LOCALES,
   utcToZoned,
   zonedToUtc,
   type EventContent,
@@ -239,7 +240,7 @@ export function newEventData(def: TemplateDefinition, settings: Settings, eventD
     content.rsvp.menuOptions = [...settings.defaultMenuOptions];
   }
   const languages: Locale[] =
-    settings.defaultLanguage === "both" ? ["mk", "en"] : [settings.defaultLanguage as Locale];
+    settings.defaultLanguage === "both" ? [...LOCALES] : [settings.defaultLanguage as Locale];
   const deadline = new Date(eventDate.getTime() - settings.defaultRsvpDeadlineDays * 86_400_000);
   return {
     templateId: def.id,

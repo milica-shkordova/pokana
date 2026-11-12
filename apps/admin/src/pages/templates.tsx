@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import {
   CATEGORY_LABELS,
+  eventUrl,
   TEMPLATE_CATEGORIES,
   type EventDetail,
   type SectionState,
@@ -376,7 +377,7 @@ function TemplatePanel({
           Edit defaults
         </Button>
         {t.demoSlug ? (
-          <a className={buttonClassName({ variant: "secondary" })} href={`${WEB_URL}/${t.demoSlug}`} target="_blank" rel="noreferrer">
+          <a className={buttonClassName({ variant: "secondary" })} href={eventUrl(WEB_URL, t.demoSlug)} target="_blank" rel="noreferrer">
             Open demo ↗
           </a>
         ) : (

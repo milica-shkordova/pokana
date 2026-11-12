@@ -1,19 +1,15 @@
 import type { CSSProperties, ReactNode } from "react";
-import { LOCALES, type Venue } from "@pokanito/shared";
+import { LOCALES, mapsEmbed, mapsLink, venueMapsQuery, type Venue } from "@pokanito/shared";
 import { useInvitation } from "./runtime";
 import { useMusic } from "./hooks";
 
 // Headless-ish building blocks. They carry behaviour and accessibility;
 // templates pass classNames/styles for the look.
 
-export const mapsLink = (query: string) => `https://maps.google.com/?q=${encodeURIComponent(query)}`;
-export const mapsEmbed = (query: string) =>
-  `https://maps.google.com/maps?q=${encodeURIComponent(query)}&output=embed&z=16`;
-
 /** The venue's maps query, falling back to "name, address". */
 export function useVenueQuery() {
   const { t } = useInvitation();
-  return (v: Venue) => v.mapsQuery || [t(v.name), t(v.address)].filter(Boolean).join(", ");
+  return (v: Venue) => venueMapsQuery(v, t);
 }
 
 interface PhotoProps {

@@ -1,4 +1,4 @@
-import { ApiError, createApiClient } from "@pokanito/shared";
+import { ApiError, createApiClient, envUrl, stripProtocol } from "@pokanito/shared";
 import { useResource as useResourceBase } from "@pokanito/ui";
 
 const base = createApiClient("");
@@ -32,8 +32,9 @@ export const api = {
   upload: <T>(path: string, form: FormData) => guard(base.request<T>(path, { method: "POST", body: form })),
 };
 
-export const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL ?? "http://localhost:3000";
-export const WEB_HOST = WEB_URL.replace(/^https?:\/\//, "");
+/** The public site (invitation links are eventUrl(WEB_URL, slug)). */
+export const WEB_URL = envUrl(process.env.NEXT_PUBLIC_WEB_URL, "http://localhost:3000");
+export const WEB_HOST = stripProtocol(WEB_URL);
 
 /** Tiny fetch-on-mount hook for an admin API path. Pass `null` to skip (e.g. until the router is ready). */
 export function useResource<T>(path: string | null) {
