@@ -47,3 +47,13 @@ export function moveItem<T>(list: T[], from: number, to: number): T[] {
   next.splice(to, 0, item);
   return next;
 }
+
+/** "Meat, Fish, Vegetarian" → ["Meat", "Fish", "Vegetarian"] (trimmed, empties dropped). */
+export const parseCommaList = (text: string) =>
+  text
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+/** CSS `object-position` that keeps a photo's focal point (0–1 on each axis) in frame. */
+export const focalPosition = (m: { focalX: number; focalY: number }) => `${m.focalX * 100}% ${m.focalY * 100}%`;

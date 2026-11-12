@@ -1,6 +1,7 @@
 import gsap from "gsap";
+import { clamp } from "@pokanito/shared";
 import { ITEM, MOUNT_RANGE } from "./constants";
-import { clamp, focusOf, GAP, PHONE_W, STAGE_H, trackGeometry } from "./geometry";
+import { focusOf, GAP, PHONE_W, STAGE_H, trackGeometry } from "./geometry";
 import type { GalleryEnv } from "./types";
 
 /**

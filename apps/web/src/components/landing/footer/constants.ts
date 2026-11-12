@@ -1,7 +1,7 @@
 import { CONFETTI_COLORS } from "@pokanito/ui";
-import { rnd } from "@/lib/random";
+import { seededRandom as rnd } from "@pokanito/shared";
 
-// Deterministic "random" (lib/random) so server and client render the same confetti.
+// Deterministic "random" (seededRandom, @pokanito/shared) so server and client render the same confetti.
 export const RAIN = Array.from({ length: 30 }, (_, i) => ({
   left: `${(rnd(i, 8) * 100).toFixed(1)}%`,
   strip: rnd(i, 7) > 0.5,

@@ -1,4 +1,4 @@
-import { RSVP_MODE_LABELS, utcToZoned, zonedToUtc } from "@pokanito/shared";
+import { parseCommaList, RSVP_MODE_LABELS, utcToZoned, zonedToUtc } from "@pokanito/shared";
 import { Checkbox, Field, FormGrid, Input } from "@pokanito/ui";
 import { EditorCard, LocalizedField } from "./fields";
 import { setContent, type SectionFormProps } from "./context";
@@ -22,10 +22,7 @@ export default function RsvpForm({ event, languages, updateContent, update, labe
               onBlur={(e) =>
                 set({
                   ...r,
-                  menuOptions: e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter(Boolean),
+                  menuOptions: parseCommaList(e.target.value),
                 })
               }
             />

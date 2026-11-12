@@ -1,4 +1,5 @@
 import { useEffect, useState, type RefObject } from "react";
+import { countdownParts } from "@pokanito/shared";
 import type { CountdownParts } from "./types";
 
 /**
@@ -7,11 +8,10 @@ import type { CountdownParts } from "./types";
  * screen.
  */
 export function useCountdown(date: string, ref: RefObject<HTMLElement>): CountdownParts | null {
-  const [left, setLeft] = useState<number | null>(null);
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
-    const target = new Date(date).getTime();
-    const tick = () => setLeft(Math.max(0, target - Date.now()));
+    const tick = () => setNow(Date.now());
     tick();
     let id: number | undefined;
     const start = () => {
@@ -29,8 +29,7 @@ export function useCountdown(date: string, ref: RefObject<HTMLElement>): Countdo
     };
   }, [date, ref]);
 
-  const s = left === null ? null : Math.floor(left / 1000);
-  return s === null
-    ? null
-    : { days: Math.floor(s / 86400), hours: Math.floor((s % 86400) / 3600), min: Math.floor((s % 3600) / 60), sec: s % 60 };
+  if (now === null) return null;
+  const p = countdownParts(date, now);
+  return { days: p.days, hours: p.hours, min: p.minutes, sec: p.seconds };
 }

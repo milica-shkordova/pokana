@@ -1,13 +1,6 @@
 import type { MediaItem, PublicSettings, Settings } from "@pokanito/shared";
 import { RSVP_DEADLINE_DAYS } from "./constants";
 
-/** "Meat, Fish, Vegetarian" → ["Meat", "Fish", "Vegetarian"]. */
-export const parseMenuText = (text: string) =>
-  text
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-
 export const menuTextOf = (s: Settings) => s.defaultMenuOptions.join(", ");
 
 /**

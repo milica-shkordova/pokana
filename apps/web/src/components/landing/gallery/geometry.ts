@@ -2,6 +2,8 @@
 // turns scroll progress into phone positions. Values from AnimTemplates.dc.html
 // (designed on a 1440px-wide frame). All lengths are in unscaled stage px.
 
+import { clamp } from "@pokanito/shared";
+
 export const PHONE_W = 260;
 export const PHONE_H = 530;
 /** Centre-to-centre distance between phones. */
@@ -40,8 +42,6 @@ export function trackGeometry(stageWidth: number, count: number): TrackGeometry 
   const lead = Math.min(LEAD, span / 2, maxLead);
   return { first: stageWidth / 2 - lead, travel: span - lead };
 }
-
-export const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 
 /** Centre focus for a phone `d` gaps away from the stage centre (+ = right). */
 export function focusOf(d: number, hover: number) {

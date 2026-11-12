@@ -1,5 +1,7 @@
+import { clamp } from "@pokanito/shared";
+
 export function Progress({ value, label }: { value: number; label: string }) {
-  const pct = Math.max(0, Math.min(100, value));
+  const pct = clamp(value, 0, 100);
   return (
     <span
       className="ui-progress"

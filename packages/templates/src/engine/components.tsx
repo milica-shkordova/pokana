@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { LOCALES, mapsEmbed, mapsLink, venueMapsQuery, type Venue } from "@pokanito/shared";
+import { focalPosition, LOCALES, mapsEmbed, mapsLink, venueMapsQuery, type Venue } from "@pokanito/shared";
 import { useInvitation } from "./runtime";
 import { useMusic, type CountdownUnit } from "./hooks";
 
@@ -59,7 +59,7 @@ export function Photo({
       alt={m.alt}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
-      style={{ objectFit: "cover", objectPosition: `${m.focalX * 100}% ${m.focalY * 100}%`, ...style }}
+      style={{ objectFit: "cover", objectPosition: focalPosition(m), ...style }}
     />
   );
 }

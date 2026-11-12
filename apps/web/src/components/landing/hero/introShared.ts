@@ -1,5 +1,5 @@
 import { CONFETTI_VARS, MEDIA } from "@pokanito/ui";
-import { rnd } from "@/lib/random";
+import { seededRandom as rnd } from "@pokanito/shared";
 
 /**
  * Play the intro only once per browser tab? Off: it plays on every visit

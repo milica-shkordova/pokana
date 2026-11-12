@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { publicApiPaths, type MediaItem, type PublicSettings, type Settings } from "@pokanito/shared";
+import { parseCommaList, publicApiPaths, type MediaItem, type PublicSettings, type Settings } from "@pokanito/shared";
 import { useToast } from "@pokanito/ui";
 import { api, useResource } from "@/lib/api";
 import type { SetSetting } from "./types";
-import { menuTextOf, parseMenuText, resolveLogoSrc } from "./utils";
+import { menuTextOf, resolveLogoSrc } from "./utils";
 
 /** The settings form: local copy of the stored settings, dirty check, logo preview and save. */
 export function useSettingsForm() {
@@ -46,7 +46,7 @@ export function useSettingsForm() {
     try {
       const body: Settings = {
         ...form,
-        defaultMenuOptions: parseMenuText(menuText),
+        defaultMenuOptions: parseCommaList(menuText),
       };
       remote.mutate(await api.put<Settings>("/api/admin/settings", body));
       toast("Settings saved");

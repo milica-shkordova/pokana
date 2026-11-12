@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { EventSummary, TemplateCategory } from "@pokanito/shared";
+import { useDebouncedValue } from "@pokanito/ui";
 import { useResource } from "@/lib/api";
 import { SEARCH_DEBOUNCE_MS, TABS } from "./constants";
 import type { Sort, Tab } from "./types";
@@ -11,12 +12,7 @@ export function useEventsList() {
   const [category, setCategory] = useState<TemplateCategory | "">("");
   const [sort, setSort] = useState<Sort>("eventDate");
   const [query, setQuery] = useState("");
-  const [debounced, setDebounced] = useState("");
-
-  useEffect(() => {
-    const t = setTimeout(() => setDebounced(query.trim()), SEARCH_DEBOUNCE_MS);
-    return () => clearTimeout(t);
-  }, [query]);
+  const debounced = useDebouncedValue(query, SEARCH_DEBOUNCE_MS).trim();
 
   // Everything (archived too) in one request: the tabs filter here, so each
   // tab can show its count.

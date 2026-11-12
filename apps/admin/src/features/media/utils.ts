@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { formatBytes, formatDuration, type MediaItem } from "@pokanito/shared";
+import { clamp, focalPosition, formatBytes, formatDuration, type MediaItem } from "@pokanito/shared";
 import type { MediaGroup } from "./types";
 
 /** File name as shown in the admin (seeded files carry a "seed:" prefix). */
@@ -7,11 +7,11 @@ export const fileLabel = (m: Pick<MediaItem, "fileName">) => m.fileName.replace(
 
 /** `object-position` that keeps a photo's focal point in frame. */
 export const focalStyle = (m: Pick<MediaItem, "focalX" | "focalY">): CSSProperties => ({
-  objectPosition: `${m.focalX * 100}% ${m.focalY * 100}%`,
+  objectPosition: focalPosition(m),
 });
 
 /** Rounds a focal coordinate into 0–1 (3 decimals). */
-export const clampFocal = (v: number) => Math.round(Math.min(1, Math.max(0, v)) * 1000) / 1000;
+export const clampFocal = (v: number) => Math.round(clamp(v, 0, 1) * 1000) / 1000;
 
 /** Format, size and (for photos) dimensions / phone size of a file. */
 export const mediaMeta = (item: MediaItem) =>

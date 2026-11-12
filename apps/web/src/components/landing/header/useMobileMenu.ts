@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { lockScroll } from "../scrollLock";
+import { lockScroll } from "@pokanito/ui";
 import { MENU_CLOSE_MS, MENU_ID, MENU_OPEN_CLASS } from "./constants";
 
 /**

@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { lockScroll } from "../scrollLock";
+import { lockScroll } from "@pokanito/ui";
 import { DESKTOP_SECONDS, MOBILE_SECONDS, OPENING_CLASS, SEALED_CLASS } from "./constants";
 import type { Els } from "./introElements";
 
