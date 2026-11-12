@@ -94,7 +94,7 @@ export default function SectionNav({ event, def, sections, pane, onPane, onSecti
         {adding ? (
           <div className="admin-secnav__add">
             {disabled.length === 0 ? (
-              <span className="admin-muted">Every section is already on.</span>
+              <span className="ui-muted">Every section is already on.</span>
             ) : (
               disabled.map((s) => (
                 <button
@@ -111,7 +111,7 @@ export default function SectionNav({ event, def, sections, pane, onPane, onSecti
                 </button>
               ))
             )}
-            <button type="button" className="admin-secnav__add-item admin-muted" onClick={() => setAdding(false)}>
+            <button type="button" className="admin-secnav__add-item ui-muted" onClick={() => setAdding(false)}>
               Cancel
             </button>
           </div>

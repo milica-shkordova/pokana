@@ -69,7 +69,7 @@ export default function TemplatesPage() {
     >
       <LoadState loading={loading && !data} error={error} onRetry={reload}>
         <div className="admin-split">
-          <div className="admin-split__main admin-stack">
+          <div className="admin-split__main ui-stack">
             <Tabs variant="chips" items={cats} value={cat} onChange={setCat} aria-label="Category" />
             <div className="admin-template-grid admin-template-grid--library">
               {items.map((t) => {
@@ -88,7 +88,7 @@ export default function TemplatesPage() {
                     <span className="admin-template-card__body">
                       <CategoryLabel>{CATEGORY_LABELS[t.category].one}</CategoryLabel>
                       <span className="admin-template-card__name">{t.name}</span>
-                      <span className="admin-muted">{t.isVariant ? `${usageLabel(t)} · variant of ${getDefinition(t.layoutId)?.name ?? t.layoutId}` : usageLabel(t)}</span>
+                      <span className="ui-muted">{t.isVariant ? `${usageLabel(t)} · variant of ${getDefinition(t.layoutId)?.name ?? t.layoutId}` : usageLabel(t)}</span>
                     </span>
                   </button>
                 );
@@ -210,8 +210,8 @@ function TemplatePanel({
   const editing = def?.themeOptions.find((o) => o.key === editingColour);
 
   return (
-    <Card className="admin-split__side admin-stack admin-template-panel" aria-label="Template details">
-      <div className="admin-stack-sm">
+    <Card className="admin-split__side ui-stack admin-template-panel" aria-label="Template details">
+      <div className="ui-stack--8">
         <CategoryLabel>{CATEGORY_LABELS[t.category].one}</CategoryLabel>
         <input
           className="admin-detail-title admin-inline-edit"
@@ -220,14 +220,14 @@ function TemplatePanel({
           onChange={(e) => setName(e.target.value)}
           onBlur={() => name.trim() && name !== t.name && void patch({ name: name.trim() }, "Name saved")}
         />
-        <span className="admin-muted">
+        <span className="ui-muted">
           {usageLabel(t)}
           {t.isVariant && ` · variant of the ${def?.name ?? t.layoutId} layout`}
         </span>
       </div>
 
-      <div className="admin-stack-sm">
-        <span className="admin-label">Status on landing page</span>
+      <div className="ui-stack--8">
+        <span className="ui-label">Status on landing page</span>
         <Segmented<TemplateStatus>
           label="Status"
           value={t.status === "draft" ? "hidden" : t.status}
@@ -238,7 +238,7 @@ function TemplatePanel({
             { value: "hidden", label: "Hidden" },
           ]}
         />
-        <span className="admin-muted">Live shows “View live demo”. Coming soon shows “Notify me”. Hidden removes the card.</span>
+        <span className="ui-muted">Live shows “View live demo”. Coming soon shows “Notify me”. Hidden removes the card.</span>
         {t.status === "live" && !t.demoSlug && <Alert tone="warning">No published demo, so the card won&apos;t have a working “View live demo”.</Alert>}
         {t.status === "live" && !t.implemented && <Alert tone="warning">This template isn&apos;t built yet.</Alert>}
       </div>
@@ -259,8 +259,8 @@ function TemplatePanel({
         </Field>
       )}
 
-      <div className="admin-stack-sm">
-        <span className="admin-label">Card</span>
+      <div className="ui-stack--8">
+        <span className="ui-label">Card</span>
         <div className="admin-thumb-edit">
           <Input aria-label="Card word" value={thumbLabel} maxLength={24} onChange={(e) => setThumbLabel(e.target.value)} onBlur={() => thumbLabel !== t.thumb.label && void patch({ thumbLabel: thumbLabel.trim() || null })} />
           <label className="admin-colour" title="Card background">
@@ -272,7 +272,7 @@ function TemplatePanel({
             <span style={{ background: style.ink }} />
           </label>
           {(t.thumb.bg || t.thumb.ink) && (
-            <button type="button" className="admin-linkbtn" onClick={() => void patch({ thumbBg: null, thumbInk: null })}>
+            <button type="button" className="ui-link-button" onClick={() => void patch({ thumbBg: null, thumbInk: null })}>
               Reset
             </button>
           )}
@@ -281,8 +281,8 @@ function TemplatePanel({
 
       {def ? (
         <>
-          <div className="admin-stack-sm">
-            <span className="admin-label">Default palette</span>
+          <div className="ui-stack--8">
+            <span className="ui-label">Default palette</span>
             <div className="ui-swatches">
               {def.themeOptions.map((o) => (
                 <button
@@ -296,11 +296,11 @@ function TemplatePanel({
                   onClick={() => setEditingColour(editingColour === o.key ? null : o.key)}
                 />
               ))}
-              {!def.themeOptions.length && <span className="admin-muted">This layout has no colour options.</span>}
+              {!def.themeOptions.length && <span className="ui-muted">This layout has no colour options.</span>}
             </div>
             {editing && (
               <div className="admin-palette-edit">
-                <span className="admin-muted">{editing.label}</span>
+                <span className="ui-muted">{editing.label}</span>
                 <div className="ui-swatches">
                   {[...new Set([editing.default, ...editing.options])].map((c) => (
                     <button
@@ -321,16 +321,16 @@ function TemplatePanel({
             )}
           </div>
 
-          <div className="admin-stack-sm">
-            <span className="admin-label">Sections included</span>
-            <div className="admin-chips">
+          <div className="ui-stack--8">
+            <span className="ui-label">Sections included</span>
+            <div className="ui-chips">
               {sections.map((s) => {
                 const sd = def.sections.find((x) => x.id === s.id);
                 return (
                   <button
                     key={s.id}
                     type="button"
-                    className={cx("admin-chip", "admin-chip--toggle", !s.enabled && "admin-chip--off")}
+                    className={cx("ui-chip", "ui-chip--toggle", !s.enabled && "ui-chip--off")}
                     aria-pressed={s.enabled}
                     disabled={sd?.required}
                     title={sd?.required ? "Always included" : s.enabled ? "Click to leave out of new events" : "Click to include in new events"}
@@ -341,13 +341,13 @@ function TemplatePanel({
                 );
               })}
             </div>
-            <span className="admin-muted">New events start with these on. Order and text are set in Edit defaults.</span>
+            <span className="ui-muted">New events start with these on. Order and text are set in Edit defaults.</span>
           </div>
 
-          <div className="admin-stack-sm">
-            <span className="admin-label">Photo slots</span>
+          <div className="ui-stack--8">
+            <span className="ui-label">Photo slots</span>
             <span>{def.photoSlots.map((p) => `${p.label} (${p.aspect})`).join(" · ")}</span>
-            <span className="admin-muted">Part of the {def.name} layout. Default photos are set in Edit defaults.</span>
+            <span className="ui-muted">Part of the {def.name} layout. Default photos are set in Edit defaults.</span>
           </div>
         </>
       ) : (
@@ -490,8 +490,8 @@ function NewTemplateDialog({
         </>
       }
     >
-      <form id="new-template" className="admin-stack" onSubmit={submit}>
-        <p className="admin-muted">
+      <form id="new-template" className="ui-stack" onSubmit={submit}>
+        <p className="ui-muted">
           A new template reuses an existing layout with its own name, palette, sections and default text. A brand-new layout still needs a developer.
         </p>
         {error && <Alert tone="danger">{error}</Alert>}

@@ -115,7 +115,7 @@ export default function EventDialogs({ action, onClose, onUnpublish, onArchive, 
             <input type="checkbox" checked={keepOnline} onChange={(e) => setKeepOnline(e.target.checked)} />
             <span>
               <strong>Keep the invitation link online</strong>
-              <span className="admin-muted">Guests can still open it to look back at the photos. Only hides it from your lists.</span>
+              <span className="ui-muted">Guests can still open it to look back at the photos. Only hides it from your lists.</span>
             </span>
           </label>
         </div>

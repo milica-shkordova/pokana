@@ -1,29 +1,31 @@
+@use "./tools" as ui;
+
 .ui-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--ui-space-6);
   min-width: 0;
 
   &__label {
     font-weight: 600;
-    font-size: 13px;
+    font-size: var(--ui-text-13);
     color: var(--ui-color-ink);
   }
 
   &__hint {
     color: var(--ui-color-muted);
-    font-size: 12px;
+    font-size: var(--ui-text-12);
   }
 
   &__error {
     color: var(--ui-color-danger);
-    font-size: 12px;
+    font-size: var(--ui-text-12);
     font-weight: 600;
   }
 
   &__ok {
     color: var(--ui-color-success);
-    font-size: 12px;
+    font-size: var(--ui-text-12);
     font-weight: 600;
   }
 }
@@ -36,11 +38,11 @@
   background: var(--ui-color-surface);
   border: 1px solid var(--ui-color-border-input);
   border-radius: var(--ui-radius-input);
-  padding: 0 12px;
+  padding: 0 var(--ui-space-12);
   color: var(--ui-color-ink);
   font-family: var(--ui-font-body);
-  font-size: 14px;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-size: var(--ui-text-14);
+  transition: border-color var(--ui-duration-fast) ease, box-shadow var(--ui-duration-fast) ease;
 
   &::placeholder {
     color: var(--ui-color-faint);
@@ -49,7 +51,7 @@
   &:focus {
     outline: none;
     border-color: var(--ui-color-terracotta);
-    box-shadow: 0 0 0 3px rgba(181, 80, 47, 0.15);
+    box-shadow: 0 0 0 3px rgba(var(--ui-color-terracotta-rgb), 0.15);
   }
 
   &[aria-invalid="true"] {
@@ -64,14 +66,14 @@
 }
 
 .ui-textarea {
-  padding: 12px;
+  padding: var(--ui-space-12);
   resize: vertical;
   min-height: 96px;
   line-height: 1.6;
 
   &--code {
-    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-    font-size: 13px;
+    font-family: var(--ui-font-mono);
+    font-size: var(--ui-text-13);
     min-height: 420px;
     white-space: pre;
   }
@@ -89,13 +91,13 @@
 
   &:focus-within {
     border-color: var(--ui-color-terracotta);
-    box-shadow: 0 0 0 3px rgba(181, 80, 47, 0.15);
+    box-shadow: 0 0 0 3px rgba(var(--ui-color-terracotta-rgb), 0.15);
   }
 
   &__addon {
     display: flex;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 var(--ui-space-12);
     color: var(--ui-color-muted);
     white-space: nowrap;
 
@@ -120,9 +122,9 @@
 .ui-checkbox {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--ui-space-10);
   min-height: var(--ui-touch);
-  font-size: 14px;
+  font-size: var(--ui-text-14);
   cursor: pointer;
 
   input {
@@ -135,7 +137,7 @@
 .ui-form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  gap: var(--ui-space-16);
 
   > .ui-field--full {
     grid-column: 1 / -1;
@@ -147,12 +149,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: var(--ui-space-16);
 
   &__text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--ui-space-2);
   }
 
   &__label {
@@ -160,7 +162,7 @@
   }
 
   &__hint {
-    font-size: 12px;
+    font-size: var(--ui-text-12);
     color: var(--ui-color-muted);
   }
 }
@@ -176,16 +178,16 @@
   display: flex;
   justify-content: flex-start;
   background: var(--ui-color-border-dashed);
-  transition: background 0.15s ease;
+  transition: background var(--ui-duration-fast) ease;
 
   &::after {
     content: "";
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: #fff;
+    background: var(--ui-color-white);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    transition: transform 0.15s ease;
+    transition: transform var(--ui-duration-fast) ease;
   }
 
   &[aria-checked="true"] {
@@ -207,9 +209,9 @@
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
-  gap: 4px;
+  gap: var(--ui-space-4);
   background: var(--ui-color-selected);
-  padding: 4px;
+  padding: var(--ui-space-4);
   border-radius: var(--ui-radius-md);
 
   &--inline {
@@ -221,25 +223,25 @@
 
   &__option {
     min-height: 38px;
-    padding: 0 12px;
+    padding: 0 var(--ui-space-12);
     border: 0;
     border-radius: 9px;
     background: transparent;
     color: var(--ui-color-muted);
     font: inherit;
-    font-size: 13px;
+    font-size: var(--ui-text-13);
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: var(--ui-space-6);
 
     &[aria-checked="true"],
     &[aria-pressed="true"] {
       background: var(--ui-color-surface);
       color: var(--ui-color-ink);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      box-shadow: var(--ui-shadow-thumb);
     }
   }
 
@@ -252,7 +254,7 @@
 
   &__option {
     position: relative;
-    transition: color 0.2s ease;
+    transition: color var(--ui-duration-base) ease;
 
     &[aria-checked="true"] {
       background: transparent;
@@ -267,14 +269,14 @@
     z-index: -1;
     border-radius: 9px;
     background: var(--ui-color-surface);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--ui-shadow-thumb);
     pointer-events: none;
     transition:
       transform 0.32s var(--ui-ease-out),
       width 0.32s var(--ui-ease-out),
       height 0.32s var(--ui-ease-out);
 
-    @media (prefers-reduced-motion: reduce) {
+    @include ui.reduced-motion {
       transition: none;
     }
   }
@@ -284,7 +286,7 @@
 .ui-swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--ui-space-8);
 }
 
 .ui-swatch {
@@ -324,11 +326,11 @@
     border-color: var(--ui-color-cocoa-input);
     color: var(--ui-color-cocoa-text);
     min-height: 46px;
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: var(--ui-space-14);
+    padding-right: var(--ui-space-14);
 
     &::placeholder {
-      color: #a8928a;
+      color: var(--ui-color-cocoa-placeholder);
     }
 
     &:focus {
@@ -338,7 +340,7 @@
   }
 
   .ui-textarea {
-    padding-top: 12px;
+    padding-top: var(--ui-space-12);
   }
 
   .ui-select option,

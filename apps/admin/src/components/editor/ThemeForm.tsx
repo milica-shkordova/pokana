@@ -6,7 +6,7 @@ export default function ThemeForm({ event, def, update }: FormProps) {
   if (!def.themeOptions.length) {
     return (
       <EditorCard title="Theme">
-        <p className="admin-muted">This template has a fixed palette.</p>
+        <p className="ui-muted">This template has a fixed palette.</p>
       </EditorCard>
     );
   }
@@ -16,14 +16,14 @@ export default function ThemeForm({ event, def, update }: FormProps) {
       {def.themeOptions.map((o) => {
         const value = event.theme[o.key] ?? o.default;
         return (
-          <div key={o.key} className="admin-stack-sm">
+          <div key={o.key} className="ui-stack--8">
             <span className="ui-field__label">{o.label}</span>
-            <div className="admin-row admin-row--wrap">
+            <div className="ui-row ui-row--wrap">
               <Swatches options={o.options} value={value} onChange={(v) => set(o.key, v)} label={o.label} size="lg" />
               <label className="admin-color">
                 <span className="ui-sr-only">Custom {o.label} colour</span>
                 <input type="color" value={value} onChange={(e) => set(o.key, e.target.value)} />
-                <span className="admin-mono">{value}</span>
+                <span className="ui-mono">{value}</span>
               </label>
               {value.toLowerCase() !== o.default.toLowerCase() && (
                 <Button size="sm" variant="ghost" onClick={() => set(o.key, o.default)}>

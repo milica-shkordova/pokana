@@ -1,3 +1,5 @@
+@use "./tools" as ui;
+
 .ui-container {
   max-width: var(--ui-container-max);
   margin: 0 auto;
@@ -5,7 +7,7 @@
   width: 100%;
   box-sizing: content-box;
 
-  @media (max-width: 1128px) {
+  @include ui.down(container) {
     box-sizing: border-box;
     max-width: 100%;
   }
@@ -30,10 +32,14 @@
   &--white {
     background: var(--ui-color-surface);
   }
+  &--tall {
+    padding-top: 104px;
+    padding-bottom: 104px;
+  }
 
-  @media (max-width: 720px) {
-    padding-top: 64px;
-    padding-bottom: 64px;
+  @include ui.down(mobile) {
+    padding-top: var(--ui-space-64);
+    padding-bottom: var(--ui-space-64);
   }
 }
 
@@ -41,7 +47,7 @@
 
 .ui-eyebrow {
   font-family: var(--ui-font-body);
-  font-size: 13px;
+  font-size: var(--ui-text-13);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -49,7 +55,7 @@
 }
 
 .ui-kicker {
-  font-size: 12px;
+  font-size: var(--ui-text-12);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -57,7 +63,7 @@
 }
 
 .ui-category {
-  font-size: 11px;
+  font-size: var(--ui-text-11);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -81,15 +87,15 @@
     font-size: clamp(32px, 4vw, 48px);
   }
   &--page {
-    font-size: 40px;
+    font-size: var(--ui-text-40);
     font-weight: 600;
   }
   &--md {
-    font-size: 28px;
+    font-size: var(--ui-text-28);
     font-weight: 600;
   }
   &--sm {
-    font-size: 24px;
+    font-size: var(--ui-text-24);
     font-weight: 600;
   }
 }
@@ -97,7 +103,7 @@
 .ui-lede {
   color: var(--ui-color-text-secondary);
   line-height: 1.7;
-  font-size: 15px;
+  font-size: var(--ui-text-15);
   max-width: 520px;
 }
 
@@ -108,7 +114,7 @@
 .ui-section-heading {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--ui-space-10);
 
   &--center {
     text-align: center;
@@ -125,7 +131,7 @@
   color: var(--ui-color-cocoa-text);
 
   .ui-eyebrow {
-    color: #f2b49f;
+    color: var(--ui-color-cocoa-accent);
   }
   .ui-heading {
     color: var(--ui-color-cocoa-text);

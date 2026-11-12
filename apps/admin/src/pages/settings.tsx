@@ -139,7 +139,7 @@ export default function SettingsPage() {
             <div className="admin-settings__body">
               <IssueList error={error} />
 
-              <Card id="business" className="admin-stack">
+              <Card id="business" className="ui-stack">
                 <CardHeader
                   title="Business profile"
                   subtitle="Shown on the landing page, in emails and in the small “Made with Pokanito” footer."
@@ -205,7 +205,7 @@ export default function SettingsPage() {
                 </FormGrid>
               </Card>
 
-              <Card id="rsvp" className="admin-stack">
+              <Card id="rsvp" className="ui-stack">
                 <CardHeader
                   title="RSVP emails"
                   subtitle="How every reply email looks. The address it goes to is set per event in the editor."
@@ -254,7 +254,7 @@ export default function SettingsPage() {
                       Мени: {(menuText.split(",")[0] || "Месо").trim()},{" "}
                       {(menuText.split(",")[2] || "Вегетаријанско").trim()}
                     </span>
-                    <span className="admin-muted">Порака: „Едвај чекаме!“</span>
+                    <span className="ui-muted">Порака: „Едвај чекаме!“</span>
                   </div>
                 </div>
                 <SwitchRow
@@ -271,7 +271,7 @@ export default function SettingsPage() {
                 />
               </Card>
 
-              <Card id="links" className="admin-stack">
+              <Card id="links" className="ui-stack">
                 <CardHeader
                   title="Links & publishing"
                   subtitle="Where invitations live and what happens after the event."
@@ -313,7 +313,7 @@ export default function SettingsPage() {
                 />
               </Card>
 
-              <Card id="defaults" className="admin-stack">
+              <Card id="defaults" className="ui-stack">
                 <CardHeader
                   title="Invitation defaults"
                   subtitle="Pre-filled on every new event. You can still change them per event."
@@ -430,7 +430,7 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
   };
 
   return (
-    <Card id="team" className="admin-stack">
+    <Card id="team" className="ui-stack">
       <CardHeader
         title="Team"
         subtitle="People who can log in to this admin."
@@ -461,10 +461,10 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
                   <span className="admin-team__name">
                     {m.name ?? m.email}
                     {m.id === meId && (
-                      <span className="admin-muted"> (you)</span>
+                      <span className="ui-muted"> (you)</span>
                     )}
                   </span>
-                  <span className="admin-muted">
+                  <span className="ui-muted">
                     {pending ? `${m.email} · invite pending` : m.email}
                   </span>
                 </div>
@@ -473,7 +473,7 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
                     <label>
                       <span className="ui-sr-only">Role for {m.email}</span>
                       <Select
-                        className="admin-select-sm"
+                        className="ui-select--sm"
                         value={m.role}
                         onChange={(e) =>
                           void act(
@@ -544,7 +544,7 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
         title={link ? "Invite sent" : "Invite a team member"}
       >
         {link ? (
-          <div className="admin-stack">
+          <div className="ui-stack">
             {link.emailError ? (
               <Alert tone="warning">
                 The email couldn&apos;t be sent ({link.emailError}). Share this
@@ -562,7 +562,7 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
               onFocus={(e) => e.target.select()}
               aria-label="Invite link"
             />
-            <div className="admin-row admin-row--end">
+            <div className="ui-row ui-row--end">
               <Button
                 variant="secondary"
                 onClick={() =>
@@ -577,7 +577,7 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
             </div>
           </div>
         ) : (
-          <form className="admin-stack" onSubmit={invite}>
+          <form className="ui-stack" onSubmit={invite}>
             <IssueList error={error} />
             <Field label="Email">
               <Input
@@ -600,7 +600,7 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
                 <option value="owner">Owner</option>
               </Select>
             </Field>
-            <div className="admin-row admin-row--end">
+            <div className="ui-row ui-row--end">
               <Button variant="secondary" onClick={closeInvite}>
                 Cancel
               </Button>
@@ -640,9 +640,9 @@ function PasswordSection() {
     }
   };
   return (
-    <Card id="account" className="admin-stack">
+    <Card id="account" className="ui-stack">
       <CardHeader title="Your account" subtitle="Change your password." />
-      <form className="admin-stack" onSubmit={submit}>
+      <form className="ui-stack" onSubmit={submit}>
         <IssueList error={error} />
         <FormGrid>
           <Field label="Current password">

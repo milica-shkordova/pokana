@@ -211,12 +211,12 @@ export default function EventEditorPage() {
                 <span className="admin-editor__divider" aria-hidden />
                 <div className="admin-editor__title">
                   <span className="admin-editor__name">{draft.isDefaults ? `${draft.templateName}: defaults` : draft.name}</span>
-                  <span className="admin-muted" aria-live="polite">
+                  <span className="ui-muted" aria-live="polite">
                     {draft.isDefaults ? `Template defaults · ${def.name} layout` : draft.templateName} · {saveLabel}
                     {editor.saveState === "error" && (
                       <>
                         {" "}
-                        <button type="button" className="admin-linkbtn" onClick={() => void save()}>
+                        <button type="button" className="ui-link-button" onClick={() => void save()}>
                           Retry
                         </button>
                       </>
@@ -321,7 +321,7 @@ export default function EventEditorPage() {
                             notice: !s.enabled ? (
                               <Alert tone="warning">
                                 This section is off and won&apos;t show on the invitation.{" "}
-                                <button type="button" className="admin-linkbtn" onClick={() => setOn(true)}>
+                                <button type="button" className="ui-link-button" onClick={() => setOn(true)}>
                                   Turn it on
                                 </button>
                               </Alert>

@@ -1,8 +1,11 @@
 // @pokanito/ui — import once per app (in pages/_app.tsx):
 //   import "@pokanito/ui/styles.scss";
-@import './tokens';
-@import './reset';
-@import './layout';
-@import './button';
-@import './form';
-@import './surfaces';
+// Sass tools (breakpoints, mixins; no CSS): `@use "@pokanito/ui/tools" as ui;`
+@use "tokens";
+@use "reset";
+@use "layout";
+@use "button";
+@use "form";
+@use "surfaces";
+@use "motion";
+@use "utilities";

@@ -7,7 +7,7 @@ const DESKTOP_WIDTH = 1280;
 const DESKTOP_HEIGHT = 820;
 /** Desktop frame border (px each side). */
 const BEZEL = 6;
-/** Match the .admin-device transitions in admin.scss. */
+/** Match the .admin-device transitions in styles/_motion.scss. */
 const FADE_MS = 160;
 const MORPH_MS = 460;
 
@@ -108,7 +108,7 @@ export default function LivePreview({ eventId, event, device }: { eventId: strin
     <aside ref={column} aria-label="Live preview" className="admin-editor__preview">
       <span className="admin-secnav__title">Live preview</span>
       {error ? (
-        <p className="admin-error">{error}</p>
+        <p className="ui-error">{error}</p>
       ) : (
         <div
           className={cx("admin-device", `admin-device--${shown}`, phase !== "idle" && `is-${phase}`)}

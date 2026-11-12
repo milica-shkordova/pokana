@@ -1,0 +1,140 @@
+@use "@pokanito/ui/tools" as ui;
+// ── Settings ──────────────────────────────────────────────────────────────
+
+.admin-settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ui-space-32);
+  align-items: flex-start;
+
+  &__nav {
+    flex: 0 0 280px;
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-2);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 var(--ui-space-12);
+    border-radius: var(--ui-radius-sm);
+    text-decoration: none;
+    color: var(--ui-color-ink-soft) !important;
+
+    &--on {
+      background: var(--ui-color-surface);
+      font-weight: 600;
+      color: var(--ui-color-ink) !important;
+    }
+  }
+
+  &__body {
+    flex: 1 1 560px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-20);
+
+    > .ui-card {
+      scroll-margin-top: 24px;
+    }
+
+    // Settings cards put the description under the title (design/Settings).
+    .ui-card__heading {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+  }
+
+  @include ui.down(tablet-lg) {
+    &__nav {
+      flex: 1 1 100%;
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.admin-logo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ui-space-12);
+  margin-bottom: var(--ui-space-8);
+
+  &__tile {
+    flex: 0 0 auto;
+    width: 76px;
+    height: 76px;
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-linen);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      max-width: 60px;
+      max-height: 60px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .ui-wordmark {
+      height: 48px;
+    }
+  }
+}
+
+.admin-email-preview {
+  border: 1px solid var(--ui-color-border-soft);
+  border-radius: var(--ui-radius-md);
+  overflow: hidden;
+
+  &__bar {
+    padding: var(--ui-space-10) var(--ui-space-14);
+    background: var(--ui-color-bg);
+    font-size: var(--ui-text-12);
+    color: var(--ui-color-muted);
+    border-bottom: 1px solid var(--ui-color-border-soft);
+  }
+
+  &__body {
+    padding: var(--ui-space-18);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-8);
+    line-height: 1.6;
+  }
+}
+
+.admin-team {
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-12);
+    padding: var(--ui-space-12) 0;
+    border-top: 1px solid var(--ui-color-border-soft);
+    flex-wrap: wrap;
+  }
+
+  &__who {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+  }
+
+  &__name {
+    font-weight: 600;
+  }
+}

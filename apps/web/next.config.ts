@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@pokanito/ui", "@pokanito/templates", "@pokanito/shared"],
   sassOptions: {
     silenceDeprecations: ["legacy-js-api", "import", "global-builtin"],
+    // `@use "@pokanito/ui/tools"` resolves through node_modules (packages/ui/_tools.scss).
+    loadPaths: [path.resolve(__dirname, "../../node_modules")],
   },
   turbopack: {
     // Monorepo root, so hoisted node_modules and packages/* resolve.

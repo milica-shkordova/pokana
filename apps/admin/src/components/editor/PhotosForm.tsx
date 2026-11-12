@@ -38,7 +38,7 @@ export default function PhotosForm({ event, def, updateContent, mediaById, pick,
         ))}
       </div>
       {unassigned.length > 0 && (
-        <p className="admin-muted">
+        <p className="ui-muted">
           {unassigned.length} uploaded photo{unassigned.length === 1 ? " isn't" : "s aren't"} in a slot yet — use “Choose” on a slot.
         </p>
       )}
@@ -95,10 +95,10 @@ function SlotTile({
       </div>
       <figcaption>
         <b>{label}</b> · {aspect}
-        {required && !media && <span className="admin-warn"> · required</span>}
-        {media && <span className="admin-muted"> · {media.fileName.replace(/^seed:/, "")}</span>}
+        {required && !media && <span className="ui-warn"> · required</span>}
+        {media && <span className="ui-muted"> · {media.fileName.replace(/^seed:/, "")}</span>}
       </figcaption>
-      <div className="admin-row">
+      <div className="ui-row">
         <input
           ref={input}
           type="file"

@@ -1,0 +1,115 @@
+// ── Leads ─────────────────────────────────────────────────────────────────
+
+.admin-lead-list {
+  flex: 1 1 340px;
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-lead-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-8);
+  padding: var(--ui-space-16) var(--ui-space-18);
+  border: 0;
+  border-bottom: 1px solid var(--ui-color-border-soft);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  background: var(--ui-color-surface);
+  color: var(--ui-color-ink);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover {
+    background: var(--ui-color-surface-muted);
+  }
+
+  &--on,
+  &--on:hover {
+    background: var(--ui-color-selected);
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ui-space-8);
+  }
+
+  &__name {
+    font-size: var(--ui-text-15);
+    font-weight: 500;
+
+    &--unread {
+      font-weight: 700;
+    }
+  }
+
+  &__subject {
+    font-size: var(--ui-text-13);
+    color: var(--ui-color-ink-soft);
+  }
+}
+
+.admin-pipeline {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--ui-space-6);
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-6);
+  }
+
+  &__bar {
+    height: 6px;
+    border-radius: var(--ui-radius-pill);
+    background: var(--ui-color-border);
+
+    &--on {
+      background: var(--ui-color-terracotta);
+    }
+  }
+
+  &__label {
+    font-size: var(--ui-text-12);
+    color: var(--ui-color-muted);
+
+    &--on {
+      font-weight: 700;
+      color: var(--ui-color-ink);
+    }
+  }
+}
+
+.admin-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--ui-space-12);
+
+  > div {
+    background: var(--ui-color-bg);
+    border-radius: var(--ui-radius-md);
+    padding: var(--ui-space-14);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-4);
+  }
+}
+
+.admin-quote {
+  padding: var(--ui-space-16);
+  background: var(--ui-color-surface-muted);
+  border: 1px solid var(--ui-color-border-soft);
+  border-radius: var(--ui-radius-md);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}

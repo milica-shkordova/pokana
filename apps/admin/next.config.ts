@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@pokanito/ui", "@pokanito/shared", "@pokanito/templates"],
   sassOptions: {
     silenceDeprecations: ["legacy-js-api", "import", "global-builtin"],
+    // `@use "@pokanito/ui/tools"` resolves through node_modules (packages/ui/_tools.scss).
+    loadPaths: [path.resolve(__dirname, "../../node_modules")],
   },
   turbopack: {
     root: path.resolve(__dirname, "../.."),

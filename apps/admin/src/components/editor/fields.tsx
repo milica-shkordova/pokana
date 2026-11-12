@@ -111,19 +111,19 @@ export function RowControls({
 }) {
   return (
     <div className="admin-row-controls">
-      <button type="button" className="admin-icon-btn" aria-label={`Move ${label} up`} disabled={index === 0} onClick={() => onMove(index, index - 1)}>
+      <button type="button" className="ui-icon-btn" aria-label={`Move ${label} up`} disabled={index === 0} onClick={() => onMove(index, index - 1)}>
         ↑
       </button>
       <button
         type="button"
-        className="admin-icon-btn"
+        className="ui-icon-btn"
         aria-label={`Move ${label} down`}
         disabled={index === count - 1}
         onClick={() => onMove(index, index + 1)}
       >
         ↓
       </button>
-      <button type="button" className="admin-icon-btn admin-icon-btn--danger" aria-label={`Remove ${label}`} onClick={onRemove}>
+      <button type="button" className="ui-icon-btn ui-icon-btn--danger" aria-label={`Remove ${label}`} onClick={onRemove}>
         ×
       </button>
     </div>

@@ -68,7 +68,7 @@ export default function Inside() {
       <div className="ic__inner">
         <div className="ic__head">
           <div className="ic__copy" data-reveal>
-            <span className="ic__eyebrow">{c.eyebrow}</span>
+            <span className="ui-eyebrow ic__eyebrow">{c.eyebrow}</span>
             <h2 className="ic__title">{c.title}</h2>
             <p className="ic__intro">{c.intro}</p>
           </div>

@@ -1,3 +1,5 @@
+@use "@pokanito/ui/tools" as ui;
+
 // Owned by the gallery animation (HANDOFF-ANIMATIONS). Imported from landing.scss.
 // Templates — sideways gallery (B4, AnimTemplates.dc.html). Sizes must match
 // components/landing/gallery/geometry.ts.
@@ -9,9 +11,6 @@ $screen-h: 512px;
 $frame-w: 390px; // demo page width inside a phone (FRAME_W)
 $gap: 330px; // centre to centre
 $stage-h: 620px;
-
-$desktop: "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
-$mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
 
 .lp-gallery {
   background: var(--ui-color-honey);
@@ -37,7 +36,7 @@ $mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
   // ── Phone carousel (base = < 1024px) ────────────────────────────────────
   &__viewport {
     position: relative;
-    margin: 0 -24px; // full bleed out of .lp-section's padding
+    margin: 0 -24px; // full bleed out of .ui-section's padding
     padding: 28px 0 8px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -79,7 +78,7 @@ $mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
     box-sizing: border-box;
     border-radius: 40px;
     background: var(--ui-color-ink-strong);
-    box-shadow: 0 24px 50px rgba(42, 37, 34, 0.18);
+    box-shadow: 0 24px 50px rgba(var(--ui-color-ink-rgb), 0.18);
     transform-origin: 50% 60%;
   }
 
@@ -145,7 +144,7 @@ $mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--ui-status-new-fg, #9a4a2a);
+    color: var(--ui-status-new-fg);
   }
 
   &__name {
@@ -183,7 +182,7 @@ $mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
 }
 
 // ── < 1024px with motion: scroll-snap carousel, IO-driven centre focus ──────
-@media #{$mobile} {
+@include ui.below(desktop, $and: ui.$motion-ok) {
   .lp-gallery__phone {
     transform: scale(0.94);
     transition: transform 0.45s var(--ui-ease-bounce);
@@ -204,7 +203,7 @@ $mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
 }
 
 // ── ≥ 1024px with motion: pinned, scrubbed sideways row ─────────────────────
-@media #{$desktop} {
+@include ui.up(desktop, $and: ui.$motion-ok) {
   .lp-gallery {
     height: 100vh;
     box-sizing: border-box;
@@ -294,7 +293,7 @@ $mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
       height: 4px;
       margin: 4px 96px 0;
       border-radius: 4px;
-      background: rgba(181, 80, 47, 0.15);
+      background: rgba(var(--ui-color-terracotta-rgb), 0.15);
       overflow: hidden;
 
       span {
@@ -310,7 +309,7 @@ $mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
 }
 
 // ── Reduced motion: today's static card grid ────────────────────────────────
-@media (prefers-reduced-motion: reduce) {
+@include ui.reduced-motion {
   .lp-gallery__viewport,
   .lp-gallery__progress {
     display: none;

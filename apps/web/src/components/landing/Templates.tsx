@@ -415,7 +415,7 @@ export default function Templates({ templates }: { templates: TemplateSummary[] 
   );
 
   return (
-    <section id="templates" ref={root} className="lp-section lp-gallery">
+    <section id="templates" ref={root} className="ui-section lp-gallery">
       <div className="lp-gallery__head">
         <SectionHeading
           data-reveal

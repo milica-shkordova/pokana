@@ -86,12 +86,12 @@ export default function LeadsPage() {
                       {l.name}
                       {l.unread && <span className="ui-sr-only"> (unread)</span>}
                     </span>
-                    <span className="admin-muted admin-nowrap">{timeAgo(l.createdAt)}</span>
+                    <span className="ui-muted ui-nowrap">{timeAgo(l.createdAt)}</span>
                   </span>
                   <span className="admin-lead-row__subject">
                     {l.source === "notify-me" ? `Notify me: ${l.templateName ?? "a template"}` : l.message.split("\n")[0].slice(0, 80) || "(no message)"}
                   </span>
-                  <span className="admin-row">
+                  <span className="ui-row">
                     <LeadStageBadge stage={l.stage} />
                     {l.templateName && <span className="ui-badge ui-badge--outline ui-badge--sm">{l.templateName}</span>}
                   </span>
@@ -100,11 +100,11 @@ export default function LeadsPage() {
             </div>
 
             {cur && (
-              <Card key={cur.id} className="admin-split__wide admin-stack-lg admin-panel-in" aria-label="Lead details">
-                <div className="admin-row admin-row--between admin-row--wrap admin-row--top">
-                  <div className="admin-stack-sm">
+              <Card key={cur.id} className="admin-split__wide ui-stack--22 admin-panel-in" aria-label="Lead details">
+                <div className="ui-row ui-row--between ui-row--wrap ui-row--top">
+                  <div className="ui-stack--8">
                     <h2 className="admin-detail-title">{cur.name}</h2>
-                    <span className="admin-muted">
+                    <span className="ui-muted">
                       {cur.contact} · received {timeAgo(cur.createdAt)} · {cur.source === "notify-me" ? "Notify me" : "Contact form"}
                     </span>
                   </div>
@@ -125,36 +125,36 @@ export default function LeadsPage() {
                     </li>
                   ))}
                 </ol>
-                {cur.stage === "lost" && <p className="admin-warn">Marked as lost.</p>}
+                {cur.stage === "lost" && <p className="ui-warn">Marked as lost.</p>}
 
                 <div className="admin-facts">
                   <div>
-                    <span className="admin-muted">Template of interest</span>
+                    <span className="ui-muted">Template of interest</span>
                     <strong>{cur.templateName ?? "Not sure yet"}</strong>
                   </div>
                   <div>
-                    <span className="admin-muted">Event date</span>
+                    <span className="ui-muted">Event date</span>
                     <strong>{cur.eventDate ? (Number.isNaN(Date.parse(cur.eventDate)) ? cur.eventDate : formatDate(new Date(cur.eventDate).toISOString())) : "—"}</strong>
                   </div>
                   <div>
-                    <span className="admin-muted">Guests</span>
+                    <span className="ui-muted">Guests</span>
                     <strong>{cur.guestCount ?? "—"}</strong>
                   </div>
                 </div>
 
-                <div className="admin-stack-sm">
-                  <span className="admin-label">Message</span>
-                  <p className="admin-quote">{cur.message || <span className="admin-muted">No message.</span>}</p>
+                <div className="ui-stack--8">
+                  <span className="ui-label">Message</span>
+                  <p className="admin-quote">{cur.message || <span className="ui-muted">No message.</span>}</p>
                 </div>
 
-                <div className="admin-stack-sm">
-                  <label htmlFor="lead-note" className="admin-label">
+                <div className="ui-stack--8">
+                  <label htmlFor="lead-note" className="ui-label">
                     Internal note
                   </label>
                   <Textarea id="lead-note" rows={3} placeholder="Quoted price, follow-up date, anything to remember…" value={note} onChange={(e) => setNote(e.target.value)} />
                 </div>
 
-                <div className="admin-row admin-row--wrap">
+                <div className="ui-row ui-row--wrap">
                   {next && (
                     <Button variant="secondary" onClick={() => void patch(cur, { stage: next })}>
                       {cur.stage === "lost" ? "Reopen" : "Move to next stage →"}

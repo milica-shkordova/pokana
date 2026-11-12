@@ -253,21 +253,21 @@ export default function BasicsForm(
               onChange={(e) => setSlug(e.target.value.toLowerCase())}
               suffix={
                 slugState?.ok || slug === event.slug ? (
-                  <span className="admin-ok">
+                  <span className="ui-ok">
                     {slug === event.slug ? "Saved" : "Available"}
                   </span>
                 ) : slugState?.msg === "Checking…" ? (
-                  <span className="admin-muted">Checking…</span>
+                  <span className="ui-muted">Checking…</span>
                 ) : undefined
               }
             />
           </Field>
 
-          <div className="admin-stack-sm">
+          <div className="ui-stack--8">
             <label htmlFor="rsvp-email" className="ui-field__label">
               Send RSVP replies to
             </label>
-            <div className="admin-row admin-row--wrap">
+            <div className="ui-row ui-row--wrap">
               <div className="admin-email-input">
                 <IconMail />
                 <input
@@ -300,16 +300,16 @@ export default function BasicsForm(
                 “{badEmail}” isn&apos;t a valid email
               </span>
             ) : testedTo ? (
-              <span className="admin-ok">
+              <span className="ui-ok">
                 Test RSVP sent to {testedTo.join(", ")}, ask the client to check
                 spam too.
               </span>
             ) : event.rsvpTestedAt && event.rsvpEmails.length ? (
-              <span className="admin-ok">
+              <span className="ui-ok">
                 Tested ✓ — replies will arrive at these addresses.
               </span>
             ) : (
-              <span className="admin-muted">
+              <span className="ui-muted">
                 Each reply arrives as one email with the guest’s name,
                 attendance, number of guests and menu choice. Add more addresses
                 separated by commas.

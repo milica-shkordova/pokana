@@ -1,3 +1,5 @@
+@use "@pokanito/ui/tools" as ui;
+
 // Mobile layout of the landing page (from the mobile design mock-ups).
 // Loaded after landing.scss and _motion.scss, so these rules win.
 
@@ -7,7 +9,7 @@
   display: none;
 }
 
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-intro__pin {
     padding-top: 72px; // the header is fixed on phones
   }
@@ -109,7 +111,7 @@
       opacity: 1;
       clip-path: inset(0 0 0 0);
       transition:
-        clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        clip-path 0.5s var(--ui-ease-out),
         opacity 0.2s ease,
         visibility 0s;
     }
@@ -157,7 +159,7 @@
     justify-content: center;
     border-radius: var(--ui-radius-pill);
     background: var(--ui-color-terracotta);
-    color: #fff;
+    color: var(--ui-color-white);
     font-size: 17px;
     font-weight: 700;
     text-decoration: none;
@@ -191,7 +193,7 @@
   }
 }
 
-@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+@include ui.down(mobile, $and: ui.$reduced-motion) {
   .lp-menu,
   .lp-menu--open,
   .lp-menu__link,
@@ -204,7 +206,7 @@
 
 
 // ── Hero: full-width stacked buttons ───────────────────────────────────────
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-hero__actions {
     flex-direction: column;
     align-items: stretch;
@@ -223,7 +225,7 @@
 }
 
 // ── What we do: compact cards (icon beside the text, same content) ─────────
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-what .lp-features {
     gap: 14px;
   }
@@ -249,7 +251,7 @@
 }
 
 // ── How it works: the phone sits in the middle ─────────────────────────────
-@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+@include ui.below(desktop, $and: ui.$motion-ok) {
   .lp-journey .lp-journey__steps > .lp-step--phone {
     align-self: center;
   }
@@ -267,14 +269,14 @@
   display: none;
 }
 
-@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+@include ui.below(desktop, $and: ui.$motion-ok) {
   .lp-gallery__swipe {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     margin: 4px auto 0;
-    font-family: "Caveat", "Comic Sans MS", cursive;
+    font-family: var(--ui-font-script);
     font-size: 24px;
     font-weight: 700;
     color: var(--ui-color-terracotta);
@@ -323,7 +325,7 @@
   gap: 18px;
 }
 
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-plans {
     display: flex;
     flex-direction: column;
@@ -370,7 +372,7 @@
   display: none;
 }
 
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-contact {
     gap: 20px;
   }
@@ -409,7 +411,7 @@
   border-radius: 48px 48px 0 0;
 }
 
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-what {
     margin-top: -32px;
     border-radius: 32px 32px 0 0;
@@ -417,7 +419,7 @@
 }
 
 // Keep "there's more" (bottom of the hero) clear of the overlapping section.
-@media (min-width: 1024px) {
+@include ui.up(desktop) {
   .lp-hero > .lp-hero__more {
     bottom: 64px;
   }
@@ -429,14 +431,14 @@
   bottom: calc(clamp(16px, 5vh, 56px) + 48px);
 }
 
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-seal-btn {
     bottom: calc(clamp(16px, 5vh, 56px) + 32px);
   }
 }
 
 // Desktop: the "You're invited!" notification sits centred above the phone.
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@include ui.up(desktop, $and: ui.$motion-ok) {
   .lp-journey .lp-journey__notif {
     left: 50%;
     margin-left: -115px; // half its 230px width
@@ -445,7 +447,7 @@
 }
 
 // Phones: the language toggle lives in the fixed header, so not in the footer too.
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-footer__lang {
     display: none;
   }

@@ -212,7 +212,7 @@ export default function EventsPage() {
       title="Events"
       actions={
         <>
-          <label className="admin-search">
+          <label className="ui-search">
             <IconSearch />
             <span className="ui-sr-only">Search events</span>
             <input type="search" placeholder="Search by name, client or link" value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -247,11 +247,11 @@ export default function EventsPage() {
       <Card padding="none">
         <div className="admin-table-toolbar">
           <Tabs sliding items={tabItems} value={tab} onChange={setTab} aria-label="Filter events" />
-          <div className="admin-row">
-            {tab === "all" && counts.archived > 0 && <span className="admin-muted admin-table-hint">Archived events are hidden here</span>}
+          <div className="ui-row">
+            {tab === "all" && counts.archived > 0 && <span className="ui-muted admin-table-hint">Archived events are hidden here</span>}
             <label>
               <span className="ui-sr-only">Event type</span>
-              <Select className="admin-select-sm" value={category} onChange={(e) => setCategory(e.target.value as TemplateCategory | "")}>
+              <Select className="ui-select--sm" value={category} onChange={(e) => setCategory(e.target.value as TemplateCategory | "")}>
                 <option value="">All event types</option>
                 {TEMPLATE_CATEGORIES.map((c) => (
                   <option key={c} value={c}>
@@ -262,7 +262,7 @@ export default function EventsPage() {
             </label>
             <label>
               <span className="ui-sr-only">Sort</span>
-              <Select className="admin-select-sm" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
+              <Select className="ui-select--sm" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
                 <option value="eventDate">Sort: event date</option>
                 <option value="updated">Sort: last edited</option>
                 <option value="name">Sort: name</option>
@@ -317,18 +317,18 @@ export default function EventsPage() {
                           <Link href={`/events/${e.id}`} className="admin-event-cell__name">
                             {e.name}
                           </Link>
-                          <span className="admin-muted">{e.clientName || "—"}</span>
+                          <span className="ui-muted">{e.clientName || "—"}</span>
                         </div>
                       </div>
                     </td>
                     <td>
                       {e.templateName}
-                      <div className="admin-muted">{e.category ? CATEGORY_LABELS[e.category].one : ""}</div>
+                      <div className="ui-muted">{e.category ? CATEGORY_LABELS[e.category].one : ""}</div>
                     </td>
                     <td>{formatDate(e.eventDate)}</td>
                     <td>
                       <EventStatusBadge status={e.status} />
-                      {e.status === "archived" && e.archivedOnline && <div className="admin-muted admin-small">Link still online</div>}
+                      {e.status === "archived" && e.archivedOnline && <div className="ui-muted admin-small">Link still online</div>}
                     </td>
                     <td>
                       <a className="admin-link-muted" href={`${WEB_URL}/${e.slug}`} target="_blank" rel="noreferrer">

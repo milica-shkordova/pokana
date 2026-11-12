@@ -135,7 +135,7 @@ export default function Contact({ templates, contactEmail }: Props) {
   };
 
   return (
-    <section id="contact" className="lp-section lp-section--white lp-section--contact">
+    <section id="contact" className="ui-section ui-section--white lp-section--contact">
       <div className="lp-wrap">
         <div className="lp-contact ui-inverse" data-reveal>
           <div className="lp-contact__intro">
@@ -180,7 +180,7 @@ export default function Contact({ templates, contactEmail }: Props) {
                   placeholder={c.messagePlaceholder}
                 />
               </Field>
-              <div className="lp-hp" aria-hidden>
+              <div className="ui-visually-hidden-field" aria-hidden>
                 <label>
                   Website
                   <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />

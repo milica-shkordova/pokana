@@ -1,0 +1,132 @@
+@use "@pokanito/ui/tools" as ui;
+
+// ── Contact ────────────────────────────────────────────────────────────────
+.lp-contact {
+  position: relative;
+  overflow: hidden;
+  background: var(--ui-color-cocoa);
+  color: var(--ui-color-cocoa-text);
+  border-radius: 32px;
+  padding: 48px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 40px;
+
+  &__confetti {
+    position: absolute;
+    animation: lp-bob 5s ease-in-out infinite;
+
+    &--1 {
+      right: 40px;
+      top: 28px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--ui-color-marigold);
+    }
+    &--2 {
+      right: 84px;
+      top: 18px; // inside the card padding, clear of the form fields
+      width: 28px;
+      height: 10px;
+      border-radius: 5px;
+      background: var(--ui-color-rose);
+      rotate: -30deg;
+      animation-delay: -1.6s;
+    }
+    &--3 {
+      left: 44%;
+      bottom: 30px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--ui-color-sage);
+      animation-delay: -3s;
+    }
+  }
+
+  &__intro {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--ui-color-cocoa-faint);
+  }
+
+  &__email.lp-contact__email {
+    color: var(--ui-color-cocoa-text);
+    font-weight: 700;
+    word-break: break-all;
+  }
+
+  &__form {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-content: start;
+
+    .ui-field {
+      gap: 6px;
+    }
+
+    .ui-input,
+    .ui-select,
+    .ui-textarea {
+      min-height: 48px;
+      border-radius: 14px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .ui-textarea {
+      padding-top: 14px;
+    }
+
+    @include ui.down(phone-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ui-field--full {
+    grid-column: 1 / -1;
+  }
+
+  &__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+
+    .ui-button {
+      min-height: 50px;
+      padding: 0 28px;
+    }
+  }
+
+  &__status {
+    position: relative;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__ok {
+    color: var(--ui-color-marigold);
+  }
+
+  &__error {
+    color: var(--ui-color-blush);
+  }
+
+  @include ui.down(mobile) {
+    padding: 32px 20px;
+    border-radius: 24px;
+  }
+}

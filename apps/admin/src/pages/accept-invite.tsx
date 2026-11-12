@@ -62,8 +62,8 @@ export default function AcceptInvitePage() {
             <Spinner size="lg" />
           </div>
         ) : (
-          <form className="admin-stack" onSubmit={submit}>
-            <p className="admin-muted">
+          <form className="ui-stack" onSubmit={submit}>
+            <p className="ui-muted">
               Welcome! Choose your name and a password for <strong>{invite.email}</strong>.
             </p>
             {error && <Alert tone="danger">{error}</Alert>}

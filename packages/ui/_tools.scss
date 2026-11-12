@@ -1,0 +1,4 @@
+// Entry for `@use "@pokanito/ui/tools" as ui;` (breakpoints, mixins; no CSS
+// output). Sass finds it through node_modules: both apps add the repo's
+// node_modules to `sassOptions.loadPaths` in next.config.ts.
+@forward "./src/styles/tools";

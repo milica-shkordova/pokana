@@ -64,8 +64,8 @@ export default function WhatWeDo() {
   const w = useLang().t.what;
 
   return (
-    <section ref={section} id="what" className="lp-section lp-section--cream lp-what">
-      <div className="lp-wrap lp-stack-40">
+    <section ref={section} id="what" className="ui-section ui-section--cream lp-what">
+      <div className="lp-wrap ui-stack--40">
         {/* No scroll reveal here: in this pinned section the heading must
             always be visible while the cards flip. */}
         <SectionHeading

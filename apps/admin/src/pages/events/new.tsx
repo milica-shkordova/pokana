@@ -159,7 +159,7 @@ export default function NewEventPage() {
           <div className="admin-new__main">
             <div className="admin-new__filters">
               <Tabs variant="chips" items={cats} value={cat} onChange={setCat} aria-label="Category" />
-              <label className="admin-search admin-new__search">
+              <label className="ui-search admin-new__search">
                 <IconSearch />
                 <span className="ui-sr-only">Search templates</span>
                 <input type="search" placeholder="Search templates" value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -173,7 +173,7 @@ export default function NewEventPage() {
                 </span>
                 <span>
                   <strong>For lead {lead.name}</strong>
-                  <span className="admin-muted">
+                  <span className="ui-muted">
                     {lead.contact}
                     {lead.templateName ? ` · interested in ${lead.templateName}` : ""}. Their details fill the new draft.
                   </span>
@@ -187,7 +187,7 @@ export default function NewEventPage() {
                 </span>
                 <span>
                   <strong>Starting from a lead?</strong>
-                  <span className="admin-muted">
+                  <span className="ui-muted">
                     {suggestion.name} asked about {suggestion.templateName ?? "a template"}
                     {suggestion.eventDate ? ` for ${formatDate(guessDate(suggestion.eventDate) ?? suggestion.eventDate)}` : ""}. Use
                     these details →
@@ -199,7 +199,7 @@ export default function NewEventPage() {
             <IssueList error={error} />
 
             {shown.length === 0 ? (
-              <p className="admin-muted">No templates match “{query}”.</p>
+              <p className="ui-muted">No templates match “{query}”.</p>
             ) : (
               <div className="admin-pick-grid" role="listbox" aria-label="Templates">
                 {shown.map((t) => {
@@ -230,7 +230,7 @@ export default function NewEventPage() {
                         <CategoryLabel>{CATEGORY_LABELS[t.category].one}</CategoryLabel>
                         <span className="admin-pick__name">{t.name}</span>
                         <span className="admin-pick__desc">{t.description}</span>
-                        <span className="admin-muted admin-pick__usage">
+                        <span className="ui-muted admin-pick__usage">
                           {t.usageCount > 0 ? `Used in ${t.usageCount} event${t.usageCount === 1 ? "" : "s"}` : "New"}
                         </span>
                       </span>
@@ -254,7 +254,7 @@ export default function NewEventPage() {
               <div className="admin-new__info" key={`${pick.id}-info`}>
                 <CategoryLabel>{CATEGORY_LABELS[pick.category].one}</CategoryLabel>
                 <h2 className="admin-new__name">{pick.name}</h2>
-                <p className="admin-muted">{pick.description}</p>
+                <p className="ui-muted">{pick.description}</p>
                 {pickDef && (
                   <ul className="admin-new__facts">
                     <li>{pickDef.sections.length} sections</li>
@@ -267,7 +267,7 @@ export default function NewEventPage() {
                 <Button block size="lg" loading={creating === pick.id} disabled={!!creating} onClick={() => void create(pick.id)}>
                   Use {pick.name} →
                 </Button>
-                <p className="admin-muted admin-new__note">
+                <p className="ui-muted admin-new__note">
                   Opens the editor with this template’s defaults. You can switch template later; your content carries over.
                 </p>
               </div>

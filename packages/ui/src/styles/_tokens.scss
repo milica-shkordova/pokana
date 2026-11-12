@@ -2,97 +2,170 @@
 // by the landing page and the admin panel (HANDOFF §4). Exposed as CSS custom
 // properties so any stylesheet (or inline style) can use them.
 // Palette: HANDOFF §4.3 / design/Palette.dc.html ("playful but muted").
+//
+// Raw palette first, then semantic aliases (var() of a palette colour) so a
+// colour is defined once. Breakpoints and mixins are Sass (no CSS output):
+// `@use "@pokanito/ui/tools" as ui;` (see tools/).
+
+@use "./tools" as ui;
 
 :root {
+  // ── Palette ──────────────────────────────────────────────────────────────
+
   // Accents. Bright ones (coral, rose, marigold, sage) are fills and decoration
   // only: put ink text on them, never white.
   --ui-color-terracotta: #b5502f; // primary buttons, links, active tabs; safe for text
+  --ui-color-terracotta-rgb: 181, 80, 47; // for rgba(var(--ui-color-terracotta-rgb), 0.12)
   --ui-color-coral: #d9693f;
   --ui-color-rose: #ee9c92;
+  --ui-color-rose-hover: #f4b3aa; // rose (accent) button hover
   --ui-color-marigold: #e9a94f;
   --ui-color-sage: #9db59a;
   --ui-color-clay-deep: #8e3a22; // terracotta hover, dark accent text
 
   // Tints (section and card backgrounds)
   --ui-color-blush-tint: #fbe6e0;
+  --ui-color-blush-tint-hover: #f8dcd3;
   --ui-color-honey: #fcefd9;
+  --ui-color-peach: #fbe9d4; // suggestion banner
+  --ui-color-peach-hover: #f8dfc2;
   --ui-color-mint: #e6eee4;
   --ui-color-mist: #e4eaf2;
   --ui-color-lilac: #f6e1ec;
   --ui-color-line: #f0e2d6;
+  --ui-color-warning-tint: #fdecd6; // warning icon tile
+  --ui-color-danger-tint: #fbe0da; // danger icon tile, inline code
+
+  // Neutrals
+  --ui-color-white: #fff;
+  --ui-color-cream: #fff9f3;
+  --ui-color-paper: #fffdf9; // letter / card paper (landing illustrations)
+  --ui-color-row-hover: #fffcf8; // table row hover
+  --ui-color-avatar-pending: #c9b79c;
+  --ui-color-media-dark: #4a4645; // audio tiles, dark media placeholders
+  --ui-color-bezel: #1e1b1a; // device (phone / desktop) frames
+  --ui-color-envelope-flap: #f3d7be; // envelope flap (landing illustrations)
+  --ui-color-photo-placeholder: #b49a8a; // photo stand-in behind images (landing)
 
   // Dark contact card
   --ui-color-cocoa: #3a2a26;
   --ui-color-cocoa-input: #4a3833;
+  --ui-color-cocoa-line: #6b5650; // secondary button border on cocoa
   --ui-color-cocoa-text: #fbefe8;
   --ui-color-cocoa-soft: #d9c8bf;
   --ui-color-cocoa-faint: #bfa99e;
+  --ui-color-cocoa-placeholder: #a8928a;
+  --ui-color-cocoa-accent: #f2b49f; // eyebrow on cocoa
+
+  // Ink
+  --ui-color-ink: #2a2522;
+  --ui-color-ink-rgb: 42, 37, 34; // for rgba(var(--ui-color-ink-rgb), 0.14)
+  --ui-color-ink-soft: #4a403a;
+  --ui-color-text-secondary: #5e544c;
+  --ui-color-muted: #7a6e66; // passes 4.5:1 on cream
+  --ui-color-faint: #a39b8f;
+
+  // ── Semantic aliases ─────────────────────────────────────────────────────
 
   // Primary action
   --ui-color-primary: var(--ui-color-terracotta);
   --ui-color-primary-hover: var(--ui-color-clay-deep);
 
   // Surfaces
-  --ui-color-bg: #fff9f3; // cream: admin page background
-  --ui-color-cream: #fff9f3; // landing background
-  --ui-color-sand: #fcefd9; // honey: landing template section
-  --ui-color-linen: #fbe6e0; // blush: landing hero
-  --ui-color-surface: #ffffff; // paper: cards, sidebar
-  --ui-color-surface-muted: #fff9f3; // drop zones, quoted messages
-  --ui-color-selected: #fbe6e0; // selected nav item / row / segmented track
+  --ui-color-bg: var(--ui-color-cream); // admin page background
+  --ui-color-sand: var(--ui-color-honey); // landing template section
+  --ui-color-linen: var(--ui-color-blush-tint); // landing hero
+  --ui-color-surface: var(--ui-color-white); // paper: cards, sidebar
+  --ui-color-surface-muted: var(--ui-color-cream); // drop zones, quoted messages
+  --ui-color-selected: var(--ui-color-blush-tint); // selected nav item / row / segmented track
 
   // Lines
-  --ui-color-border: #f0e2d6;
+  --ui-color-border: var(--ui-color-line);
   --ui-color-border-soft: #f5ebe2;
-  --ui-color-border-input: #f0e2d6;
+  --ui-color-border-input: var(--ui-color-line);
   --ui-color-border-dashed: #e7c9b8;
 
   // Ink
-  --ui-color-ink: #2a2522;
-  --ui-color-ink-strong: #2a2522; // dark mock-ups (phone frame), strong text
-  --ui-color-ink-soft: #4a403a;
-  --ui-color-text-secondary: #5e544c;
-  --ui-color-muted: #7a6e66; // passes 4.5:1 on cream
-  --ui-color-faint: #a39b8f;
+  --ui-color-ink-strong: var(--ui-color-ink); // dark mock-ups (phone frame), strong text
 
   // Accent roles
-  --ui-color-clay: #b5502f; // category labels, lead badge
-  --ui-color-gold: #b5502f; // section eyebrow
-  --ui-color-blush: #ee9c92; // rose: buttons on dark backgrounds
+  --ui-color-clay: var(--ui-color-terracotta); // category labels, lead badge
+  --ui-color-gold: var(--ui-color-terracotta); // section eyebrow
+  --ui-color-blush: var(--ui-color-rose); // rose: buttons on dark backgrounds
   --ui-color-danger: #8c3b2e;
   --ui-color-warning: #8a5a12;
   --ui-color-success: #3d5a41;
 
   // Status pairs (bg / text)
-  --ui-status-live-bg: #e6eee4;
-  --ui-status-live-fg: #3d5a41;
-  --ui-status-draft-bg: #f0e2d6;
-  --ui-status-draft-fg: #5e544c;
-  --ui-status-review-bg: #fcefd9;
-  --ui-status-review-fg: #8a5a12;
-  --ui-status-soon-bg: #f6e1ec;
+  --ui-status-live-bg: var(--ui-color-mint);
+  --ui-status-live-fg: var(--ui-color-success);
+  --ui-status-draft-bg: var(--ui-color-line);
+  --ui-status-draft-fg: var(--ui-color-text-secondary);
+  --ui-status-review-bg: var(--ui-color-honey);
+  --ui-status-review-fg: var(--ui-color-warning);
+  --ui-status-soon-bg: var(--ui-color-lilac);
   --ui-status-soon-fg: #8a4468;
   --ui-status-past-bg: #eeeeee;
   --ui-status-past-fg: #555555;
-  --ui-status-new-bg: #fbe6e0;
+  --ui-status-new-bg: var(--ui-color-blush-tint);
   --ui-status-new-fg: #9a4a2a;
-  --ui-status-info-bg: #e4eaf2;
+  --ui-status-info-bg: var(--ui-color-mist);
   --ui-status-info-fg: #3b5a80;
   --ui-status-danger-bg: #f6e1dd;
-  --ui-status-danger-fg: #8c3b2e;
+  --ui-status-danger-fg: var(--ui-color-danger);
 
   // Dots (section list, checklist)
-  --ui-dot-ok: #9db59a;
-  --ui-dot-warn: #e9a94f;
-  --ui-dot-off: #e7c9b8;
+  --ui-dot-ok: var(--ui-color-sage);
+  --ui-dot-warn: var(--ui-color-marigold);
+  --ui-dot-off: var(--ui-color-border-dashed);
 
-  // Typography. Fredoka has no Cyrillic, so Macedonian headings fall back,
-  // glyph by glyph, to M PLUS Rounded 1c (rounded and bold, the closest
-  // match to Fredoka), then Nunito and Manrope.
+  // ── Typography ───────────────────────────────────────────────────────────
+  // Fredoka has no Cyrillic, so Macedonian headings fall back, glyph by glyph,
+  // to M PLUS Rounded 1c (rounded and bold, the closest match to Fredoka),
+  // then Nunito and Manrope.
   --ui-font-heading: "Fredoka", "M PLUS Rounded 1c", "Nunito", "Manrope", system-ui, sans-serif;
   --ui-font-body: "Manrope", system-ui, sans-serif;
+  --ui-font-script: "Caveat", "Comic Sans MS", cursive; // handwritten notes (landing)
+  --ui-font-serif: "Cormorant Garamond", Georgia, serif; // template look (landing mock-ups)
+  --ui-font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
 
-  // Radii
+  // Font sizes (px-named; display sizes stay with their heading classes)
+  --ui-text-11: 11px;
+  --ui-text-12: 12px;
+  --ui-text-13: 13px;
+  --ui-text-14: 14px; // app body
+  --ui-text-15: 15px; // landing body
+  --ui-text-16: 16px;
+  --ui-text-18: 18px;
+  --ui-text-20: 20px;
+  --ui-text-22: 22px;
+  --ui-text-24: 24px;
+  --ui-text-28: 28px;
+  --ui-text-30: 30px;
+  --ui-text-36: 36px;
+  --ui-text-40: 40px;
+
+  // ── Spacing (px-named: gap, padding, margin) ─────────────────────────────
+  --ui-space-2: 2px;
+  --ui-space-4: 4px;
+  --ui-space-6: 6px;
+  --ui-space-8: 8px;
+  --ui-space-10: 10px;
+  --ui-space-12: 12px;
+  --ui-space-14: 14px;
+  --ui-space-16: 16px;
+  --ui-space-18: 18px;
+  --ui-space-20: 20px;
+  --ui-space-24: 24px;
+  --ui-space-28: 28px;
+  --ui-space-32: 32px;
+  --ui-space-40: 40px;
+  --ui-space-48: 48px;
+  --ui-space-56: 56px;
+  --ui-space-64: 64px;
+  --ui-space-96: 96px;
+
+  // ── Radii ────────────────────────────────────────────────────────────────
   --ui-radius-sm: 8px;
   --ui-radius-input: 10px;
   --ui-radius-md: 12px;
@@ -101,22 +174,36 @@
   --ui-radius-xl: 24px;
   --ui-radius-pill: 999px;
 
-  // Elevation
-  --ui-shadow-sm: 0 1px 2px rgba(42, 37, 34, 0.06);
-  --ui-shadow-md: 0 10px 24px rgba(42, 37, 34, 0.1);
-  --ui-shadow-lg: 0 20px 50px rgba(42, 37, 34, 0.18);
+  // ── Elevation ────────────────────────────────────────────────────────────
+  --ui-shadow-sm: 0 1px 2px rgba(var(--ui-color-ink-rgb), 0.06);
+  --ui-shadow-md: 0 10px 24px rgba(var(--ui-color-ink-rgb), 0.1);
+  --ui-shadow-lg: 0 20px 50px rgba(var(--ui-color-ink-rgb), 0.18); // dialogs, device frame
+  --ui-shadow-popover: 0 18px 40px rgba(var(--ui-color-ink-rgb), 0.14); // dropdown menus
+  --ui-shadow-phone: 0 14px 30px rgba(var(--ui-color-ink-rgb), 0.22); // template phone mock-ups
+  --ui-shadow-thumb: 0 1px 3px rgba(0, 0, 0, 0.12); // segmented-control thumb
+  --ui-shadow-warm-hover: 0 18px 36px rgba(var(--ui-color-terracotta-rgb), 0.12); // landing cards on hover
 
-  // Motion
+  // ── Z-index ──────────────────────────────────────────────────────────────
+  --ui-z-sticky: 10; // sticky bars
+  --ui-z-dropdown: 100; // menus
+  --ui-z-toast: 1000; // toasts
+
+  // ── Motion ───────────────────────────────────────────────────────────────
   --ui-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ui-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ui-ease-spring: cubic-bezier(0.3, 0.7, 0.3, 1.2);
+  --ui-duration-fast: 0.15s;
+  --ui-duration-base: 0.2s;
+  --ui-duration-moderate: 0.25s;
+  --ui-duration-slow: 0.3s;
 
-  // Layout
+  // ── Layout ───────────────────────────────────────────────────────────────
   --ui-container-max: 1080px;
   --ui-gutter: 24px;
   --ui-touch: 44px; // minimum touch target
 }
 
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   :root {
     --ui-gutter: 16px;
   }

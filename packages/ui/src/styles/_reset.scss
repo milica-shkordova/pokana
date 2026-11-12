@@ -1,3 +1,5 @@
+@use "./tools" as ui;
+
 // Kept deliberately minimal — the invitation templates render on top of this
 // reset too, so anything added here changes how every template looks.
 // App-level typography lives on `.ui-root` (landing, admin).
@@ -15,14 +17,14 @@ body {
 }
 
 body {
-  background: #ffffff;
+  background: var(--ui-color-white);
   -webkit-font-smoothing: antialiased;
 }
 
 .ui-root {
   color: var(--ui-color-ink);
   font-family: var(--ui-font-body);
-  font-size: 14px;
+  font-size: var(--ui-text-14);
   line-height: 1.5;
 
   // :where() keeps specificity at 0 so component classes (.ui-button--primary
@@ -36,8 +38,7 @@ body {
   }
 
   :focus-visible {
-    outline: 2px solid var(--ui-color-terracotta);
-    outline-offset: 2px;
+    @include ui.focus-ring;
   }
 }
 

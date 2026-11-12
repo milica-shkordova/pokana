@@ -112,7 +112,7 @@ function ProgramForm({ event, languages, updateContent, label }: P) {
         />
       </FormGrid>
       <div className="admin-rows">
-        {p.items.length === 0 && <p className="admin-muted">No items yet.</p>}
+        {p.items.length === 0 && <p className="ui-muted">No items yet.</p>}
         {p.items.map((item, i) => (
           <div className="admin-program-row" key={item.id}>
             <input
@@ -197,7 +197,7 @@ function PeopleForm({ event, languages, updateContent, label, mediaById, pick }:
               <LocalizedField label="Name" value={person.name} languages={languages} onChange={(v) => patch(i, { name: v })} />
               <LocalizedField label="Role" value={person.role} languages={languages} onChange={(v) => patch(i, { role: v })} />
             </FormGrid>
-            <div className="admin-stack-sm">
+            <div className="ui-stack--8">
               <RowControls index={i} count={people.items.length} label={`person ${i + 1}`} onMove={(a, b) => set(move(people.items, a, b))} onRemove={() => set(people.items.filter((_, j) => j !== i))} />
               {photo && (
                 <Button size="sm" variant="ghost" onClick={() => patch(i, { photo: null })}>
@@ -232,7 +232,7 @@ function GalleryForm({ event, languages, updateContent, label, mediaById, pick, 
     <EditorCard
       title={label}
       aside={
-        <div className="admin-row">
+        <div className="ui-row">
           <UploadButton
             eventId={event.id}
             size="sm"
@@ -256,14 +256,14 @@ function GalleryForm({ event, languages, updateContent, label, mediaById, pick, 
           return (
             <figure key={`${id}-${i}`} className="admin-photo">
               <div className="admin-photo__frame" style={{ aspectRatio: "1" }}>
-                {m ? <img src={m.thumbUrl} alt={m.alt} /> : <span className="admin-muted">Missing file</span>}
+                {m ? <img src={m.thumbUrl} alt={m.alt} /> : <span className="ui-muted">Missing file</span>}
               </div>
               <RowControls index={i} count={g.photos.length} label={`photo ${i + 1}`} onMove={(a, b) => set(move(g.photos, a, b))} onRemove={() => set(g.photos.filter((_, j) => j !== i))} />
             </figure>
           );
         })}
       </div>
-      {g.photos.length === 0 && <p className="admin-muted">No gallery photos yet.</p>}
+      {g.photos.length === 0 && <p className="ui-muted">No gallery photos yet.</p>}
     </EditorCard>
   );
 }
@@ -297,11 +297,11 @@ function RsvpForm({ event, languages, updateContent, update, label, def }: P) {
           </Field>
         )}
       </FormGrid>
-      <div className="admin-row admin-row--wrap">
+      <div className="ui-row ui-row--wrap">
         <Checkbox label="Ask about allergies" checked={r.askAllergies || r.mode === "kids"} disabled={r.mode === "kids"} onChange={(e) => set({ ...r, askAllergies: e.target.checked })} />
         <Checkbox label="Let guests leave a message" checked={r.askMessage} onChange={(e) => set({ ...r, askMessage: e.target.checked })} />
       </div>
-      <p className="admin-muted">Replies go to the addresses in Basics › “Send RSVP replies to”.</p>
+      <p className="ui-muted">Replies go to the addresses in Basics › “Send RSVP replies to”.</p>
     </EditorCard>
   );
 }
@@ -366,9 +366,9 @@ function MusicForm({ event, updateContent, label, mediaById, pick, addToLibrary 
           <span className="admin-music__icon">
             <IconMusic size={22} />
           </span>
-          <div className="admin-stack-sm" style={{ flex: 1, minWidth: 0 }}>
+          <div className="ui-stack--8" style={{ flex: 1, minWidth: 0 }}>
             <strong>{track.fileName.replace(/^seed:/, "")}</strong>
-            <span className="admin-muted">{formatDuration(track.durationSec)}</span>
+            <span className="ui-muted">{formatDuration(track.durationSec)}</span>
             <audio controls preload="none" src={track.url} style={{ width: "100%" }} />
           </div>
           <Button size="sm" variant="ghost" onClick={() => set({ ...music, mediaId: null })}>
@@ -376,9 +376,9 @@ function MusicForm({ event, updateContent, label, mediaById, pick, addToLibrary 
           </Button>
         </div>
       ) : (
-        <p className="admin-muted">No music chosen.</p>
+        <p className="ui-muted">No music chosen.</p>
       )}
-      <div className="admin-row">
+      <div className="ui-row">
         <UploadButton
           eventId={event.id}
           kind="audio"

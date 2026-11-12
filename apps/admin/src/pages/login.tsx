@@ -34,12 +34,12 @@ export default function LoginPage() {
         <title>Sign in · Pokanito Admin</title>
       </Head>
       <Card className="admin-login__card">
-        <form className="admin-stack" onSubmit={handleSubmit}>
+        <form className="ui-stack" onSubmit={handleSubmit}>
           <div className="admin-login__brand">
             <Wordmark />
             <span className="admin__brand-tag">Admin</span>
           </div>
-          <p className="admin-muted">Sign in with your team account.</p>
+          <p className="ui-muted">Sign in with your team account.</p>
           {error && <Alert tone="danger">{error}</Alert>}
           <Field label="Email">
             <Input type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus />

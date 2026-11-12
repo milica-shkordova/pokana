@@ -74,8 +74,8 @@ export default function MediaPage() {
         <>
           {storage && (
             <div className="admin-storage">
-              <span className="admin-muted">
-                Storage: <b className="admin-ink">{formatBytes(storage.usedBytes)}</b> of {formatBytes(storage.quotaBytes)}
+              <span className="ui-muted">
+                Storage: <b className="ui-ink">{formatBytes(storage.usedBytes)}</b> of {formatBytes(storage.quotaBytes)}
               </span>
               <Progress value={(storage.usedBytes / storage.quotaBytes) * 100} label="Storage used" />
             </div>
@@ -89,10 +89,10 @@ export default function MediaPage() {
         </>
       }
     >
-      <div className="admin-row admin-row--wrap">
+      <div className="ui-row ui-row--wrap">
         <label>
           <span className="ui-sr-only">Event</span>
-          <Select className="admin-select-sm" value={eventFilter} onChange={(e) => setEventFilter(e.target.value)}>
+          <Select className="ui-select--sm" value={eventFilter} onChange={(e) => setEventFilter(e.target.value)}>
             <option value="">All events</option>
             {events.data?.map((e) => (
               <option key={e.id} value={e.id}>
@@ -104,12 +104,12 @@ export default function MediaPage() {
           </Select>
         </label>
         <Tabs variant="chips" items={typeTabs} value={type} onChange={setType} aria-label="File type" />
-        <span className="admin-muted admin-push">Photos are compressed for phones automatically. Originals are kept.</span>
+        <span className="ui-muted ui-push">Photos are compressed for phones automatically. Originals are kept.</span>
       </div>
 
       <LoadState loading={lib.loading && !lib.data} error={lib.error} onRetry={lib.reload}>
         <div className="admin-split">
-          <div className="admin-split__wide admin-stack-lg">
+          <div className="admin-split__wide ui-stack--22">
             {groups.length === 0 && (
               <Card>
                 <EmptyState icon="▦" title={items.length ? "Nothing matches" : "No files yet"}>
@@ -118,10 +118,10 @@ export default function MediaPage() {
               </Card>
             )}
             {groups.map((g) => (
-              <section key={g.key} className="admin-stack-sm" aria-label={g.title}>
-                <div className="admin-row admin-row--baseline">
+              <section key={g.key} className="ui-stack--8" aria-label={g.title}>
+                <div className="ui-row ui-row--baseline">
                   <h2 className="admin-group-title">{g.eventId ? <Link href={`/events/${g.eventId}`}>{g.title}</Link> : g.title}</h2>
-                  <span className="admin-muted">
+                  <span className="ui-muted">
                     {g.items.length} file{g.items.length === 1 ? "" : "s"}
                   </span>
                 </div>
@@ -201,7 +201,7 @@ function DropZone({ eventId, onUploaded }: { eventId: string | null; onUploaded:
       <input ref={input} type="file" hidden multiple accept={`${ACCEPT.photo},${ACCEPT.audio}`} onChange={(e) => void upload(e.target.files).then(() => (e.target.value = ""))} />
       <button
         type="button"
-        className={cx("admin-dropzone", over && "admin-dropzone--over")}
+        className={cx("ui-dropzone", over && "ui-dropzone--over")}
         onClick={() => input.current?.click()}
         onDragOver={(e) => {
           e.preventDefault();
@@ -259,7 +259,7 @@ function MediaDetail({ item, onChange, onDelete }: { item: MediaItem; onChange: 
     : `MP3 · ${formatDuration(item.durationSec)} · ${formatBytes(item.bytes)}`;
 
   return (
-    <Card className="admin-split__side admin-stack admin-panel-in" aria-label="File details">
+    <Card className="admin-split__side ui-stack admin-panel-in" aria-label="File details">
       {isPhoto ? (
         <>
           <div
@@ -297,7 +297,7 @@ function MediaDetail({ item, onChange, onDelete }: { item: MediaItem; onChange: 
               }}
             />
           </div>
-          <span className="admin-muted">Drag the dot to set the focus point, so the face stays in frame on every screen size.</span>
+          <span className="ui-muted">Drag the dot to set the focus point, so the face stays in frame on every screen size.</span>
         </>
       ) : (
         <div className="admin-audio-preview">
@@ -306,13 +306,13 @@ function MediaDetail({ item, onChange, onDelete }: { item: MediaItem; onChange: 
         </div>
       )}
 
-      <div className="admin-stack-xs">
-        <strong className="admin-break">{item.fileName.replace(/^seed:/, "")}</strong>
-        <span className="admin-muted">{meta}</span>
+      <div className="ui-stack--4">
+        <strong className="ui-break">{item.fileName.replace(/^seed:/, "")}</strong>
+        <span className="ui-muted">{meta}</span>
       </div>
 
-      <div className="admin-stack-xs">
-        <span className="admin-label">Used in</span>
+      <div className="ui-stack--4">
+        <span className="ui-label">Used in</span>
         <span className="admin-usedin">
           {item.usedIn.length === 0
             ? "Not used yet"

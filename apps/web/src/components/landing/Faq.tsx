@@ -9,8 +9,8 @@ export default function Faq() {
   const faq = copy.items;
   const base = useId();
   return (
-    <section id="faq" className="lp-section lp-section--white">
-      <div className="lp-wrap lp-wrap--narrow lp-stack-32">
+    <section id="faq" className="ui-section ui-section--white">
+      <div className="lp-wrap lp-wrap--narrow ui-stack--32">
         <SectionHeading data-reveal eyebrow={copy.eyebrow} title={copy.title} size="xl" />
         <div className="lp-faq" data-reveal-group>
           {faq.map((item, i) => {

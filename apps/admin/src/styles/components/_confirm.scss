@@ -1,0 +1,86 @@
+// ── Confirm dialogs (unpublish / archive / delete) ─────────────────────────
+
+.admin-confirm {
+  display: grid;
+  gap: var(--ui-space-16);
+  font-size: var(--ui-text-15);
+  line-height: 1.55;
+
+  > p {
+    color: var(--ui-color-ink-soft);
+  }
+
+  ul {
+    display: grid;
+    gap: var(--ui-space-6);
+    padding-left: var(--ui-space-20);
+    margin: 0;
+    color: var(--ui-color-ink);
+    font-size: var(--ui-text-14);
+  }
+
+  &__option {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ui-space-12);
+    padding: var(--ui-space-14) var(--ui-space-16);
+    border-radius: var(--ui-radius-md);
+    background: var(--ui-color-blush-tint);
+    cursor: pointer;
+    font-size: var(--ui-text-14);
+    transition: background-color var(--ui-duration-base) ease;
+
+    &:hover {
+      background: var(--ui-color-blush-tint-hover);
+    }
+
+    input {
+      width: 18px;
+      height: 18px;
+      margin-top: var(--ui-space-2);
+      accent-color: var(--ui-color-terracotta);
+      flex: 0 0 auto;
+    }
+
+    strong,
+    .ui-muted {
+      display: block;
+    }
+  }
+
+  &__type {
+    display: grid;
+    gap: var(--ui-space-8);
+    font-size: var(--ui-text-14);
+    font-weight: 600;
+
+    code {
+      padding: var(--ui-space-2) var(--ui-space-8);
+      border-radius: 6px;
+      background: var(--ui-color-danger-tint);
+      font-size: var(--ui-text-13);
+      white-space: pre;
+    }
+  }
+
+  &__export {
+    justify-self: start;
+    font-weight: 700;
+    font-size: var(--ui-text-14);
+    color: var(--ui-color-terracotta);
+  }
+}
+
+// The confirm dialogs are a little wider than the default dialog.
+.ui-dialog:has(.admin-confirm) {
+  width: min(620px, calc(100vw - 32px));
+
+  .ui-dialog__inner {
+    padding: 36px;
+  }
+}
+
+.admin-table-hint,
+.admin-small {
+  font-size: var(--ui-text-12);
+}

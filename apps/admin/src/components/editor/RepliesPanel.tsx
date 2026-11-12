@@ -39,7 +39,7 @@ export default function RepliesPanel({ event }: { event: EventDetail }) {
   if (event.isDemo) {
     return (
       <EditorCard title="Replies">
-        <p className="admin-muted">This is a gallery demo — replies are accepted but not stored or emailed.</p>
+        <p className="ui-muted">This is a gallery demo — replies are accepted but not stored or emailed.</p>
       </EditorCard>
     );
   }
@@ -48,7 +48,7 @@ export default function RepliesPanel({ event }: { event: EventDetail }) {
     <EditorCard
       title="Replies"
       aside={
-        <div className="admin-row">
+        <div className="ui-row">
           <Button size="sm" variant="ghost" onClick={reload}>
             Refresh
           </Button>
@@ -74,7 +74,7 @@ export default function RepliesPanel({ event }: { event: EventDetail }) {
           )}
         </div>
         {failed > 0 && (
-          <p className="admin-warn">
+          <p className="ui-warn">
             {failed} reply email{failed === 1 ? "" : "s"} couldn&apos;t be delivered — check the address in Basics, then press “Resend”.
           </p>
         )}
@@ -100,7 +100,7 @@ export default function RepliesPanel({ event }: { event: EventDetail }) {
                 <tr key={r.id}>
                   <td>
                     <strong>{r.name}</strong>
-                    <div className="admin-muted">{formatDateTime(r.createdAt)}</div>
+                    <div className="ui-muted">{formatDateTime(r.createdAt)}</div>
                   </td>
                   <td>{r.attending ? <Badge tone="live">Coming · {r.totalGuests}</Badge> : <Badge tone="past">Can&apos;t come</Badge>}</td>
                   <td className="admin-details">
@@ -115,21 +115,21 @@ export default function RepliesPanel({ event }: { event: EventDetail }) {
                     {r.extra.dinner !== undefined && <div>Dinner: {r.extra.dinner ? "yes" : "no"}</div>}
                     {r.extra.plusOne !== undefined && <div>Plus one: {r.extra.plusOne ? "yes" : "no"}</div>}
                     {r.allergies && <div>Allergies: {r.allergies}</div>}
-                    {r.message && <div className="admin-muted">„{r.message}“</div>}
+                    {r.message && <div className="ui-muted">„{r.message}“</div>}
                   </td>
                   <td>
                     {r.emailedAt ? (
-                      <span className="admin-ok">Sent</span>
+                      <span className="ui-ok">Sent</span>
                     ) : r.emailError ? (
-                      <span className="admin-error" title={r.emailError}>
+                      <span className="ui-error" title={r.emailError}>
                         Failed
                       </span>
                     ) : (
-                      <span className="admin-muted">Sending…</span>
+                      <span className="ui-muted">Sending…</span>
                     )}
                   </td>
                   <td className="ui-num">
-                    <div className="admin-row admin-row--end">
+                    <div className="ui-row ui-row--end">
                       {!r.emailedAt && r.emailError && (
                         <Button size="sm" variant="secondary" onClick={() => resend(r)}>
                           Resend

@@ -1,0 +1,44 @@
+@use "@pokanito/ui/tools" as ui;
+
+// Page shell: the .lp root, the narrow wrapper and section modifiers the
+// shared .ui-section doesn't have. Colours come from the shared Pokanito
+// tokens (packages/ui/src/styles/_tokens.scss, HANDOFF §4.3).
+
+.lp {
+  background: var(--ui-color-cream);
+  color: var(--ui-color-ink);
+  font-family: var(--ui-font-body);
+  font-size: 15px;
+  overflow-x: clip;
+
+  .ui-heading {
+    margin: 0;
+  }
+}
+
+.lp-wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+
+  &--narrow {
+    max-width: 760px;
+  }
+}
+
+// Contact section: less top padding (sits right under the inside cards).
+// Used together with .ui-section.
+.lp-section--contact {
+  padding-top: 40px;
+
+  @include ui.down(mobile) {
+    padding-top: 24px;
+  }
+}
+
+.lp-br-wide {
+  @include ui.down(mobile) {
+    display: none;
+  }
+}
+
+// Scroll reveals are driven by GSAP (components/landing/useLandingReveal.ts).

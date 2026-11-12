@@ -83,7 +83,7 @@ export default function NotifyDialog({ open, onClose, templates, initialTemplate
               ))}
             </Select>
           </Field>
-          <div className="lp-hp" aria-hidden>
+          <div className="ui-visually-hidden-field" aria-hidden>
             <label>
               Website
               <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />

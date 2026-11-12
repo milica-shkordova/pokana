@@ -1,0 +1,82 @@
+@use "@pokanito/ui/tools" as ui;
+
+// ── Header ─────────────────────────────────────────────────────────────────
+.lp-header {
+  // Above the hero (and its envelope stage) inside the pinned intro frame.
+  position: relative;
+  z-index: 5;
+  background: var(--ui-color-cream);
+  padding: 0 24px;
+
+  // The slot the hero intro flies the card logo into (Flip.fit target).
+  &__logo {
+    display: inline-flex;
+    transform-origin: 50% 50%;
+  }
+
+  &__row {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__brand {
+    text-decoration: none;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+
+    a {
+      color: var(--ui-color-ink);
+      text-decoration: none;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+
+      &:hover {
+        color: var(--ui-color-terracotta);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    }
+  }
+
+  &__cta.lp-header__cta {
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--ui-color-terracotta);
+    background: var(--ui-color-terracotta);
+    color: var(--ui-color-white);
+    font-weight: 600;
+
+    &:hover {
+      border-color: var(--ui-color-clay-deep);
+      background: var(--ui-color-clay-deep);
+      color: var(--ui-color-white);
+      text-decoration: none;
+    }
+  }
+
+  @include ui.down(mobile) {
+    padding: 8px 16px;
+
+    &__nav {
+      gap: 4px 16px;
+
+      a:not(.lp-header__cta) {
+        display: none;
+      }
+    }
+  }
+}

@@ -39,9 +39,9 @@ export default function HowItWorks() {
   const steps = stepMeta.map((m, i) => ({ ...m, ...h.steps[i] }));
 
   return (
-    <section id="how" ref={section} className="lp-section lp-section--blush lp-journey">
+    <section id="how" ref={section} className="ui-section ui-section--linen lp-journey">
       <div className="lp-journey__stage">
-        <div className="lp-wrap lp-stack-48 lp-journey__inner">
+        <div className="lp-wrap ui-stack--48 lp-journey__inner">
           <SectionHeading data-reveal eyebrow={h.eyebrow} title={h.title} />
           <div className="lp-journey__map">
             <svg className="lp-journey__svg" aria-hidden="true" focusable="false">

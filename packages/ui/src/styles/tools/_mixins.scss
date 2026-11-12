@@ -1,0 +1,34 @@
+// Shared mixins (Sass only, no CSS output).
+
+@use "sass:list";
+
+// Keyboard focus outline (ui buttons, .ui-root, admin colour wells).
+@mixin focus-ring($color: var(--ui-color-terracotta), $offset: 2px) {
+  outline: 2px solid $color;
+  outline-offset: $offset;
+}
+
+// One duration and easing for several properties:
+//   @include ui.transition(background-color color, var(--ui-duration-base));
+//   → transition: background-color 0.2s ease, color 0.2s ease;
+@mixin transition($props, $duration: var(--ui-duration-base), $ease: ease) {
+  $list: ();
+  @each $prop in $props {
+    $list: list.append($list, $prop $duration $ease, comma);
+  }
+  transition: $list;
+}
+
+// Short stagger for the first items of a list or grid (the rest follow the
+// last delay, so long lists don't take ages). Use on the animated items:
+//   .list > * { animation: ui-rise 0.38s var(--ui-ease-out) backwards; @include ui.stagger; }
+@mixin stagger($step: 0.035s, $count: 10) {
+  @for $i from 2 through $count {
+    &:nth-child(#{$i}) {
+      animation-delay: ($i - 1) * $step;
+    }
+  }
+  &:nth-child(n + #{$count + 1}) {
+    animation-delay: $count * $step;
+  }
+}

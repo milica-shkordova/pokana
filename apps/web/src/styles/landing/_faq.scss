@@ -1,0 +1,69 @@
+// ── FAQ ────────────────────────────────────────────────────────────────────
+.lp-faq {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__item {
+    border-radius: 20px;
+    background: var(--ui-color-cream);
+    transition: background 0.25s ease;
+
+    &--open {
+      background: var(--ui-color-blush-tint);
+    }
+  }
+
+  &__h {
+    font: inherit;
+  }
+
+  &__q {
+    width: 100%;
+    min-height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ui-color-ink);
+    text-align: left;
+    cursor: pointer;
+    padding: 8px 20px;
+  }
+
+  &__sign {
+    flex: 0 0 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ui-color-white);
+    color: var(--ui-color-terracotta);
+    font-size: 20px;
+    font-weight: 600;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      transform 0.3s var(--ui-ease-bounce);
+  }
+
+  &__item--open &__sign {
+    background: var(--ui-color-terracotta);
+    color: var(--ui-color-white);
+    transform: rotate(180deg);
+  }
+
+  &__a p {
+    margin: 0;
+    padding: 0 20px 20px;
+    color: var(--ui-color-text-secondary);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+}
