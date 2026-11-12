@@ -21,13 +21,16 @@ import {
   SwitchRow,
   useToast,
   Wordmark,
+  LoadState,
+  IssueList,
+  copyText,
+  errorMessage,
+  useScrollSpy,
 } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
-import LoadState, { IssueList } from "@/components/LoadState";
 import { UploadButton } from "@/components/MediaPicker";
-import { api, copyText, errorMessage, useResource } from "@/lib/api";
+import { api, useResource } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import { useScrollSpy } from "@/lib/useScrollSpy";
 
 const SECTIONS = [
   { id: "business", label: "Business profile" },
@@ -473,7 +476,7 @@ function TeamSection({ isOwner, meId }: { isOwner: boolean; meId?: string }) {
                     <label>
                       <span className="ui-sr-only">Role for {m.email}</span>
                       <Select
-                        className="ui-select--sm"
+                        size="sm"
                         value={m.role}
                         onChange={(e) =>
                           void act(

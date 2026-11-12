@@ -1,9 +1,8 @@
 import { useRef, useState } from "react";
 import type { MediaItem, MediaKind } from "@pokanito/shared";
-import { Button, Dialog, EmptyState, Tabs, cx, useToast } from "@pokanito/ui";
-import { api, errorMessage } from "@/lib/api";
+import { Button, Dialog, EmptyState, Tabs, cx, useToast, errorMessage, IconMusic, IconUpload } from "@pokanito/ui";
+import { api } from "@/lib/api";
 import { formatDuration } from "@/lib/format";
-import { IconMusic, IconUpload } from "./Icons";
 
 export const ACCEPT: Record<MediaKind, string> = {
   photo: "image/jpeg,image/png,image/heic,image/heif,image/webp,.heic,.heif,.jpg,.jpeg,.png",

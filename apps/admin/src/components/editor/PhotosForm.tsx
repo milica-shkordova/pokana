@@ -1,7 +1,5 @@
 import { useRef, useState } from "react";
-import { Button, useToast } from "@pokanito/ui";
-import { errorMessage } from "@/lib/api";
-import { IconUpload } from "../Icons";
+import { Button, useToast, errorMessage, IconUpload } from "@pokanito/ui";
 import { ACCEPT, UploadButton, uploadFiles } from "../MediaPicker";
 import { EditorCard } from "./fields";
 import type { FormProps } from "./context";

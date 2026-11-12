@@ -1,4 +1,5 @@
 import { EVENT_TIMEZONE } from "@pokanito/shared";
+import { THUMB_TONES } from "@pokanito/ui";
 
 const dateFmt = new Intl.DateTimeFormat("en-GB", { timeZone: EVENT_TIMEZONE, day: "numeric", month: "short", year: "numeric" });
 const dateTimeFmt = new Intl.DateTimeFormat("en-GB", {
@@ -44,9 +45,8 @@ export function formatDuration(sec: number | null | undefined): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-/** Placeholder thumbnail tones (Main.dc.html). */
-export const TONES = ["#C9B79C", "#E5B9A8", "#9FB3A3", "#B7C2D6", "#D8C6E0", "#CDBB8A"]; // event thumbnails (Main.dc.html)
-export const toneFor = (key: string) => TONES[[...key].reduce((a, c) => a + c.charCodeAt(0), 0) % TONES.length];
+/** Placeholder thumbnail tone for an event without a photo (stable per key). */
+export const toneFor = (key: string) => THUMB_TONES[[...key].reduce((a, c) => a + c.charCodeAt(0), 0) % THUMB_TONES.length];
 
 export const parseEmails = (text: string) =>
   text

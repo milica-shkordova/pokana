@@ -1,6 +1,8 @@
-// Small inline icon set from Landing.dc.html (all decorative).
+// Small inline icon set from Landing.dc.html (all decorative). The admin's
+// named line icons (IconCheck, …) are in LineIcons.tsx; the two sets differ in
+// size and stroke width, so each keeps its own markup.
 
-export type IconName = "spark" | "grid" | "pen" | "link" | "clock" | "check" | "pin" | "lines" | "mail" | "chevron";
+import type { IconName } from "./types";
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const common = {

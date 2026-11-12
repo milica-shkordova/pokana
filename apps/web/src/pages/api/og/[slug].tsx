@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
 import { formatEventDate, type PublicEventResponse } from "@pokanito/shared";
+import { colors } from "@pokanito/ui/tokens";
 import { OG_LOGO, OG_LOGO_SIZE } from "@/lib/og-logo";
 
 // Link preview image for WhatsApp / Viber / Messenger: the event's names and
@@ -113,8 +114,8 @@ export default async function handler(req: NextRequest) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "#FFF9F3",
-        color: "#2A2522",
+        background: colors.cream,
+        color: colors.ink,
         fontFamily: "Sans",
         padding: 80,
         position: "relative",
@@ -124,7 +125,7 @@ export default async function handler(req: NextRequest) {
         style={{
           fontSize: 26,
           letterSpacing: 6,
-          color: "#7A6E66",
+          color: colors.muted,
           display: "flex",
         }}
       >
@@ -134,7 +135,7 @@ export default async function handler(req: NextRequest) {
         style={{
           width: 240,
           height: 2,
-          background: "#E7C9B8",
+          background: colors.borderDashed,
           marginTop: 28,
           display: "flex",
         }}
@@ -158,7 +159,7 @@ export default async function handler(req: NextRequest) {
         style={{
           width: 240,
           height: 2,
-          background: "#E7C9B8",
+          background: colors.borderDashed,
           display: "flex",
         }}
       />

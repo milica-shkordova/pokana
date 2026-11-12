@@ -35,6 +35,12 @@ export const TEMPLATE_STATUSES = [
   "draft",
 ] as const;
 export type TemplateStatus = (typeof TEMPLATE_STATUSES)[number];
+export const TEMPLATE_STATUS_LABELS: Record<TemplateStatus, string> = {
+  live: "Live",
+  "coming-soon": "Coming soon",
+  hidden: "Hidden",
+  draft: "Draft",
+};
 
 export const EVENT_STATUSES = [
   "draft",

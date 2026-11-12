@@ -1,12 +1,28 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ApiError, type EventSummary, type MediaItem, type MediaLibrary } from "@pokanito/shared";
-import { Badge, Button, Card, Dialog, EmptyState, Field, Input, Progress, Select, Tabs, cx, useToast } from "@pokanito/ui";
+import {
+  Badge,
+  Button,
+  Card,
+  Dialog,
+  DropZone,
+  EmptyState,
+  Field,
+  Input,
+  Progress,
+  Select,
+  Tabs,
+  cx,
+  useToast,
+  LoadState,
+  IconMusic,
+  IconPlus,
+  errorMessage,
+} from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
-import LoadState from "@/components/LoadState";
 import { ACCEPT, UploadButton, uploadFiles } from "@/components/MediaPicker";
-import { IconMusic, IconPlus } from "@/components/Icons";
-import { api, errorMessage, useResource } from "@/lib/api";
+import { api, useResource } from "@/lib/api";
 import { formatBytes, formatDuration } from "@/lib/format";
 
 type TypeTab = "all" | "photo" | "audio" | "unused";
@@ -92,7 +108,7 @@ export default function MediaPage() {
       <div className="ui-row ui-row--wrap">
         <label>
           <span className="ui-sr-only">Event</span>
-          <Select className="ui-select--sm" value={eventFilter} onChange={(e) => setEventFilter(e.target.value)}>
+          <Select size="sm" value={eventFilter} onChange={(e) => setEventFilter(e.target.value)}>
             <option value="">All events</option>
             {events.data?.map((e) => (
               <option key={e.id} value={e.id}>
@@ -146,7 +162,7 @@ export default function MediaPage() {
                       <span className="admin-media-card__name">{m.fileName.replace(/^seed:/, "")}</span>
                     </button>
                   ))}
-                  <DropZone eventId={g.eventId} onUploaded={addItems} />
+                  <UploadDropZone eventId={g.eventId} onUploaded={addItems} />
                 </div>
               </section>
             ))}
@@ -179,10 +195,9 @@ export default function MediaPage() {
   );
 }
 
-function DropZone({ eventId, onUploaded }: { eventId: string | null; onUploaded: (items: MediaItem[]) => void }) {
+function UploadDropZone({ eventId, onUploaded }: { eventId: string | null; onUploaded: (items: MediaItem[]) => void }) {
   const toast = useToast();
   const input = useRef<HTMLInputElement>(null);
-  const [over, setOver] = useState(false);
   const [busy, setBusy] = useState(false);
   const upload = async (files: FileList | null) => {
     if (!files?.length) return;
@@ -199,25 +214,10 @@ function DropZone({ eventId, onUploaded }: { eventId: string | null; onUploaded:
   return (
     <>
       <input ref={input} type="file" hidden multiple accept={`${ACCEPT.photo},${ACCEPT.audio}`} onChange={(e) => void upload(e.target.files).then(() => (e.target.value = ""))} />
-      <button
-        type="button"
-        className={cx("ui-dropzone", over && "ui-dropzone--over")}
-        onClick={() => input.current?.click()}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setOver(true);
-        }}
-        onDragLeave={() => setOver(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setOver(false);
-          void upload(e.dataTransfer.files);
-        }}
-        disabled={busy}
-      >
+      <DropZone onClick={() => input.current?.click()} onFiles={(files) => void upload(files)} disabled={busy}>
         {busy ? "Uploading…" : <IconPlus size={20} />}
         {!busy && "Drop files here"}
-      </button>
+      </DropZone>
     </>
   );
 }

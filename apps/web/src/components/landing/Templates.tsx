@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 import { TEMPLATE_CATEGORIES, type TemplateCategory, type TemplateSummary } from "@pokanito/shared";
-import { CategoryLabel, SectionHeading, Tabs } from "@pokanito/ui";
+import { CategoryLabel, SectionHeading, Tabs, MEDIA } from "@pokanito/ui";
 import NotifyDialog from "./NotifyDialog";
 import { fmt } from "@/content/landing";
 import { useLang } from "./i18n";
@@ -18,8 +18,8 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger, Flip, useG
 type Filter = "all" | TemplateCategory;
 
 
-const DESKTOP = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
-const MOBILE = "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
+const DESKTOP = MEDIA.desktopMotion;
+const MOBILE = MEDIA.mobileMotion;
 const ITEM = ".lp-gallery__item";
 const HIDDEN = "is-hidden";
 /** Desktop: mount demo iframes for phones within this many gaps of the centre. */

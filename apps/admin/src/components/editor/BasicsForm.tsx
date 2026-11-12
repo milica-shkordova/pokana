@@ -15,10 +15,11 @@ import {
   Select,
   SwitchRow,
   useToast,
+  errorMessage,
+  IconMail,
 } from "@pokanito/ui";
-import { api, errorMessage, WEB_HOST } from "@/lib/api";
+import { api, WEB_HOST } from "@/lib/api";
 import { parseEmails } from "@/lib/format";
-import { IconMail } from "../Icons";
 import { EditorCard, LocalizedField } from "./fields";
 import { setContent, type FormProps } from "./context";
 

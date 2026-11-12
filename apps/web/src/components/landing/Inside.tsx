@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { cx } from "@pokanito/ui";
+import { cx, MEDIA } from "@pokanito/ui";
 import { INVITE_SAMPLE, fmt, plural, type Copy, type Lang } from "@/content/landing";
 import { useLang } from "./i18n";
 
@@ -47,7 +47,7 @@ export default function Inside() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(MEDIA.motionOk, () => {
         gsap.from(".ic-card", {
           y: 40,
           opacity: 0,

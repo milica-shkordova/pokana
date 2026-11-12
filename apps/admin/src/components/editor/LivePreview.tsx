@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { PublicEvent } from "@pokanito/shared";
-import { Spinner, cx } from "@pokanito/ui";
-import { api, errorMessage } from "@/lib/api";
+import { Spinner, cx, errorMessage, prefersReducedMotion } from "@pokanito/ui";
+import { api } from "@/lib/api";
 
 const DESKTOP_WIDTH = 1280;
 const DESKTOP_HEIGHT = 820;
@@ -82,7 +82,7 @@ export default function LivePreview({ eventId, event, device }: { eventId: strin
       setPhase("idle");
       return;
     }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       setShown(device);
       return;
     }

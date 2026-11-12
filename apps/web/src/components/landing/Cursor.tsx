@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { MEDIA } from "@pokanito/ui";
 
 gsap.registerPlugin(useGSAP);
 
@@ -26,7 +27,7 @@ export default function Cursor() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+      mm.add(MEDIA.pointerFineMotion, () => {
         const el = root.current!;
         const dot = el.querySelector(".lp-cursor__dot")!;
         const pill = el.querySelector(".lp-cursor__pill")!;

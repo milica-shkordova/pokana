@@ -2,7 +2,19 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ApiError, type LeadInput, type TemplateSummary } from "@pokanito/shared";
-import { Button, Eyebrow, Field, Heading, Input, Lede, Select, Textarea } from "@pokanito/ui";
+import {
+  Button,
+  CONFETTI_COLORS,
+  Eyebrow,
+  Field,
+  Heading,
+  HoneypotField,
+  Input,
+  Lede,
+  Select,
+  Textarea,
+  prefersReducedMotion,
+} from "@pokanito/ui";
 import { browserApi } from "@/lib/api";
 import { fmt } from "@/content/landing";
 import { useLang } from "./i18n";
@@ -14,10 +26,7 @@ interface Props {
   contactEmail: string;
 }
 
-const CONFETTI = ["#D9693F", "#E9A94F", "#EE9C92", "#9DB59A", "#B5502F"];
-const BURST = Array.from({ length: 26 }, (_, i) => ({ color: CONFETTI[i % CONFETTI.length], strip: i % 3 === 0 }));
-
-const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const BURST = Array.from({ length: 26 }, (_, i) => ({ color: CONFETTI_COLORS[i % CONFETTI_COLORS.length], strip: i % 3 === 0 }));
 
 /**
  * "Get in touch" (HANDOFF-ANIMATIONS B7). On a successful send the form folds
@@ -46,7 +55,7 @@ export default function Contact({ templates, contactEmail }: Props) {
     const done = el.querySelector<HTMLElement>(".lp-send__done")!;
     const pieces = gsap.utils.toArray<HTMLElement>(".lp-send__piece", el);
 
-    if (reducedMotion()) {
+    if (prefersReducedMotion()) {
       gsap.set(form, { autoAlpha: 0 });
       gsap.set(done, { autoAlpha: 1 });
       done.querySelector("button")?.focus();
@@ -84,7 +93,7 @@ export default function Contact({ templates, contactEmail }: Props) {
   });
 
   const shake = contextSafe(() => {
-    if (reducedMotion()) return;
+    if (prefersReducedMotion()) return;
     gsap.fromTo(
       ".lp-contact__actions .ui-button",
       { x: 0 },
@@ -99,7 +108,7 @@ export default function Contact({ templates, contactEmail }: Props) {
     gsap.fromTo(
       ".lp-contact__form",
       { autoAlpha: 0, scale: 0.96 },
-      { autoAlpha: 1, scale: 1, duration: reducedMotion() ? 0 : 0.4, ease: "power2.out", clearProps: "all" },
+      { autoAlpha: 1, scale: 1, duration: prefersReducedMotion() ? 0 : 0.4, ease: "power2.out", clearProps: "all" },
     );
     setStatus("idle");
     el.querySelector<HTMLInputElement>(".lp-contact__form input")?.focus();
@@ -180,12 +189,7 @@ export default function Contact({ templates, contactEmail }: Props) {
                   placeholder={c.messagePlaceholder}
                 />
               </Field>
-              <div className="ui-visually-hidden-field" aria-hidden>
-                <label>
-                  Website
-                  <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
-                </label>
-              </div>
+              <HoneypotField value={website} onChange={setWebsite} />
               <div className="lp-contact__actions">
                 <Button type="submit" variant="accent" size="lg" loading={status === "sending"} iconRight="→">
                   {status === "sending" ? c.sending : c.send}

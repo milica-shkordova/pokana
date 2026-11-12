@@ -3,12 +3,11 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
+import { useIsoLayoutEffect, useSlidingIndicator } from "@pokanito/ui";
 import { COPY, LANGS, type Copy, type Lang } from "@/content/landing";
 import { requestScrollRefresh } from "./scrollRefresh";
 
@@ -68,40 +67,21 @@ export function useLang(): LangValue {
   return useContext(LangContext);
 }
 
-// useLayoutEffect warns during SSR; this toggle only measures in the browser.
-const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
-
 /**
  * МК / EN switch for the header. A terracotta pill slides behind the chosen
  * language (measured from the buttons, so it fits either label exactly).
  */
 export function LangToggle({ className }: { className?: string }) {
   const { lang, setLang, t } = useLang();
-  const group = useRef<HTMLDivElement>(null);
-  const thumb = useRef<HTMLSpanElement>(null);
   const [placed, setPlaced] = useState(false);
 
   // Move the pill under the active button; re-measure when sizes change
   // (fonts loading, language labels).
+  const [group, pill] = useSlidingIndicator<HTMLDivElement>(".lp-lang__opt--on", [lang]);
   useIsoLayoutEffect(() => {
-    const el = group.current;
-    const pill = thumb.current;
-    if (!el || !pill) return;
-    const place = () => {
-      const on = el.querySelector<HTMLElement>(".lp-lang__opt--on");
-      if (!on) return;
-      pill.style.width = `${on.offsetWidth}px`;
-      pill.style.transform = `translateX(${on.offsetLeft}px)`;
-    };
-    place();
     // Only animate moves after the first placement (no slide-in on load).
     const id = requestAnimationFrame(() => setPlaced(true));
-    const ro = new ResizeObserver(place);
-    ro.observe(el);
-    return () => {
-      cancelAnimationFrame(id);
-      ro.disconnect();
-    };
+    return () => cancelAnimationFrame(id);
   }, [lang]);
 
   return (
@@ -111,7 +91,11 @@ export function LangToggle({ className }: { className?: string }) {
       role="group"
       aria-label={t.lang.label}
     >
-      <span ref={thumb} className="lp-lang__thumb" aria-hidden />
+      <span
+        className="lp-lang__thumb"
+        style={pill ? { width: pill.width, transform: `translateX(${pill.left}px)` } : undefined}
+        aria-hidden
+      />
       {LANGS.map((l) => (
         <button
           key={l}

@@ -2,10 +2,20 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LEAD_PIPELINE, LEAD_STAGE_LABELS, type Lead, type LeadStage } from "@pokanito/shared";
-import { Button, Card, EmptyState, LeadStageBadge, Textarea, buttonClassName, cx, useToast } from "@pokanito/ui";
+import {
+  Button,
+  Card,
+  EmptyState,
+  LeadStageBadge,
+  Textarea,
+  buttonClassName,
+  cx,
+  useToast,
+  LoadState,
+  errorMessage,
+} from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
-import LoadState from "@/components/LoadState";
-import { api, errorMessage, useResource } from "@/lib/api";
+import { api, useResource } from "@/lib/api";
 import { formatDate, timeAgo } from "@/lib/format";
 import { useSession } from "@/lib/session";
 

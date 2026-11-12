@@ -16,6 +16,7 @@ import {
   Alert,
   Button,
   Card,
+  Chips,
   CategoryLabel,
   Dialog,
   Field,
@@ -24,15 +25,17 @@ import {
   Select,
   Tabs,
   Textarea,
+  ToggleChip,
   TemplateStatusBadge,
   buttonClassName,
   cx,
   useToast,
+  LoadState,
+  errorMessage,
 } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
-import LoadState from "@/components/LoadState";
 import TemplateThumb, { thumbStyle } from "@/components/TemplateThumb";
-import { api, errorMessage, useResource, WEB_URL } from "@/lib/api";
+import { api, useResource, WEB_URL } from "@/lib/api";
 
 type Cat = "all" | TemplateCategory;
 
@@ -272,9 +275,9 @@ function TemplatePanel({
             <span style={{ background: style.ink }} />
           </label>
           {(t.thumb.bg || t.thumb.ink) && (
-            <button type="button" className="ui-link-button" onClick={() => void patch({ thumbBg: null, thumbInk: null })}>
+            <Button variant="link" onClick={() => void patch({ thumbBg: null, thumbInk: null })}>
               Reset
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -323,24 +326,22 @@ function TemplatePanel({
 
           <div className="ui-stack--8">
             <span className="ui-label">Sections included</span>
-            <div className="ui-chips">
+            <Chips>
               {sections.map((s) => {
                 const sd = def.sections.find((x) => x.id === s.id);
                 return (
-                  <button
+                  <ToggleChip
                     key={s.id}
-                    type="button"
-                    className={cx("ui-chip", "ui-chip--toggle", !s.enabled && "ui-chip--off")}
-                    aria-pressed={s.enabled}
+                    pressed={s.enabled}
                     disabled={sd?.required}
                     title={sd?.required ? "Always included" : s.enabled ? "Click to leave out of new events" : "Click to include in new events"}
                     onClick={() => toggleSection(s.id)}
                   >
                     {sd?.label ?? s.id}
-                  </button>
+                  </ToggleChip>
                 );
               })}
-            </div>
+            </Chips>
             <span className="ui-muted">New events start with these on. Order and text are set in Edit defaults.</span>
           </div>
 

@@ -2,8 +2,8 @@ import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import type { CurrentUser } from "@pokanito/shared";
-import { Alert, Button, Card, Field, Input, Wordmark } from "@pokanito/ui";
-import { api, errorMessage } from "@/lib/api";
+import { Alert, Button, Card, Field, Input, Wordmark, errorMessage } from "@pokanito/ui";
+import { api } from "@/lib/api";
 import { useSession } from "@/lib/session";
 
 export default function LoginPage() {

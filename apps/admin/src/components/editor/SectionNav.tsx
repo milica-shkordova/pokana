@@ -8,8 +8,7 @@ import {
   type SectionState,
 } from "@pokanito/shared";
 import type { TemplateDefinition } from "@pokanito/templates/definitions";
-import { Checkbox, Dot, cx } from "@pokanito/ui";
-import { IconAlert, IconCheck } from "../Icons";
+import { Checkbox, Dot, cx, IconAlert, IconCheck } from "@pokanito/ui";
 
 export type Pane = "basics" | "photos" | "theme" | "client" | "replies" | SectionKind;
 

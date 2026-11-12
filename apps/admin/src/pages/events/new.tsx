@@ -11,11 +11,22 @@ import {
   type TemplateSummary,
 } from "@pokanito/shared";
 import { getDefinition } from "@pokanito/templates/definitions";
-import { Button, CategoryLabel, Spinner, Tabs, TemplateStatusBadge, cx } from "@pokanito/ui";
+import {
+  Button,
+  CategoryLabel,
+  Spinner,
+  Tabs,
+  TemplateStatusBadge,
+  cx,
+  LoadState,
+  IssueList,
+  IconBack,
+  IconChat,
+  IconCheck,
+  SearchInput,
+} from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
-import LoadState, { IssueList } from "@/components/LoadState";
 import { thumbStyle } from "@/components/TemplateThumb";
-import { IconBack, IconChat, IconCheck, IconSearch } from "@/components/Icons";
 import { api, useResource, WEB_URL } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 
@@ -159,11 +170,7 @@ export default function NewEventPage() {
           <div className="admin-new__main">
             <div className="admin-new__filters">
               <Tabs variant="chips" items={cats} value={cat} onChange={setCat} aria-label="Category" />
-              <label className="ui-search admin-new__search">
-                <IconSearch />
-                <span className="ui-sr-only">Search templates</span>
-                <input type="search" placeholder="Search templates" value={query} onChange={(e) => setQuery(e.target.value)} />
-              </label>
+              <SearchInput label="Search templates" className="admin-new__search" placeholder="Search templates" value={query} onChange={(e) => setQuery(e.target.value)} />
             </div>
 
             {lead && (

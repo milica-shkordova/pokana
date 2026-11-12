@@ -1,6 +1,5 @@
-import { buttonClassName, cx, SectionHeading } from "@pokanito/ui";
+import { buttonClassName, cx, SectionHeading, Icon } from "@pokanito/ui";
 import { planMeta } from "@/content/landing";
-import { Icon } from "./Icon";
 import { useLang } from "./i18n";
 
 /** Pricing heading block. */

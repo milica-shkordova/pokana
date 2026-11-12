@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import type { EventSummary } from "@pokanito/shared";
-import { Button, Dialog, Input } from "@pokanito/ui";
+import { Button, Dialog, Input, IconArchive, IconPause, IconTrash } from "@pokanito/ui";
 import { WEB_HOST } from "@/lib/api";
-import { IconArchive, IconPause, IconTrash } from "./Icons";
 
 /** What the events list is asking to confirm (null = nothing open). */
 export type EventAction =

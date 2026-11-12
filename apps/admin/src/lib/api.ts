@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import { ApiError, createApiClient } from "@pokanito/shared";
+import { useResource as useResourceBase } from "@pokanito/ui";
 
 const base = createApiClient("");
 
@@ -35,52 +35,7 @@ export const api = {
 export const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL ?? "http://localhost:3000";
 export const WEB_HOST = WEB_URL.replace(/^https?:\/\//, "");
 
-interface ResourceState<T> {
-  data: T | undefined;
-  error: Error | undefined;
-  loading: boolean;
-}
-
-/** Tiny fetch-on-mount hook. Pass `null` to skip (e.g. until the router is ready). */
+/** Tiny fetch-on-mount hook for an admin API path. Pass `null` to skip (e.g. until the router is ready). */
 export function useResource<T>(path: string | null) {
-  const [state, setState] = useState<ResourceState<T>>({ data: undefined, error: undefined, loading: !!path });
-  const latest = useRef(path);
-  latest.current = path;
-
-  const reload = useCallback(async () => {
-    if (!path) return;
-    setState((s) => ({ ...s, loading: true, error: undefined }));
-    try {
-      const data = await api.get<T>(path);
-      if (latest.current === path) setState({ data, error: undefined, loading: false });
-    } catch (error) {
-      if (latest.current === path) setState((s) => ({ ...s, error: error as Error, loading: false }));
-    }
-  }, [path]);
-
-  useEffect(() => {
-    void reload();
-  }, [reload]);
-
-  const mutate = useCallback((data: T | ((prev: T | undefined) => T)) => {
-    setState((s) => ({ ...s, data: typeof data === "function" ? (data as (p: T | undefined) => T)(s.data) : data }));
-  }, []);
-
-  return { ...state, reload, mutate };
-}
-
-export function errorMessage(err: unknown): string {
-  if (err instanceof ApiError) {
-    return err.issues.length ? `${err.message}: ${err.issues.map((i) => i.message).join(" · ")}` : err.message;
-  }
-  return err instanceof Error ? err.message : "Something went wrong";
-}
-
-export async function copyText(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
-  }
+  return useResourceBase<T>(path, api.get);
 }

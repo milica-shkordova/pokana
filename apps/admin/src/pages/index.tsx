@@ -9,12 +9,19 @@ import {
   type EventSummary,
   type TemplateCategory,
 } from "@pokanito/shared";
-import { Card, EmptyState, EventStatusBadge, Select, Stat, Table, Tabs, buttonClassName, useToast } from "@pokanito/ui";
-import AdminLayout from "@/components/AdminLayout";
-import LoadState from "@/components/LoadState";
-import { Menu, type MenuItem } from "@/components/Menu";
-import EventDialogs, { type EventAction } from "@/components/EventDialogs";
 import {
+  Card,
+  EmptyState,
+  EventStatusBadge,
+  Select,
+  Stat,
+  Table,
+  Tabs,
+  buttonClassName,
+  useToast,
+  LoadState,
+  Menu,
+  type MenuItem,
   IconArchive,
   IconCopy,
   IconDownload,
@@ -26,10 +33,15 @@ import {
   IconPlus,
   IconQr,
   IconRestore,
-  IconSearch,
   IconTrash,
-} from "@/components/Icons";
-import { api, copyText, errorMessage, useResource, WEB_HOST, WEB_URL } from "@/lib/api";
+  SearchInput,
+  colors,
+  copyText,
+  errorMessage,
+} from "@pokanito/ui";
+import AdminLayout from "@/components/AdminLayout";
+import EventDialogs, { type EventAction } from "@/components/EventDialogs";
+import { api, useResource, WEB_HOST, WEB_URL } from "@/lib/api";
 import { formatDate, toneFor } from "@/lib/format";
 import { useSession } from "@/lib/session";
 
@@ -50,7 +62,7 @@ async function downloadQr(e: EventSummary) {
     width: 1024,
     margin: 2,
     errorCorrectionLevel: "M",
-    color: { dark: "#2A2522", light: "#FFFFFF" },
+    color: { dark: colors.ink, light: colors.white },
   });
   const a = document.createElement("a");
   a.href = url;
@@ -212,11 +224,7 @@ export default function EventsPage() {
       title="Events"
       actions={
         <>
-          <label className="ui-search">
-            <IconSearch />
-            <span className="ui-sr-only">Search events</span>
-            <input type="search" placeholder="Search by name, client or link" value={query} onChange={(e) => setQuery(e.target.value)} />
-          </label>
+          <SearchInput label="Search events" placeholder="Search by name, client or link" value={query} onChange={(e) => setQuery(e.target.value)} />
           <Link href="/events/new" className={buttonClassName({}, "admin-btn-icon")}>
             <IconPlus />
             New event
@@ -251,7 +259,7 @@ export default function EventsPage() {
             {tab === "all" && counts.archived > 0 && <span className="ui-muted admin-table-hint">Archived events are hidden here</span>}
             <label>
               <span className="ui-sr-only">Event type</span>
-              <Select className="ui-select--sm" value={category} onChange={(e) => setCategory(e.target.value as TemplateCategory | "")}>
+              <Select size="sm" value={category} onChange={(e) => setCategory(e.target.value as TemplateCategory | "")}>
                 <option value="">All event types</option>
                 {TEMPLATE_CATEGORIES.map((c) => (
                   <option key={c} value={c}>
@@ -262,7 +270,7 @@ export default function EventsPage() {
             </label>
             <label>
               <span className="ui-sr-only">Sort</span>
-              <Select className="ui-select--sm" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
+              <Select size="sm" value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
                 <option value="eventDate">Sort: event date</option>
                 <option value="updated">Sort: last edited</option>
                 <option value="name">Sort: name</option>

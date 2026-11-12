@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ApiError, type LeadInput, type TemplateSummary } from "@pokanito/shared";
-import { Alert, Button, Dialog, Field, Input, Select } from "@pokanito/ui";
+import { Alert, Button, Dialog, Field, Input, Select, HoneypotField } from "@pokanito/ui";
 import { browserApi } from "@/lib/api";
 import { useLang } from "./i18n";
 
@@ -83,12 +83,7 @@ export default function NotifyDialog({ open, onClose, templates, initialTemplate
               ))}
             </Select>
           </Field>
-          <div className="ui-visually-hidden-field" aria-hidden>
-            <label>
-              Website
-              <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
-            </label>
-          </div>
+          <HoneypotField value={website} onChange={setWebsite} />
           {error && <Alert tone="danger">{error}</Alert>}
           <div className="ui-dialog__footer">
             <Button variant="secondary" onClick={onClose}>

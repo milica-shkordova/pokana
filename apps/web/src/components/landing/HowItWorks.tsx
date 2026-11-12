@@ -2,13 +2,13 @@ import { useRef, type CSSProperties } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SectionHeading } from "@pokanito/ui";
+import { SectionHeading, MEDIA } from "@pokanito/ui";
 import { stepMeta } from "@/content/landing";
 import { useLang } from "./i18n";
 import { setupJourney } from "./journey/setupJourney";
 
-const DESKTOP = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
-const MOBILE = "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
+const DESKTOP = MEDIA.desktopMotion;
+const MOBILE = MEDIA.mobileMotion;
 
 /**
  * "How it works" (HANDOFF-ANIMATIONS B3): a ribbon snakes through the three

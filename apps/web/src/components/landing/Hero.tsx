@@ -1,13 +1,10 @@
 import { useEffect, useRef, type ReactNode } from "react";
-import { ButtonLink, Heading, Lede } from "@pokanito/ui";
+import { ButtonLink, Heading, Lede, CONFETTI_VARS } from "@pokanito/ui";
 import { LangToggle, useLang } from "./i18n";
 import { CONFETTI_SETTLE_EVENT, keepConfettiClear } from "./hero/confettiZone";
 import Envelope from "./hero/Envelope";
 import { BURST, INTRO_ARM_SCRIPT, rnd } from "./hero/introShared";
 
-// Extra background confetti for the hero (deterministic, so SSR and the
-// browser agree). Kept off the middle band where the headline sits.
-const SPECK_COLORS = ["var(--ui-color-coral)", "var(--ui-color-marigold)", "var(--ui-color-rose)", "var(--ui-color-sage)", "var(--ui-color-terracotta)"];
 // Confetti around the envelope on the sealed screen (kept to the edges).
 const SEAL_CONFETTI = [
   { left: "9%", top: "18%", w: 18, h: 18, rot: 0, color: "var(--ui-color-marigold)" },
@@ -24,6 +21,8 @@ const SEAL_CONFETTI = [
   { left: "74%", top: "90%", w: 32, h: 10, rot: -18, color: "var(--ui-color-rose)" },
 ];
 
+// Extra background confetti for the hero (deterministic, so SSR and the
+// browser agree). Kept off the middle band where the headline sits.
 const SPECKS = Array.from({ length: 26 }, (_, i) => {
   const strip = rnd(i, 21) > 0.55;
   const size = 7 + Math.round(rnd(i, 22) * 9);
@@ -37,7 +36,7 @@ const SPECKS = Array.from({ length: 26 }, (_, i) => {
     h: strip ? Math.max(5, size * 0.7) : size,
     strip,
     rot: Math.round(rnd(i, 26) * 180 - 90),
-    color: SPECK_COLORS[i % SPECK_COLORS.length],
+    color: CONFETTI_VARS[i % CONFETTI_VARS.length],
   };
 });
 import { useHeroIntro } from "./hero/useHeroIntro";

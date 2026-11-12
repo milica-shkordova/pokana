@@ -1,17 +1,21 @@
 import type { ReactNode } from "react";
 import { ApiError } from "@pokanito/shared";
-import { Alert, Button, Spinner } from "@pokanito/ui";
-import { errorMessage } from "@/lib/api";
+import { errorMessage } from "../../utils/errorMessage";
+import { Alert } from "../Alert";
+import { Button } from "../Button";
+import { Spinner } from "../Spinner";
 
-interface Props {
+export interface LoadStateProps {
   loading: boolean;
   error?: Error;
   onRetry?: () => void;
   children: ReactNode;
+  /** Class of the box around the spinner (styled by the admin: .admin-loading). */
+  loadingClassName?: string;
 }
 
 /** Spinner while loading, an error with retry on failure, otherwise children. */
-export default function LoadState({ loading, error, onRetry, children }: Props) {
+export function LoadState({ loading, error, onRetry, children, loadingClassName = "admin-loading" }: LoadStateProps) {
   if (error) {
     return (
       <Alert tone="danger">
@@ -26,7 +30,7 @@ export default function LoadState({ loading, error, onRetry, children }: Props) 
   }
   if (loading) {
     return (
-      <div className="admin-loading">
+      <div className={loadingClassName}>
         <Spinner size="lg" />
       </div>
     );

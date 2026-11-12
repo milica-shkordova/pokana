@@ -1,3 +1,5 @@
+import { CONFETTI_VARS, MEDIA } from "@pokanito/ui";
+
 /**
  * Play the intro only once per browser tab? Off: it plays on every visit
  * (owner decision). Set to true to show the finished hero on repeat visits.
@@ -17,7 +19,7 @@ export const INTRO_ARMED_CLASS = "lp-intro-armed";
  * React's tree) to avoid a hydration mismatch. If the JS never takes over,
  * the class is removed after 5s and the static hero shows.
  */
-export const INTRO_ARM_SCRIPT = `(function(){try{var d=document.documentElement;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(${REMEMBER_INTRO}&&sessionStorage.getItem(${JSON.stringify(
+export const INTRO_ARM_SCRIPT = `(function(){try{var d=document.documentElement;if(matchMedia(${JSON.stringify(MEDIA.reducedMotion)}).matches)return;if(${REMEMBER_INTRO}&&sessionStorage.getItem(${JSON.stringify(
   INTRO_SEEN_KEY,
 )}))return;d.classList.add(${JSON.stringify(INTRO_ARMED_CLASS)});setTimeout(function(){d.classList.remove(${JSON.stringify(
   INTRO_ARMED_CLASS,
@@ -46,14 +48,6 @@ export const rnd = (i: number, k: number) => {
   return x - Math.floor(x);
 };
 
-const BURST_COLORS = [
-  "var(--ui-color-coral)",
-  "var(--ui-color-marigold)",
-  "var(--ui-color-rose)",
-  "var(--ui-color-sage)",
-  "var(--ui-color-terracotta)",
-];
-
 export interface BurstPiece {
   /** Direction (radians) and speed (px at 1440px wide) of the radial spread. */
   angle: number;
@@ -76,6 +70,6 @@ export const BURST: BurstPiece[] = Array.from({ length: 34 }, (_, i) => {
     width: Math.round((strip ? sz * 2.2 : sz) * 10) / 10,
     height: Math.round((strip ? sz * 0.7 : sz) * 10) / 10,
     strip,
-    color: BURST_COLORS[i % 5],
+    color: CONFETTI_VARS[i % 5],
   };
 });

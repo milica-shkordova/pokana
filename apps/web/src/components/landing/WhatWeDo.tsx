@@ -2,10 +2,9 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SectionHeading } from "@pokanito/ui";
+import { SectionHeading, Icon, MEDIA } from "@pokanito/ui";
 import { featureMeta } from "@/content/landing";
 import { useLang } from "./i18n";
-import { Icon } from "./Icon";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -25,7 +24,7 @@ export default function WhatWeDo() {
       const inners = cards.map((c) => c.querySelector<HTMLElement>(".lp-flip__inner")!);
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      mm.add(MEDIA.desktopMotion, () => {
         // Plays out on its own (not tied to scrolling) once the cards are in
         // view: ~3.2s, once. Positions below are fractions of that run.
         const tl = gsap.timeline({
@@ -47,7 +46,7 @@ export default function WhatWeDo() {
         tl.timeScale(1 / 3.2);
       });
 
-      mm.add("(max-width: 1023px) and (prefers-reduced-motion: no-preference)", () => {
+      mm.add(MEDIA.mobileMotion, () => {
         cards.forEach((card, i) => {
           gsap
             .timeline({ scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none none" } })

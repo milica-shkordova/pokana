@@ -1,6 +1,7 @@
 import type { SVGProps } from "react";
 
-// Line icons from the designs (24×24, stroke = currentColor).
+// Line icons from the designs (24×24, stroke = currentColor). Admin set, one
+// component per icon. The landing uses <Icon name="…"> (Icon.tsx).
 
 const base = (size = 18): SVGProps<SVGSVGElement> => ({
   width: size,

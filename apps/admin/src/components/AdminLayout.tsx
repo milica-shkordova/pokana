@@ -2,10 +2,21 @@ import type { ReactNode } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Avatar, Button, PageHeader, Spinner, Wordmark, cx } from "@pokanito/ui";
+import {
+  Avatar,
+  Button,
+  PageHeader,
+  Spinner,
+  Wordmark,
+  cx,
+  IconCalendar,
+  IconChat,
+  IconImage,
+  IconSettings,
+  IconTemplates,
+} from "@pokanito/ui";
 import { api } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import { IconCalendar, IconChat, IconImage, IconSettings, IconTemplates } from "./Icons";
 
 interface Props {
   title: string;

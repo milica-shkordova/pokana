@@ -7,6 +7,7 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Flip } from "gsap/all";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
+import { MEDIA } from "@pokanito/ui";
 import { INTRO_FINISHED_EVENT } from "../useSmoothAnchors";
 import { CONFETTI_SETTLE_EVENT } from "./confettiZone";
 import { lockScroll } from "../scrollLock";
@@ -16,10 +17,10 @@ import { drawSeal, SEAL_END, SEAL_START } from "./sealBreak";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Flip, SplitText, useGSAP);
 
-const DESKTOP = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
-const MOBILE = "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
-const REDUCED = "(prefers-reduced-motion: reduce)";
-const FINE_POINTER = "(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
+const DESKTOP = MEDIA.desktopMotion;
+const MOBILE = MEDIA.mobileMotion;
+const REDUCED = MEDIA.reducedMotion;
+const FINE_POINTER = MEDIA.desktopFinePointerMotion;
 
 /** Envelope scale at the 1440×900 design size (≈750×490 on screen). */
 const ENV_SCALE = 1.45;

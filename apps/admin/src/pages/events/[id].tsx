@@ -13,11 +13,27 @@ import {
   type SectionState,
 } from "@pokanito/shared";
 import { getDefinition, getPublishChecklist, resolveSections } from "@pokanito/templates/definitions";
-import { Alert, Button, ButtonLink, Dialog, EventStatusBadge, Segmented, Switch, useToast } from "@pokanito/ui";
+import {
+  Alert,
+  Button,
+  ButtonLink,
+  Dialog,
+  EventStatusBadge,
+  Segmented,
+  Switch,
+  useToast,
+  LoadState,
+  IconBack,
+  IconDesktop,
+  IconDown,
+  IconPhone,
+  IconUp,
+  copyText,
+  errorMessage,
+  useScrollSpy,
+} from "@pokanito/ui";
 import { AuthGate } from "@/components/AdminLayout";
-import LoadState from "@/components/LoadState";
 import { MediaPicker } from "@/components/MediaPicker";
-import { IconBack, IconDesktop, IconDown, IconPhone, IconUp } from "@/components/Icons";
 import { useEventEditor } from "@/components/editor/useEventEditor";
 import SectionNav, { type Pane } from "@/components/editor/SectionNav";
 import BasicsForm, { ClientForm } from "@/components/editor/BasicsForm";
@@ -28,10 +44,9 @@ import RepliesPanel from "@/components/editor/RepliesPanel";
 import { SectionForm } from "@/components/editor/SectionForms";
 import LivePreview from "@/components/editor/LivePreview";
 import type { FormProps } from "@/components/editor/context";
-import { api, copyText, errorMessage, useResource } from "@/lib/api";
+import { api, useResource } from "@/lib/api";
 import { timeAgo } from "@/lib/format";
 import { useSession } from "@/lib/session";
-import { useScrollSpy } from "@/lib/useScrollSpy";
 
 const toResolved = (m: MediaItem): ResolvedMedia => ({
   id: m.id,
@@ -216,9 +231,9 @@ export default function EventEditorPage() {
                     {editor.saveState === "error" && (
                       <>
                         {" "}
-                        <button type="button" className="ui-link-button" onClick={() => void save()}>
+                        <Button variant="link" onClick={() => void save()}>
                           Retry
-                        </button>
+                        </Button>
                       </>
                     )}
                   </span>
@@ -321,9 +336,9 @@ export default function EventEditorPage() {
                             notice: !s.enabled ? (
                               <Alert tone="warning">
                                 This section is off and won&apos;t show on the invitation.{" "}
-                                <button type="button" className="ui-link-button" onClick={() => setOn(true)}>
+                                <Button variant="link" onClick={() => setOn(true)}>
                                   Turn it on
-                                </button>
+                                </Button>
                               </Alert>
                             ) : null,
                           }}

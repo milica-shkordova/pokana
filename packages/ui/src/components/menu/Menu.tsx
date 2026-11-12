@@ -6,21 +6,9 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-
-export interface MenuItem {
-  label: string;
-  onSelect: () => void;
-  danger?: boolean;
-  /** Line icon on the left. */
-  icon?: ReactNode;
-  /** Small note on the right ("PNG", "for the client"). */
-  hint?: string;
-  /** Draw a divider above this item (e.g. before the destructive group). */
-  divider?: boolean;
-}
+import type { MenuProps } from "./types";
 
 /**
  * Small accessible dropdown (menu button pattern): Enter/Space/↓ opens,
@@ -30,11 +18,8 @@ export function Menu({
   label,
   items,
   trigger = "⋯",
-}: {
-  label: string;
-  items: MenuItem[];
-  trigger?: ReactNode;
-}) {
+  classPrefix: c = "admin-menu",
+}: MenuProps) {
   const [open, setOpen] = useState(false);
   const id = useId();
   const button = useRef<HTMLButtonElement>(null);
@@ -95,11 +80,11 @@ export function Menu({
   };
 
   return (
-    <div className="admin-menu">
+    <div className={c}>
       <button
         ref={button}
         type="button"
-        className="admin-menu__button"
+        className={`${c}__button`}
         aria-label={label}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -121,7 +106,7 @@ export function Menu({
             id={id}
             role="menu"
             aria-label={label}
-            className="admin-menu__list"
+            className={`${c}__list`}
             style={pos}
             onKeyDown={(e) => {
               const els = [
@@ -154,15 +139,15 @@ export function Menu({
           >
             {items.map((item, i) => (
               <Fragment key={item.label}>
-                {item.divider && <div role="separator" className="admin-menu__divider" />}
+                {item.divider && <div role="separator" className={`${c}__divider`} />}
                 <button
                   type="button"
                   role="menuitem"
                   tabIndex={-1}
                   className={
                     item.danger
-                      ? "admin-menu__item admin-menu__item--danger"
-                      : "admin-menu__item"
+                      ? `${c}__item ${c}__item--danger`
+                      : `${c}__item`
                   }
                   style={{ "--i": i } as CSSProperties}
                   onClick={() => {
@@ -170,9 +155,9 @@ export function Menu({
                     item.onSelect();
                   }}
                 >
-                  {item.icon && <span className="admin-menu__icon">{item.icon}</span>}
-                  <span className="admin-menu__label">{item.label}</span>
-                  {item.hint && <span className="admin-menu__hint">{item.hint}</span>}
+                  {item.icon && <span className={`${c}__icon`}>{item.icon}</span>}
+                  <span className={`${c}__label`}>{item.label}</span>
+                  {item.hint && <span className={`${c}__hint`}>{item.hint}</span>}
                 </button>
               </Fragment>
             ))}

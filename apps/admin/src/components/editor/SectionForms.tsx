@@ -8,8 +8,7 @@ import {
   type SectionKind,
   type Venue,
 } from "@pokanito/shared";
-import { Button, Checkbox, Field, FormGrid, Input } from "@pokanito/ui";
-import { IconMusic, IconPlus } from "../Icons";
+import { Button, Checkbox, Field, FormGrid, Input, IconMusic, IconPlus } from "@pokanito/ui";
 import { UploadButton } from "../MediaPicker";
 import { formatDuration } from "@/lib/format";
 import { EditorCard, LocalizedField, LocalizedInline, RowControls, move } from "./fields";

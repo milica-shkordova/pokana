@@ -1,33 +1,12 @@
 import { useMemo, type CSSProperties } from "react";
+import { CONFETTI_COLORS } from "../../tokens";
+import { randomConfettiPieces } from "../../utils/confettiPieces";
 
-// Pokanito confetti: --ui-color-{coral,marigold,rose,sage,terracotta}.
-const DEFAULT_COLORS = ["#d9693f", "#e9a94f", "#ee9c92", "#9db59a", "#b5502f"];
 const PIECE_COUNT = 40;
 
-interface Piece {
-  id: number;
-  angle: number;
-  distance: number;
-  color: string;
-  size: number;
-  delay: number;
-  rotation: number;
-}
-
-export function ConfettiBurst({ colors = DEFAULT_COLORS }: { colors?: string[] }) {
-  const pieces = useMemo<Piece[]>(
-    () =>
-      Array.from({ length: PIECE_COUNT }, (_, i) => ({
-        id: i,
-        angle: Math.random() * 360,
-        distance: 60 + Math.random() * 120,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        size: 5 + Math.random() * 6,
-        delay: Math.random() * 0.15,
-        rotation: Math.random() * 360,
-      })),
-    [colors],
-  );
+// Pokanito confetti: --ui-color-{coral,marigold,rose,sage,terracotta}.
+export function ConfettiBurst({ colors = CONFETTI_COLORS }: { colors?: string[] }) {
+  const pieces = useMemo(() => randomConfettiPieces(PIECE_COUNT, colors), [colors]);
 
   return (
     <div className="ui-confetti" aria-hidden>

@@ -1,6 +1,6 @@
 import { createContext, useContext, useId, type ReactNode } from "react";
 import type { Locale, LocalizedText } from "@pokanito/shared";
-import { Field, Input, Textarea, cx } from "@pokanito/ui";
+import { Field, IconButton, Input, Textarea, cx } from "@pokanito/ui";
 
 interface LocalizedFieldProps {
   label: string;
@@ -111,21 +111,15 @@ export function RowControls({
 }) {
   return (
     <div className="admin-row-controls">
-      <button type="button" className="ui-icon-btn" aria-label={`Move ${label} up`} disabled={index === 0} onClick={() => onMove(index, index - 1)}>
+      <IconButton aria-label={`Move ${label} up`} disabled={index === 0} onClick={() => onMove(index, index - 1)}>
         ↑
-      </button>
-      <button
-        type="button"
-        className="ui-icon-btn"
-        aria-label={`Move ${label} down`}
-        disabled={index === count - 1}
-        onClick={() => onMove(index, index + 1)}
-      >
+      </IconButton>
+      <IconButton aria-label={`Move ${label} down`} disabled={index === count - 1} onClick={() => onMove(index, index + 1)}>
         ↓
-      </button>
-      <button type="button" className="ui-icon-btn ui-icon-btn--danger" aria-label={`Remove ${label}`} onClick={onRemove}>
+      </IconButton>
+      <IconButton tone="danger" aria-label={`Remove ${label}`} onClick={onRemove}>
         ×
-      </button>
+      </IconButton>
     </div>
   );
 }

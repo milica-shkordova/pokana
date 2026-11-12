@@ -2,12 +2,12 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { CONFETTI_COLORS, MEDIA } from "@pokanito/ui";
 import { fmt } from "@/content/landing";
 import { LangToggle, useLang } from "./i18n";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const COLORS = ["#D9693F", "#E9A94F", "#EE9C92", "#9DB59A", "#B5502F"];
 // Deterministic "random" so server and client render the same confetti.
 const rnd = (i: number, k: number) => {
   const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
@@ -16,7 +16,7 @@ const rnd = (i: number, k: number) => {
 const RAIN = Array.from({ length: 30 }, (_, i) => ({
   left: `${(rnd(i, 8) * 100).toFixed(1)}%`,
   strip: rnd(i, 7) > 0.5,
-  color: COLORS[i % COLORS.length],
+  color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
   duration: `${(6 + rnd(i, 9) * 6).toFixed(1)}s`,
   delay: `${(-rnd(i, 10) * 10).toFixed(1)}s`,
 }));
@@ -38,7 +38,7 @@ export default function Footer({ businessName, instagram }: { businessName: stri
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(MEDIA.motionOk, () => {
         const letters = gsap.utils.toArray<HTMLElement>(".lp-finale__char");
         // Plays (not scrubbed) once the name itself is well into view, so it
         // never finishes before you can see it. Reverses when scrolled back up.
