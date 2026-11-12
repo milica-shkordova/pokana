@@ -1,6 +1,6 @@
 import { createContext, useContext, useId, type ReactNode } from "react";
-import type { Locale, LocalizedText } from "@momentelo/shared";
-import { Field, Input, Textarea, cx } from "@momentelo/ui";
+import type { Locale, LocalizedText } from "@pokanito/shared";
+import { Field, Input, Textarea, cx } from "@pokanito/ui";
 
 interface LocalizedFieldProps {
   label: string;

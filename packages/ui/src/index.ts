@@ -1,6 +1,6 @@
-// @momentelo/ui — the Momentelo design system shared by the landing page and the admin
+// @pokanito/ui — the Pokanito design system shared by the landing page and the admin
 // panel (HANDOFF §4). Components render plain `ui-*` classes styled by
-// "@momentelo/ui/styles.scss", imported once per app in pages/_app.tsx. Tokens are
+// "@pokanito/ui/styles.scss", imported once per app in pages/_app.tsx. Tokens are
 // CSS custom properties (--ui-color-ink, --ui-radius-card, ...).
 
 export { cx } from "./cx";

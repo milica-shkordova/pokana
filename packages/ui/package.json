@@ -1,5 +1,5 @@
 {
-  "name": "@momentelo/ui",
+  "name": "@pokanito/ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,6 +17,6 @@
     "react-dom": "^18.3.1"
   },
   "dependencies": {
-    "@momentelo/shared": "*"
+    "@pokanito/shared": "*"
   }
 }

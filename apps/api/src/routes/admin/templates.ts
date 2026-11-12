@@ -8,8 +8,8 @@ import {
   type TemplateCategory,
   type TemplateStatus,
   type TemplateSummary,
-} from "@momentelo/shared";
-import { getDefinition } from "@momentelo/templates/definitions";
+} from "@pokanito/shared";
+import { getDefinition } from "@pokanito/templates/definitions";
 import { db } from "../../db";
 import type { AuthEnv } from "../../auth";
 import { body, notFound } from "../../lib/http";

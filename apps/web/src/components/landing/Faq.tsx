@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { cx, SectionHeading } from "@momentelo/ui";
+import { cx, SectionHeading } from "@pokanito/ui";
 import { useLang } from "./i18n";
 
 /** Accordion: one open at a time, first open by default. */

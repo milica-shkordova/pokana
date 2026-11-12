@@ -2,7 +2,7 @@ import { useRef, type CSSProperties } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SectionHeading } from "@momentelo/ui";
+import { SectionHeading } from "@pokanito/ui";
 import { stepMeta } from "@/content/landing";
 import { useLang } from "./i18n";
 import { setupJourney } from "./journey/setupJourney";
@@ -83,7 +83,7 @@ export default function HowItWorks() {
                         {num}
                         {copy}
                         <span className="lp-journey__url" aria-hidden="true">
-                          momentelo.mk/ana-marko
+                          pokanito.mk/ana-marko
                         </span>
                       </div>
                     </div>

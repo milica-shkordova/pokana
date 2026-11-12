@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
-import { ApiError, formatEventDate, type Locale, type PublicEvent, type PublicEventMeta } from "@momentelo/shared";
-import { Alert, Button, Input, Spinner } from "@momentelo/ui";
+import { ApiError, formatEventDate, type Locale, type PublicEvent, type PublicEventMeta } from "@pokanito/shared";
+import { Alert, Button, Input, Spinner } from "@pokanito/ui";
 import { browserApi } from "@/lib/api";
 import { InvitationHead } from "./InvitationView";
 
@@ -50,7 +50,7 @@ function Shell({ meta, children }: { meta: PublicEventMeta; children: ReactNode 
         <span className="state-page__rule" />
         {children}
         <p className="state-page__footer">
-          <a href="/">Momentelo</a>
+          <a href="/">Pokanito</a>
         </p>
       </div>
     </main>
@@ -84,7 +84,7 @@ export function LoadingView({ meta }: { meta: PublicEventMeta }) {
   );
 }
 
-const storageKey = (slug: string) => `momentelo:unlock:${slug}`;
+const storageKey = (slug: string) => `pokanito:unlock:${slug}`;
 
 /** Remembered access code for this tab (codes are shared with guests, not secrets). */
 export function rememberedCode(slug: string): string | null {

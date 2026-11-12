@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/router";
-import type { CurrentUser, EventStats } from "@momentelo/shared";
+import type { CurrentUser, EventStats } from "@pokanito/shared";
 import { api } from "./api";
 
 interface Session {

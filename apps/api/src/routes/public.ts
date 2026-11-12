@@ -7,8 +7,8 @@ import {
   type PublicEventResponse,
   type RsvpInput,
   type TemplateSummary,
-} from "@momentelo/shared";
-import { getDefinition, resolveSections } from "@momentelo/templates/definitions";
+} from "@pokanito/shared";
+import { getDefinition, resolveSections } from "@pokanito/templates/definitions";
 import { db } from "../db";
 import { createUnlockToken, verifyPreviewToken, verifyUnlockToken } from "../auth";
 import { body, errorBody, notFound } from "../lib/http";

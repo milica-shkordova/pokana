@@ -8,8 +8,8 @@ import {
   type EventStatus,
   type EventSummary,
   type TemplateCategory,
-} from "@momentelo/shared";
-import { Card, EmptyState, EventStatusBadge, Select, Stat, Table, Tabs, buttonClassName, useToast } from "@momentelo/ui";
+} from "@pokanito/shared";
+import { Card, EmptyState, EventStatusBadge, Select, Stat, Table, Tabs, buttonClassName, useToast } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
 import LoadState from "@/components/LoadState";
 import { Menu, type MenuItem } from "@/components/Menu";

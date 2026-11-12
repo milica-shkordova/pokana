@@ -11,8 +11,8 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PrismaClient, type Prisma } from "@prisma/client";
-import { zonedToUtc, type EventContent, type TemplateCategory, type TemplateStatus } from "@momentelo/shared";
-import { defaultSections, defaultTheme, templateList, type TemplateDefinition } from "@momentelo/templates/definitions";
+import { zonedToUtc, type EventContent, type TemplateCategory, type TemplateStatus } from "@pokanito/shared";
+import { defaultSections, defaultTheme, templateList, type TemplateDefinition } from "@pokanito/templates/definitions";
 
 const db = new PrismaClient();
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -101,7 +101,7 @@ async function seedEvent(def: TemplateDefinition, data: {
       slug: data.slug,
       templateId: def.id,
       name: data.name,
-      clientName: data.clientName ?? (data.isDemo ? "Momentelo demo" : ""),
+      clientName: data.clientName ?? (data.isDemo ? "Pokanito demo" : ""),
       eventDate,
       languages: data.languages ?? def.defaultLanguages,
       content: data.content as unknown as Prisma.InputJsonValue,

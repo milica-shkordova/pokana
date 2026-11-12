@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import type { MediaItem, MediaKind } from "@momentelo/shared";
-import { Button, Dialog, EmptyState, Tabs, cx, useToast } from "@momentelo/ui";
+import type { MediaItem, MediaKind } from "@pokanito/shared";
+import { Button, Dialog, EmptyState, Tabs, cx, useToast } from "@pokanito/ui";
 import { api, errorMessage } from "@/lib/api";
 import { formatDuration } from "@/lib/format";
 import { IconMusic, IconUpload } from "./Icons";

@@ -14,7 +14,7 @@
                 <path d="M4 80 Q 18 72 32 80 T 60 80 T 88 80 T 108 82" stroke-width="2.4"></path>
                 <circle cx="150" cy="60" r="52" stroke-width="3"></circle>
                 <circle cx="150" cy="60" r="27" stroke-width="1.6"></circle>
-                <text font-family="Manrope, sans-serif" font-weight="800" font-size="9.5" fill="#A8694B" stroke="none"><textPath href="#stampArc" startOffset="0" textLength="228" lengthAdjust="spacing">• MOMENTELO • DIGITAL INVITES</textPath></text>
+                <text font-family="Manrope, sans-serif" font-weight="800" font-size="9.5" fill="#A8694B" stroke="none"><textPath href="#stampArc" startOffset="0" textLength="228" lengthAdjust="spacing">• POKANITO • DIGITAL INVITES</textPath></text>
                 <text x="150" y="59" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="600" font-size="10.5" fill="#A8694B" stroke="none">SKOPJE</text>
                 <text x="150" y="72" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="8.5" letter-spacing="1" fill="#A8694B" stroke="none">2026</text>
               </g>

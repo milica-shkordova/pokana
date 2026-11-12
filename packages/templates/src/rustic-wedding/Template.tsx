@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import type { SectionKind } from "@momentelo/shared";
+import type { SectionKind } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
 import { useCountdown, useRsvpDeadlineText } from "../engine/hooks";
 import { useRsvpForm } from "../engine/useRsvpForm";

@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import type { SectionKind } from "@momentelo/shared";
+import type { SectionKind } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
 import { useMusic, usePrefersReducedMotion } from "../engine/hooks";
 import { LanguageToggle, MusicButton, Photo, PreviewNotice } from "../engine/components";

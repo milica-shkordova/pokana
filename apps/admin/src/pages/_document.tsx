@@ -1,5 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { FontLinks } from "@momentelo/ui";
+import { FontLinks } from "@pokanito/ui";
 
 export default function Document() {
   return (

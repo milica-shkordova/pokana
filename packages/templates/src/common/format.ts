@@ -1,4 +1,4 @@
-import { utcToZoned, type Locale } from "@momentelo/shared";
+import { utcToZoned, type Locale } from "@pokanito/shared";
 
 /** "сабота" → "Сабота". */
 export const cap = (s: string) => (s ? s.charAt(0).toLocaleUpperCase() + s.slice(1) : s);

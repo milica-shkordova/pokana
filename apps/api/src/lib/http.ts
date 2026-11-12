@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import type { ZodError, ZodType, ZodTypeDef } from "zod";
-import type { ApiErrorBody, ValidationIssue } from "@momentelo/shared";
+import type { ApiErrorBody, ValidationIssue } from "@pokanito/shared";
 
 /** Thrown for 400s with field-level issues; rendered by the app's onError. */
 export class ValidationError extends Error {

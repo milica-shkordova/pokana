@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import type { SectionKind } from "@momentelo/shared";
+import type { SectionKind } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
 import { useCountdown, useRsvpDeadlineText } from "../engine/hooks";
 import { useRsvpForm } from "../engine/useRsvpForm";
@@ -21,7 +21,7 @@ function Hero() {
       )}
       <h1 className={st.name}>
         {t(c.names)}
-        {c.age !== undefined && <span className="momentelo-sr-only"> · {c.age}</span>}
+        {c.age !== undefined && <span className="pokanito-sr-only"> · {c.age}</span>}
       </h1>
       <span className={st.rule} aria-hidden />
       <span className={st.when}>

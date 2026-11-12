@@ -5,9 +5,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // side-effect free, so importing from "gsap/all" still tree-shakes to Flip only.
 import { Flip } from "gsap/all";
 import { useGSAP } from "@gsap/react";
-import { TEMPLATE_CATEGORIES, type TemplateCategory, type TemplateSummary } from "@momentelo/shared";
-import { CategoryLabel, SectionHeading, Tabs } from "@momentelo/ui";
+import { TEMPLATE_CATEGORIES, type TemplateCategory, type TemplateSummary } from "@pokanito/shared";
+import { CategoryLabel, SectionHeading, Tabs } from "@pokanito/ui";
 import NotifyDialog from "./NotifyDialog";
+import { fmt } from "@/content/landing";
 import { useLang } from "./i18n";
 import PhoneScreen, { TemplateThumb } from "./gallery/PhoneScreen";
 import { clamp, focusOf, FRAME_SCALE, GAP, INNER_SCROLL, PHONE_W, STAGE_H, trackGeometry } from "./gallery/geometry";
@@ -406,7 +407,10 @@ export default function Templates({ templates }: { templates: TemplateSummary[] 
 
   const emptyText = (
     <p className="lp-empty">
-      {tt.empty(filter === "all" ? null : CATEGORY_LABELS[filter as TemplateCategory].one, visibleSoon.length > 0)}
+      {filter === "all"
+        ? tt.empty.all
+        : fmt(tt.empty.category, { category: CATEGORY_LABELS[filter as TemplateCategory].one.toLowerCase() })}
+      {visibleSoon.length > 0 ? tt.empty.soon : tt.empty.end}
     </p>
   );
 
@@ -441,7 +445,7 @@ export default function Templates({ templates }: { templates: TemplateSummary[] 
                   href={`/${t.demoSlug}`}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label={tt.openDemoAria(t.name)}
+                  aria-label={fmt(tt.openDemoAria, { name: t.name })}
                   data-cursor={tt.openDemo}
                 />
               </div>

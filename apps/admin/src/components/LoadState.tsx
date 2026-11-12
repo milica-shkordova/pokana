@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { ApiError } from "@momentelo/shared";
-import { Alert, Button, Spinner } from "@momentelo/ui";
+import { ApiError } from "@pokanito/shared";
+import { Alert, Button, Spinner } from "@pokanito/ui";
 import { errorMessage } from "@/lib/api";
 
 interface Props {

@@ -1,4 +1,4 @@
-// React-free entry: `@momentelo/templates/definitions`. Safe to import from the
+// React-free entry: `@pokanito/templates/definitions`. Safe to import from the
 // API and the admin panel — never import components or styles here.
 
 import type { TemplateDefinition } from "./engine/types";

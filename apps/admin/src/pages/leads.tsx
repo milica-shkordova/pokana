@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { LEAD_PIPELINE, LEAD_STAGE_LABELS, type Lead, type LeadStage } from "@momentelo/shared";
-import { Button, Card, EmptyState, LeadStageBadge, Textarea, buttonClassName, cx, useToast } from "@momentelo/ui";
+import { LEAD_PIPELINE, LEAD_STAGE_LABELS, type Lead, type LeadStage } from "@pokanito/shared";
+import { Button, Card, EmptyState, LeadStageBadge, Textarea, buttonClassName, cx, useToast } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
 import LoadState from "@/components/LoadState";
 import { api, errorMessage, useResource } from "@/lib/api";

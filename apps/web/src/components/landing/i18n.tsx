@@ -12,7 +12,7 @@ import {
 import { COPY, LANGS, type Copy, type Lang } from "@/content/landing";
 import { requestScrollRefresh } from "./scrollRefresh";
 
-const STORAGE_KEY = "momentelo:lang";
+const STORAGE_KEY = "pokanito:lang";
 
 interface LangValue {
   lang: Lang;

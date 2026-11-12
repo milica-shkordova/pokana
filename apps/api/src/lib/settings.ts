@@ -1,5 +1,5 @@
 import type { Settings as DbSettings } from "@prisma/client";
-import type { PublicSettings, Settings } from "@momentelo/shared";
+import type { PublicSettings, Settings } from "@pokanito/shared";
 import { db } from "../db";
 import { thumbUrl } from "./media";
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ApiError, type PublicEvent, type PublicEventMeta, type PublicEventResponse } from "@momentelo/shared";
+import { ApiError, type PublicEvent, type PublicEventMeta, type PublicEventResponse } from "@pokanito/shared";
 import InvitationView from "@/components/invitation/InvitationView";
 import {
   EndedView,

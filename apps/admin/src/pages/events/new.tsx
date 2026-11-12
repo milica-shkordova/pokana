@@ -9,9 +9,9 @@ import {
   type Lead,
   type TemplateCategory,
   type TemplateSummary,
-} from "@momentelo/shared";
-import { getDefinition } from "@momentelo/templates/definitions";
-import { Button, CategoryLabel, Spinner, Tabs, TemplateStatusBadge, cx } from "@momentelo/ui";
+} from "@pokanito/shared";
+import { getDefinition } from "@pokanito/templates/definitions";
+import { Button, CategoryLabel, Spinner, Tabs, TemplateStatusBadge, cx } from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
 import LoadState, { IssueList } from "@/components/LoadState";
 import { thumbStyle } from "@/components/TemplateThumb";

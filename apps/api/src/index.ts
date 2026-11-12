@@ -7,7 +7,7 @@ import { startJobs } from "./jobs";
 const app = createApp();
 
 const server = serve({ fetch: app.fetch, port: env.PORT }, (info) => {
-  console.log(`▲ Momentelo API listening on http://localhost:${info.port}/api`);
+  console.log(`▲ Pokanito API listening on http://localhost:${info.port}/api`);
   if (!env.RESEND_API_KEY) console.log("  (no RESEND_API_KEY — emails are printed here instead of sent)");
   startJobs();
 });

@@ -1,5 +1,5 @@
-import type { EventContent, EventDetail, Locale, MediaItem, MediaKind } from "@momentelo/shared";
-import type { TemplateDefinition } from "@momentelo/templates/definitions";
+import type { EventContent, EventDetail, Locale, MediaItem, MediaKind } from "@pokanito/shared";
+import type { TemplateDefinition } from "@pokanito/templates/definitions";
 import type { EventEditor } from "./useEventEditor";
 
 /** What every editor form receives. */

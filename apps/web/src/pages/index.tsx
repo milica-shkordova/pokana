@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import type { GetStaticProps } from "next";
 import Head from "next/head";
-import type { PublicSettings, TemplateSummary } from "@momentelo/shared";
+import type { PublicSettings, TemplateSummary } from "@pokanito/shared";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import WhatWeDo from "@/components/landing/WhatWeDo";
@@ -18,6 +18,7 @@ import { useSmoothAnchors } from "@/components/landing/useSmoothAnchors";
 import { usePauseOffscreen } from "@/components/landing/usePauseOffscreen";
 import { serverApi, SITE_URL } from "@/lib/api";
 import { LangProvider, useLang } from "@/components/landing/i18n";
+import { fmt } from "@/content/landing";
 
 interface Props {
   templates: TemplateSummary[];
@@ -25,8 +26,8 @@ interface Props {
 }
 
 const FALLBACK_SETTINGS: PublicSettings = {
-  businessName: "Momentelo",
-  contactEmail: "hello@momentelo.mk",
+  businessName: "Pokanito",
+  contactEmail: "hello@pokanito.mk",
   phone: "",
   instagram: "",
   logoUrl: null,
@@ -46,7 +47,7 @@ function LandingPage({ templates, settings }: Props) {
   useSmoothAnchors();
   usePauseOffscreen(root);
   const { t } = useLang();
-  const title = t.meta.title(settings.businessName);
+  const title = fmt(t.meta.title, { name: settings.businessName });
 
   return (
     <div className="lp ui-root" ref={root}>

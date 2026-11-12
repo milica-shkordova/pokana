@@ -1,4 +1,4 @@
-import { Wordmark } from "@momentelo/ui";
+import { Wordmark } from "@pokanito/ui";
 import { useLang } from "../i18n";
 import { SEAL_CRUMBS } from "./sealBreak";
 
@@ -91,7 +91,7 @@ export default function Envelope({ businessName, logoUrl }: { businessName: stri
               className="lp-env__crack-main"
               pathLength={1}
               d="M62 2 L57 18 L60 26 L55 37 L61 48 L65 60 L59 70 L57 82 L61 90 L56 100 L60 110 L62 119"
-              stroke="#6A230D"
+              stroke="#6A1E08"
               strokeWidth={1.3}
               opacity={0.55}
             />
@@ -99,12 +99,12 @@ export default function Envelope({ businessName, logoUrl }: { businessName: stri
               className="lp-env__crack-main"
               pathLength={1}
               d="M63.2 2 L58.2 18 L61.2 26 L56.2 37 L62.2 48 L66.2 60 L60.2 70 L58.2 82 L62.2 90 L57.2 100 L61.2 110 L63.2 119"
-              stroke="#F3A982"
+              stroke="#FFB48A"
               strokeWidth={0.6}
               opacity={0.4}
             />
-            <path className="lp-env__crack-branch" pathLength={1} d="M61 48 L72 44 L80 46" stroke="#6A230D" strokeWidth={0.8} opacity={0.45} />
-            <path className="lp-env__crack-branch" pathLength={1} d="M57 82 L46 86 L40 84" stroke="#6A230D" strokeWidth={0.8} opacity={0.45} />
+            <path className="lp-env__crack-branch" pathLength={1} d="M61 48 L72 44 L80 46" stroke="#6A1E08" strokeWidth={0.8} opacity={0.45} />
+            <path className="lp-env__crack-branch" pathLength={1} d="M57 82 L46 86 L40 84" stroke="#6A1E08" strokeWidth={0.8} opacity={0.45} />
           </svg>
           </span>
           {SEAL_CRUMBS.map((c, i) => (

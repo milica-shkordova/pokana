@@ -2,6 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { fmt } from "@/content/landing";
 import { LangToggle, useLang } from "./i18n";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -22,7 +23,7 @@ const RAIN = Array.from({ length: 30 }, (_, i) => ({
 
 /**
  * Footer finale (HANDOFF-ANIMATIONS A4 + B9): the M mark pops, a huge
- * "Momentelo." rises letter by letter, the tagline fades in, and confetti
+ * "Pokanito." rises letter by letter, the tagline fades in, and confetti
  * rains behind it while the footer is on screen. The small footer row stays
  * underneath.
  */
@@ -30,7 +31,9 @@ export default function Footer({ businessName, instagram }: { businessName: stri
   const root = useRef<HTMLElement>(null);
   const handle = instagram?.replace(/^@/, "");
   const f = useLang().t.footer;
-  const word = `${businessName}.`.split("");
+  // Lowercase like the logo's wordmark ("pokanito."); the aria-label and the
+  // copyright line keep the capitalised name.
+  const word = `${businessName.toLocaleLowerCase()}.`.split("");
 
   useGSAP(
     () => {
@@ -84,8 +87,8 @@ export default function Footer({ businessName, instagram }: { businessName: stri
             />
           ))}
         </div>
-        {/* The current M mark with its confetti (momentelo-icon.png). */}
-        <img className="lp-finale__mark" src="/brand/momentelo-icon.png" alt="" aria-hidden />
+        {/* The P mark (pokanito-mark.svg). */}
+        <img className="lp-finale__mark" src="/brand/pokanito-mark.svg" alt="" aria-hidden />
         <p className="lp-finale__word" aria-label={businessName}>
           {word.map((ch, i) => (
             <span
@@ -106,7 +109,7 @@ export default function Footer({ businessName, instagram }: { businessName: stri
             @{handle}
           </a>
         )}
-        <span>{f.rights(new Date().getFullYear(), businessName)}</span>
+        <span>{fmt(f.rights, { year: new Date().getFullYear(), name: businessName })}</span>
         {/* Phones: the fixed header already has the toggle (hidden in CSS). */}
         <span className="lp-footer__lang">
           <LangToggle />

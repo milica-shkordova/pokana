@@ -5,7 +5,7 @@ import {
   type EventStatus,
   type LeadStage,
   type TemplateStatus,
-} from "@momentelo/shared";
+} from "@pokanito/shared";
 import { cx } from "../cx";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -318,21 +318,27 @@ export function EmptyState({
 }
 
 /**
- * The Momentelo logo. Each app serves the PNGs from its own /public/brand
- * (sources: packages/ui/brand). `variant`: full logo (icon + wordmark),
- * wordmark only, or the icon alone. `text` is the accessible name.
+ * The Pokanito logo. Each app serves the SVGs from its own /public/brand
+ * (sources: packages/ui/brand). `variant`: full logo (the lockup: the P mark,
+ * scaled to the letters' height, beside the "pokanito." wordmark), wordmark
+ * only, or the P mark alone. `tone="dark"` picks the versions with a cream wordmark for
+ * plum/dark backgrounds. `text` is the accessible name.
  */
 export function Wordmark({
   size = "md",
   variant = "logo",
+  tone = "light",
   className,
-  text = "Momentelo",
+  text = "Pokanito",
 }: {
   size?: "sm" | "md" | "lg";
   variant?: "logo" | "wordmark" | "icon";
+  tone?: "light" | "dark";
   className?: string;
   text?: string;
 }) {
+  const base = variant === "logo" ? "lockup" : variant;
+  const file = variant === "icon" ? "mark" : tone === "dark" ? `${base}-on-dark` : base;
   return (
     <img
       className={cx(
@@ -341,7 +347,7 @@ export function Wordmark({
         `ui-wordmark--${variant}`,
         className,
       )}
-      src={`/brand/momentelo-${variant}.png`}
+      src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/pokanito-${file}.svg`}
       alt={text}
     />
   );

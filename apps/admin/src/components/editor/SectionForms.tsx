@@ -7,8 +7,8 @@ import {
   type ProgramItem,
   type SectionKind,
   type Venue,
-} from "@momentelo/shared";
-import { Button, Checkbox, Field, FormGrid, Input } from "@momentelo/ui";
+} from "@pokanito/shared";
+import { Button, Checkbox, Field, FormGrid, Input } from "@pokanito/ui";
 import { IconMusic, IconPlus } from "../Icons";
 import { UploadButton } from "../MediaPicker";
 import { formatDuration } from "@/lib/format";

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SectionHeading } from "@momentelo/ui";
+import { SectionHeading } from "@pokanito/ui";
 import { featureMeta } from "@/content/landing";
 import { useLang } from "./i18n";
 import { Icon } from "./Icon";

@@ -1,6 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
 
-// Momentelo confetti: --ui-color-{coral,marigold,rose,sage,terracotta}.
+// Pokanito confetti: --ui-color-{coral,marigold,rose,sage,terracotta}.
 const DEFAULT_COLORS = ["#d9693f", "#e9a94f", "#ee9c92", "#9db59a", "#b5502f"];
 const PIECE_COUNT = 40;
 

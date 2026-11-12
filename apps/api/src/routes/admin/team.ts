@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { inviteSchema, userUpdateSchema, type TeamMember } from "@momentelo/shared";
+import { inviteSchema, userUpdateSchema, type TeamMember } from "@pokanito/shared";
 import { db } from "../../db";
 import { requireOwner, toTeamMember, type AuthEnv } from "../../auth";
 import { env } from "../../env";

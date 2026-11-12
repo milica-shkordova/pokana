@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ApiError, createApiClient } from "@momentelo/shared";
+import { ApiError, createApiClient } from "@pokanito/shared";
 
 const base = createApiClient("");
 

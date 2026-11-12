@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import Head from "next/head";
-import { formatEventDate, type PublicEvent, type RsvpInput } from "@momentelo/shared";
-import { Invitation } from "@momentelo/templates";
-import { templateDefinitions } from "@momentelo/templates/definitions";
+import { formatEventDate, type PublicEvent, type RsvpInput } from "@pokanito/shared";
+import { Invitation } from "@pokanito/templates";
+import { templateDefinitions } from "@pokanito/templates/definitions";
 import { browserApi, SITE_URL } from "@/lib/api";
 
 /** Fonts, title, robots and link-preview tags for an invitation page. */

@@ -11,8 +11,8 @@ import {
   type Locale,
   type Rsvp,
   type RsvpGuest,
-} from "@momentelo/shared";
-import { getDefinition } from "@momentelo/templates/definitions";
+} from "@pokanito/shared";
+import { getDefinition } from "@pokanito/templates/definitions";
 import { db } from "../../db";
 import { createPreviewToken, type AuthEnv } from "../../auth";
 import { env } from "../../env";

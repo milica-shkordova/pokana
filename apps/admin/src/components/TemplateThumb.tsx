@@ -1,5 +1,5 @@
-import type { TemplateSummary } from "@momentelo/shared";
-import { getDefinition } from "@momentelo/templates/definitions";
+import type { TemplateSummary } from "@pokanito/shared";
+import { getDefinition } from "@pokanito/templates/definitions";
 
 const FALLBACK = { bg: "#F0E2D6", ink: "#7A6E66", font: "'Cormorant Garamond', serif" };
 

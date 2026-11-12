@@ -1,4 +1,4 @@
-import type { EventContent } from "@momentelo/shared";
+import type { EventContent } from "@pokanito/shared";
 import type { TemplateDefinition } from "../engine/types";
 
 // Classic Christening and Floral Baptism share one component

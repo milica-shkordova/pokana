@@ -1,4 +1,4 @@
-import { Button, Swatches } from "@momentelo/ui";
+import { Button, Swatches } from "@pokanito/ui";
 import { EditorCard } from "./fields";
 import type { FormProps } from "./context";
 

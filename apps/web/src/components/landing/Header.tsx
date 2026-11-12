@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Wordmark } from "@momentelo/ui";
+import { Wordmark } from "@pokanito/ui";
+import { fmt } from "@/content/landing";
 import { LangToggle, useLang } from "./i18n";
 import { lockScroll } from "./scrollLock";
 
@@ -58,9 +59,9 @@ export default function Header({ businessName, logoUrl }: { businessName: string
   return (
     <header className={`lp-header${open ? " lp-header--open" : ""}`}>
       <div className="lp-wrap lp-header__row">
-        <a href="/" className="lp-header__brand" aria-label={t.nav.home(businessName)}>
+        <a href="/" className="lp-header__brand" aria-label={fmt(t.nav.home, { name: businessName })}>
           {/* The hero intro (Hero.tsx) flies its card logo into this slot. An
-              uploaded logo (Admin › Settings) replaces the Momentelo logo. */}
+              uploaded logo (Admin › Settings) replaces the Pokanito logo. */}
           <span className="lp-header__logo" data-header-logo>
             {logoUrl ? <img className="ui-wordmark ui-wordmark--md" src={logoUrl} alt={businessName} /> : <Wordmark text={businessName} />}
           </span>

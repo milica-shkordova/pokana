@@ -5,7 +5,7 @@ import {
   zonedToUtc,
   type EventDetail,
   type Locale,
-} from "@momentelo/shared";
+} from "@pokanito/shared";
 import {
   Button,
   Field,
@@ -15,7 +15,7 @@ import {
   Select,
   SwitchRow,
   useToast,
-} from "@momentelo/ui";
+} from "@pokanito/ui";
 import { api, errorMessage, WEB_HOST } from "@/lib/api";
 import { parseEmails } from "@/lib/format";
 import { IconMail } from "../Icons";

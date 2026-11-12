@@ -1,5 +1,5 @@
 import { useRef, type ComponentType } from "react";
-import type { PublicEvent } from "@momentelo/shared";
+import type { PublicEvent } from "@pokanito/shared";
 import { templateDefinitions } from "./definitions";
 import { InvitationProvider, type SubmitRsvp } from "./engine/runtime";
 import { useParallax, useReveal } from "./engine/hooks";
@@ -46,7 +46,7 @@ export function Invitation({ event, submitRsvp, initialLocale }: InvitationProps
   }
   return (
     <InvitationProvider event={event} def={def} submitRsvp={submitRsvp} initialLocale={initialLocale}>
-      <div ref={root} className="momentelo-root" >
+      <div ref={root} className="pokanito-root" >
         <Component />
       </div>
     </InvitationProvider>

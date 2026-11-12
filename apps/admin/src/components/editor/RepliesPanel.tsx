@@ -1,5 +1,5 @@
-import type { EventDetail, Rsvp } from "@momentelo/shared";
-import { Badge, Button, EmptyState, Stat, Table, buttonClassName, useToast } from "@momentelo/ui";
+import type { EventDetail, Rsvp } from "@pokanito/shared";
+import { Badge, Button, EmptyState, Stat, Table, buttonClassName, useToast } from "@pokanito/ui";
 import LoadState from "../LoadState";
 import { api, errorMessage, useResource } from "@/lib/api";
 import { formatDateTime } from "@/lib/format";

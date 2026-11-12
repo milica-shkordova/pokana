@@ -2,12 +2,12 @@
 // preview banner, empty photo placeholders. Templates override the toggles'
 // look with their own classes when they want to.
 
-.momentelo-root {
+.pokanito-root {
   min-height: 100vh;
 }
 
 // Scroll reveal — `[data-reveal]` fades/slides in once `data-revealed` is set.
-.momentelo-root [data-reveal] {
+.pokanito-root [data-reveal] {
   opacity: 0;
   transform: translateY(24px);
   transition:
@@ -16,31 +16,31 @@
   transition-delay: var(--reveal-delay, 0s);
 }
 
-.momentelo-root [data-reveal][data-revealed] {
+.pokanito-root [data-reveal][data-revealed] {
   opacity: 1;
   transform: none;
 }
 
 // Parallax — set by useParallax() as --parallax.
-.momentelo-root [data-parallax] {
+.pokanito-root [data-parallax] {
   transform: translate3d(0, var(--parallax, 0px), 0);
   will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .momentelo-root [data-reveal] {
+  .pokanito-root [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
   }
 
-  .momentelo-root [data-parallax] {
+  .pokanito-root [data-parallax] {
     transform: none;
   }
 
-  .momentelo-root *,
-  .momentelo-root *::before,
-  .momentelo-root *::after {
+  .pokanito-root *,
+  .pokanito-root *::before,
+  .pokanito-root *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
@@ -60,7 +60,7 @@
   min-height: 120px;
 }
 
-.momentelo-lang {
+.pokanito-lang {
   position: fixed;
   top: 12px;
   right: 12px;
@@ -96,7 +96,7 @@
   }
 }
 
-.momentelo-music {
+.pokanito-music {
   position: fixed;
   bottom: 16px;
   right: 16px;
@@ -119,7 +119,7 @@
   }
 }
 
-.momentelo-preview-notice {
+.pokanito-preview-notice {
   position: fixed;
   bottom: 16px;
   left: 16px;

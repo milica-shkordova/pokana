@@ -10,8 +10,8 @@ import {
   type TemplateStatus,
   type TemplateSummary,
   type TemplateUpdateInput,
-} from "@momentelo/shared";
-import { getDefinition, resolveSections } from "@momentelo/templates/definitions";
+} from "@pokanito/shared";
+import { getDefinition, resolveSections } from "@pokanito/templates/definitions";
 import {
   Alert,
   Button,
@@ -28,7 +28,7 @@ import {
   buttonClassName,
   cx,
   useToast,
-} from "@momentelo/ui";
+} from "@pokanito/ui";
 import AdminLayout from "@/components/AdminLayout";
 import LoadState from "@/components/LoadState";
 import TemplateThumb, { thumbStyle } from "@/components/TemplateThumb";

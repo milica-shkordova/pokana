@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ApiError, type LeadInput, type TemplateSummary } from "@momentelo/shared";
-import { Button, Eyebrow, Field, Heading, Input, Lede, Select, Textarea } from "@momentelo/ui";
+import { ApiError, type LeadInput, type TemplateSummary } from "@pokanito/shared";
+import { Button, Eyebrow, Field, Heading, Input, Lede, Select, Textarea } from "@pokanito/ui";
 import { browserApi } from "@/lib/api";
+import { fmt } from "@/content/landing";
 import { useLang } from "./i18n";
 
 gsap.registerPlugin(useGSAP);
@@ -127,7 +128,7 @@ export default function Contact({ templates, contactEmail }: Props) {
       setError(
         err instanceof ApiError && err.status === 429
           ? err.message
-          : c.error(contactEmail),
+          : fmt(c.error, { email: contactEmail }),
       );
       shake();
     }

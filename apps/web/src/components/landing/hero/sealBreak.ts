@@ -18,7 +18,8 @@ const rnd = (i: number, k: number) => {
   return x - Math.floor(x);
 };
 
-const CRUMB_COLORS = ["#7A2A12", "#A3401C", "#D96A43"];
+// Matched to the Pokanito wax (wax-seal.svg): ember, flame, highlight.
+const CRUMB_COLORS = ["#8A2A0C", "#C9461A", "#F07A40"];
 
 export const SEAL_CRUMBS = Array.from({ length: 9 }, (_, i) => ({
   vx: (rnd(i, 21) - 0.5) * 2, // −1…1 sideways

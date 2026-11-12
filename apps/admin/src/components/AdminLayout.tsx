@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Avatar, Button, PageHeader, Spinner, Wordmark, cx } from "@momentelo/ui";
+import { Avatar, Button, PageHeader, Spinner, Wordmark, cx } from "@pokanito/ui";
 import { api } from "@/lib/api";
 import { useSession } from "@/lib/session";
 import { IconCalendar, IconChat, IconImage, IconSettings, IconTemplates } from "./Icons";
@@ -22,7 +22,7 @@ export function AuthGate({ children, title }: { children: ReactNode; title: stri
   return (
     <>
       <Head>
-        <title>{`${title} · Momentelo Admin`}</title>
+        <title>{`${title} · Pokanito Admin`}</title>
       </Head>
       {user ? (
         children
@@ -60,7 +60,7 @@ export default function AdminLayout({ title, kicker, actions, header, children }
     <AuthGate title={title}>
       <div className="admin ui-root">
         <aside className="admin__sidebar">
-          <Link href="/" className="admin__brand" aria-label="Momentelo admin home">
+          <Link href="/" className="admin__brand" aria-label="Pokanito admin home">
             <Wordmark />
             <span className="admin__brand-tag">Admin</span>
           </Link>

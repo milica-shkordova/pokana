@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Button, useToast } from "@momentelo/ui";
+import { Button, useToast } from "@pokanito/ui";
 import { errorMessage } from "@/lib/api";
 import { IconUpload } from "../Icons";
 import { ACCEPT, UploadButton, uploadFiles } from "../MediaPicker";

@@ -3,7 +3,7 @@ import sharp from "sharp";
 import heicConvert from "heic-convert";
 import { parseBuffer } from "music-metadata";
 import type { Media } from "@prisma/client";
-import { PHOTO_WIDTHS, type MediaItem, type MediaKind, type ResolvedMedia } from "@momentelo/shared";
+import { PHOTO_WIDTHS, type MediaItem, type MediaKind, type ResolvedMedia } from "@pokanito/shared";
 import { db } from "../db";
 import { publicUrl, storage } from "./storage";
 import { ValidationError } from "./http";
