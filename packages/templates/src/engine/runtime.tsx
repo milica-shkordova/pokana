@@ -10,7 +10,8 @@ import {
   type SectionKind,
 } from "@pokanito/shared";
 import { baseStrings, type UiStrings } from "./strings";
-import { resolveSections, type TemplateDefinition } from "./types";
+import { defaultTheme, resolveSections } from "./sections";
+import type { TemplateDefinition } from "./types";
 
 // Everything a template needs at render time. The host app (public site,
 // preview) creates it with <InvitationProvider>; templates read it with
@@ -59,7 +60,7 @@ export function InvitationProvider({ event, def, submitRsvp, initialLocale, chil
 
   const value = useMemo<InvitationContextValue>(() => {
     const s = { ...baseStrings[locale], ...def.strings?.[locale] };
-    const theme = { ...Object.fromEntries(def.themeOptions.map((o) => [o.key, o.default])), ...event.theme };
+    const theme = { ...defaultTheme(def), ...event.theme };
     const sections = resolveSections(def, event.sections)
       .filter((x) => x.enabled)
       .map((x) => x.id);

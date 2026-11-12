@@ -1,14 +1,8 @@
 import { useRef, type CSSProperties } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { SectionHeading } from "@pokanito/ui";
 import { stepMeta } from "@/content/landing";
 import { useLang } from "./i18n";
-import { setupJourney } from "./journey/setupJourney";
-
-const DESKTOP = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
-const MOBILE = "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
+import { useJourney } from "./journey/useJourney";
 
 /**
  * "How it works" (HANDOFF-ANIMATIONS B3): a ribbon snakes through the three
@@ -21,27 +15,15 @@ const MOBILE = "(max-width: 1023px) and (prefers-reduced-motion: no-preference)"
 export default function HowItWorks() {
   const section = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const root = section.current;
-      if (!root) return;
-      gsap.registerPlugin(ScrollTrigger);
-      const mm = gsap.matchMedia();
-      mm.add({ desktop: DESKTOP, mobile: MOBILE }, (ctx) =>
-        setupJourney(root, ctx.conditions?.desktop ? "desktop" : "mobile"),
-      );
-      return () => mm.revert();
-    },
-    { scope: section },
-  );
+  useJourney(section);
 
   const h = useLang().t.how;
   const steps = stepMeta.map((m, i) => ({ ...m, ...h.steps[i] }));
 
   return (
-    <section id="how" ref={section} className="lp-section lp-section--blush lp-journey">
+    <section id="how" ref={section} className="ui-section ui-section--linen lp-journey">
       <div className="lp-journey__stage">
-        <div className="lp-wrap lp-stack-48 lp-journey__inner">
+        <div className="lp-wrap ui-stack--48 lp-journey__inner">
           <SectionHeading data-reveal eyebrow={h.eyebrow} title={h.title} />
           <div className="lp-journey__map">
             <svg className="lp-journey__svg" aria-hidden="true" focusable="false">

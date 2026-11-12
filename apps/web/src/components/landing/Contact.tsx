@@ -1,23 +1,11 @@
-import { useRef, useState } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ApiError, type LeadInput, type TemplateSummary } from "@pokanito/shared";
-import { Button, Eyebrow, Field, Heading, Input, Lede, Select, Textarea } from "@pokanito/ui";
-import { browserApi } from "@/lib/api";
+import { useRef } from "react";
+import { Button, Eyebrow, Field, Heading, HoneypotField, Input, Lede, Select, Textarea } from "@pokanito/ui";
 import { fmt } from "@/content/landing";
 import { useLang } from "./i18n";
-
-gsap.registerPlugin(useGSAP);
-
-interface Props {
-  templates: TemplateSummary[];
-  contactEmail: string;
-}
-
-const CONFETTI = ["#D9693F", "#E9A94F", "#EE9C92", "#9DB59A", "#B5502F"];
-const BURST = Array.from({ length: 26 }, (_, i) => ({ color: CONFETTI[i % CONFETTI.length], strip: i % 3 === 0 }));
-
-const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+import { BURST } from "./contact/constants";
+import { useLeadForm } from "./contact/useLeadForm";
+import { useContactSendAnimation } from "./contact/useContactSendAnimation";
+import type { ContactProps } from "./contact/types";
 
 /**
  * "Get in touch" (HANDOFF-ANIMATIONS B7). On a successful send the form folds
@@ -25,117 +13,23 @@ const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)"
  * pops in. On an error the button shakes. Success is always announced in the
  * aria-live region, independent of the animation.
  */
-export default function Contact({ templates, contactEmail }: Props) {
+export default function Contact({ templates, contactEmail }: ContactProps) {
   const live = templates.filter((t) => t.status === "live");
   const c = useLang().t.contact;
-  const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
-  const [templateId, setTemplateId] = useState(live[0]?.id ?? "");
-  const [message, setMessage] = useState("");
-  const [website, setWebsite] = useState(""); // honeypot
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [error, setError] = useState<string | null>(null);
 
   const box = useRef<HTMLDivElement>(null);
-  const { contextSafe } = useGSAP({ scope: box });
-
-  const flyAway = contextSafe(() => {
-    const el = box.current!;
-    const form = el.querySelector<HTMLElement>(".lp-contact__form")!;
-    const env = el.querySelector<HTMLElement>(".lp-send__envelope")!;
-    const done = el.querySelector<HTMLElement>(".lp-send__done")!;
-    const pieces = gsap.utils.toArray<HTMLElement>(".lp-send__piece", el);
-
-    if (reducedMotion()) {
-      gsap.set(form, { autoAlpha: 0 });
-      gsap.set(done, { autoAlpha: 1 });
-      done.querySelector("button")?.focus();
-      return;
-    }
-
-    // The envelope starts as the form's box and folds down to 260×170.
-    const sx = form.offsetWidth / 260;
-    const sy = form.offsetHeight / 170;
-    gsap
-      .timeline({ onComplete: () => done.querySelector("button")?.focus() })
-      // 0–0.5s: fields fade and shrink, the box becomes an envelope.
-      .to(form, { autoAlpha: 0, scale: 0.6, duration: 0.35, ease: "power2.in" }, 0)
-      .fromTo(env, { autoAlpha: 0, scaleX: sx, scaleY: sy }, { autoAlpha: 1, scaleX: 1, scaleY: 1, duration: 0.5, ease: "power2.inOut" }, 0)
-      .fromTo(".lp-send__flap", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.25)
-      .fromTo(".lp-send__seal", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, 0.35)
-      // 0.55–1.35s: it flies off to the top right with a confetti burst.
-      .to(env, { x: 520, y: -620, rotate: 28, scale: 0.6, duration: 0.8, ease: "power2.in" }, 0.55)
-      .set(pieces, { opacity: 1, x: 0, y: 0 }, 0.55)
-      .to(
-        pieces,
-        {
-          x: () => gsap.utils.random(-260, 260),
-          y: () => gsap.utils.random(-220, 200),
-          rotate: () => gsap.utils.random(-400, 400),
-          duration: 0.9,
-          ease: "expo.out",
-        },
-        0.55,
-      )
-      .to(pieces, { opacity: 0, duration: 0.5, stagger: 0.01 }, 1.05)
-      .set(env, { autoAlpha: 0 }, 1.4)
-      // ~1.5s: "Message sent!" pops in.
-      .fromTo(done, { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, 1.5);
+  const { flyAway, shake, reset } = useContactSendAnimation(box);
+  const form = useLeadForm("contact-form", {
+    initialTemplateId: live[0]?.id ?? "",
+    errorMessage: fmt(c.error, { email: contactEmail }),
+    onSent: flyAway,
+    onError: shake,
   });
-
-  const shake = contextSafe(() => {
-    if (reducedMotion()) return;
-    gsap.fromTo(
-      ".lp-contact__actions .ui-button",
-      { x: 0 },
-      { keyframes: { x: [0, -10, 9, -7, 5, -2, 0] }, duration: 0.5, ease: "none" },
-    );
-  });
-
-  const reset = contextSafe(() => {
-    const el = box.current!;
-    gsap.set([".lp-send__envelope", ".lp-send__done"], { clearProps: "all" });
-    gsap.set(".lp-send__piece", { clearProps: "all" });
-    gsap.fromTo(
-      ".lp-contact__form",
-      { autoAlpha: 0, scale: 0.96 },
-      { autoAlpha: 1, scale: 1, duration: reducedMotion() ? 0 : 0.4, ease: "power2.out", clearProps: "all" },
-    );
-    setStatus("idle");
-    el.querySelector<HTMLInputElement>(".lp-contact__form input")?.focus();
-  });
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    setError(null);
-    try {
-      await browserApi.post("/api/public/leads", {
-        source: "contact-form",
-        name,
-        contact,
-        templateId: templateId || undefined,
-        message: message || undefined,
-        website,
-      } satisfies LeadInput);
-      setStatus("sent");
-      setName("");
-      setContact("");
-      setMessage("");
-      flyAway();
-    } catch (err) {
-      setStatus("idle");
-      setError(
-        err instanceof ApiError && err.status === 429
-          ? err.message
-          : fmt(c.error, { email: contactEmail }),
-      );
-      shake();
-    }
-  };
+  const { name, setName, contact, setContact, templateId, setTemplateId, message, setMessage, website, setWebsite } = form;
+  const { status, setStatus, error, submit } = form;
 
   return (
-    <section id="contact" className="lp-section lp-section--white lp-section--contact">
+    <section id="contact" className="ui-section ui-section--white lp-section--contact">
       <div className="lp-wrap">
         <div className="lp-contact ui-inverse" data-reveal>
           <div className="lp-contact__intro">
@@ -180,12 +74,7 @@ export default function Contact({ templates, contactEmail }: Props) {
                   placeholder={c.messagePlaceholder}
                 />
               </Field>
-              <div className="lp-hp" aria-hidden>
-                <label>
-                  Website
-                  <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
-                </label>
-              </div>
+              <HoneypotField value={website} onChange={setWebsite} />
               <div className="lp-contact__actions">
                 <Button type="submit" variant="accent" size="lg" loading={status === "sending"} iconRight="→">
                   {status === "sending" ? c.sending : c.send}
@@ -216,7 +105,7 @@ export default function Contact({ templates, contactEmail }: Props) {
             <div className="lp-send__done">
               <span className="lp-send__title">{c.sentTitle}</span>
               <span className="lp-send__text">{c.sentText}</span>
-              <button type="button" className="lp-send__again" onClick={reset}>
+              <button type="button" className="lp-send__again" onClick={() => reset(() => setStatus("idle"))}>
                 {c.again}
               </button>
             </div>

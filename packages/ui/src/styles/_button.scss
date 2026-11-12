@@ -1,29 +1,25 @@
+@use "./tools" as ui;
+
 .ui-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--ui-space-8);
   min-height: var(--ui-touch);
-  padding: 0 20px;
+  padding: 0 var(--ui-space-20);
   border-radius: var(--ui-radius-pill);
   font-family: var(--ui-font-body);
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--ui-text-14);
   line-height: 1.2;
   cursor: pointer;
   border: 1px solid transparent;
   text-decoration: none;
   white-space: nowrap;
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease,
-    box-shadow 0.15s ease,
-    transform 0.15s ease;
+  @include ui.transition(background border-color color box-shadow transform, var(--ui-duration-fast));
 
   &:focus-visible {
-    outline: 2px solid var(--ui-color-terracotta);
-    outline-offset: 2px;
+    @include ui.focus-ring;
   }
 
   &:disabled,
@@ -34,7 +30,7 @@
 
   &__icon {
     display: inline-flex;
-    transition: transform 0.2s ease;
+    transition: transform var(--ui-duration-base) ease;
   }
 
   &:hover:not(:disabled) &__icon--right {
@@ -44,11 +40,11 @@
   // ── Variants ──
   &--primary {
     background: var(--ui-color-primary);
-    color: #fff;
+    color: var(--ui-color-white);
 
     &:hover:not(:disabled) {
       background: var(--ui-color-primary-hover);
-      color: #fff;
+      color: var(--ui-color-white);
     }
   }
 
@@ -70,7 +66,7 @@
 
     &:hover:not(:disabled) {
       background: var(--ui-color-ink-strong);
-      color: #fff;
+      color: var(--ui-color-white);
     }
   }
 
@@ -100,7 +96,7 @@
     font-weight: 700;
 
     &:hover:not(:disabled) {
-      background: #f4b3aa;
+      background: var(--ui-color-rose-hover);
       color: var(--ui-color-ink-strong);
     }
   }
@@ -108,14 +104,14 @@
   // ── Sizes ──
   &--sm {
     min-height: 40px;
-    padding: 0 14px;
-    font-size: 13px;
+    padding: 0 var(--ui-space-14);
+    font-size: var(--ui-text-13);
   }
 
   &--lg {
     min-height: 48px;
-    padding: 0 24px;
-    font-size: 15px;
+    padding: 0 var(--ui-space-24);
+    font-size: var(--ui-text-15);
   }
 
   &--block {
@@ -136,5 +132,5 @@
 .ui-inverse .ui-button--secondary {
   background: transparent;
   color: var(--ui-color-cocoa-text);
-  border-color: #6b5650;
+  border-color: var(--ui-color-cocoa-line);
 }

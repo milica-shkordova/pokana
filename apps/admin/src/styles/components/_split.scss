@@ -1,0 +1,45 @@
+// ── Split views (templates, leads, media) ─────────────────────────────────
+
+.admin-split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ui-space-20);
+  align-items: flex-start;
+
+  &__main {
+    flex: 999 1 560px;
+    min-width: 0;
+  }
+
+  &__wide {
+    flex: 999 1 460px;
+    min-width: 0;
+  }
+
+  &__side {
+    flex: 1 1 320px;
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+  }
+}
+
+.admin-detail-title {
+  font-family: var(--ui-font-heading);
+  font-size: var(--ui-text-30);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.admin-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ui-space-8);
+  padding-top: var(--ui-space-8);
+  border-top: 1px solid var(--ui-color-border-soft);
+
+  > * {
+    flex: 1 1 120px;
+  }
+}

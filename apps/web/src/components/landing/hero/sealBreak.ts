@@ -10,17 +10,13 @@
  * Distances are in envelope units (the envelope is scaled as a whole).
  */
 
-const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+import { clamp, seededRandom as rnd } from "@pokanito/shared";
+import { CRUMB_COLORS } from "./constants";
+
+const clamp01 = (v: number) => clamp(v, 0, 1);
 const io = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
-/** Fixed pseudo-random numbers, so the crumbs look the same every time. */
-const rnd = (i: number, k: number) => {
-  const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
-  return x - Math.floor(x);
-};
 
-// Matched to the Pokanito wax (wax-seal.svg): ember, flame, highlight.
-const CRUMB_COLORS = ["#8A2A0C", "#C9461A", "#F07A40"];
-
+/** Fixed pseudo-random numbers (seededRandom, @pokanito/shared), so the crumbs look the same every time. */
 export const SEAL_CRUMBS = Array.from({ length: 9 }, (_, i) => ({
   vx: (rnd(i, 21) - 0.5) * 2, // −1…1 sideways
   up: 0.4 + rnd(i, 22) * 0.8, // initial upward kick

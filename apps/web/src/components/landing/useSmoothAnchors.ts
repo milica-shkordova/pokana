@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { prefersReducedMotion } from "@pokanito/ui";
 
 /** Fired by the hero intro when it swaps its pin for the static hero. */
 export const INTRO_FINISHED_EVENT = "lp:intro-finished";
@@ -21,7 +22,6 @@ function fixedHeaderHeight() {
 export function useSmoothAnchors() {
   useEffect(() => {
     gsap.registerPlugin(ScrollToPlugin);
-    const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let tween: gsap.core.Tween | null = null;
     let target: HTMLElement | null = null;
 
@@ -87,7 +87,7 @@ export function useSmoothAnchors() {
       e.preventDefault();
       history.pushState(null, "", `#${id}`);
       current = el;
-      if (reduced()) {
+      if (prefersReducedMotion()) {
         window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - fixedHeaderHeight());
       } else {
         // Longer trips take a bit longer, within 0.5–1.1s.

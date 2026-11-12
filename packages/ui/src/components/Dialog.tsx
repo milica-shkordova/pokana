@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cx } from "../cx";
+import { prefersReducedMotion } from "../utils/prefersReducedMotion";
 
 interface DialogProps {
   open: boolean;
@@ -17,9 +18,6 @@ interface DialogProps {
 
 /** Matches the `ui-dialog-out` animation in _surfaces.scss. */
 const CLOSE_MS = 160;
-
-const reducedMotion = () =>
-  typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 /**
  * Modal built on the native <dialog>: focus trap, Esc to close and inert
@@ -46,7 +44,7 @@ export function Dialog({ open, onClose, title, children, footer, wide, icon, ico
       setShown(false);
       return;
     }
-    if (reducedMotion()) {
+    if (prefersReducedMotion()) {
       d.close();
       setShown(false);
       return;

@@ -1,37 +1,11 @@
-import { useState, type ReactNode } from "react";
-import { ApiError, formatEventDate, type Locale, type PublicEvent, type PublicEventMeta } from "@pokanito/shared";
+import { formatEventDate } from "@pokanito/shared";
 import { Alert, Button, Input, Spinner } from "@pokanito/ui";
-import { browserApi } from "@/lib/api";
 import { InvitationHead } from "./InvitationView";
+import { copyFor } from "./copy";
+import { useUnlockForm } from "./hooks/useUnlockForm";
+import type { LockedViewProps, StatePageProps, StateShellProps, UnpublishedViewProps } from "./types";
 
-const COPY = {
-  mk: {
-    locked: "Оваа покана е заштитена. Внесете го кодот што го добивте заедно со линкот.",
-    code: "Код за пристап",
-    open: "Отвори ја поканата",
-    wrong: "Кодот не е точен. Обидете се повторно.",
-    tooMany: "Премногу обиди. Обидете се повторно за неколку минути.",
-    ended: "Оваа покана заврши. Ви благодариме што бевте дел од овој посебен ден.",
-    unpublished: "Оваа покана сè уште не е објавена. Наскоро ќе биде достапна на овој линк.",
-    loading: "Се вчитува…",
-    previewError: "Линкот за преглед е неважечки или истечен.",
-  },
-  en: {
-    locked: "This invitation is private. Enter the code you received with the link.",
-    code: "Access code",
-    open: "Open the invitation",
-    wrong: "That code doesn’t match. Please try again.",
-    tooMany: "Too many attempts. Please try again in a few minutes.",
-    ended: "This invitation has ended. Thank you for being part of a special day.",
-    unpublished: "This invitation isn’t published yet. It will be available at this link soon.",
-    loading: "Loading…",
-    previewError: "This preview link is invalid or has expired.",
-  },
-};
-
-const copyFor = (meta: { languages: Locale[] }) => COPY[meta.languages[0] ?? "mk"];
-
-function Shell({ meta, children }: { meta: PublicEventMeta; children: ReactNode }) {
+function Shell({ meta, children }: StateShellProps) {
   const locale = meta.languages[0] ?? "mk";
   return (
     <main className="state-page ui-root">
@@ -57,7 +31,7 @@ function Shell({ meta, children }: { meta: PublicEventMeta; children: ReactNode 
   );
 }
 
-export function EndedView({ meta }: { meta: PublicEventMeta }) {
+export function EndedView({ meta }: StatePageProps) {
   return (
     <Shell meta={meta}>
       <p className="state-page__text">{copyFor(meta).ended}</p>
@@ -65,7 +39,7 @@ export function EndedView({ meta }: { meta: PublicEventMeta }) {
   );
 }
 
-export function UnpublishedView({ meta, error }: { meta: PublicEventMeta; error?: boolean }) {
+export function UnpublishedView({ meta, error }: UnpublishedViewProps) {
   const c = copyFor(meta);
   return (
     <Shell meta={meta}>
@@ -74,7 +48,7 @@ export function UnpublishedView({ meta, error }: { meta: PublicEventMeta; error?
   );
 }
 
-export function LoadingView({ meta }: { meta: PublicEventMeta }) {
+export function LoadingView({ meta }: StatePageProps) {
   return (
     <Shell meta={meta}>
       <p className="state-page__text" role="status">
@@ -84,62 +58,9 @@ export function LoadingView({ meta }: { meta: PublicEventMeta }) {
   );
 }
 
-const storageKey = (slug: string) => `pokanito:unlock:${slug}`;
-
-/** Remembered access code for this tab (codes are shared with guests, not secrets). */
-export function rememberedCode(slug: string): string | null {
-  try {
-    return sessionStorage.getItem(storageKey(slug));
-  } catch {
-    return null;
-  }
-}
-
-export async function unlock(slug: string, code: string) {
-  const res = await browserApi.post<{ event: PublicEvent; token: string }>(
-    `/api/public/events/${encodeURIComponent(slug)}/unlock`,
-    { code },
-  );
-  try {
-    sessionStorage.setItem(storageKey(slug), code);
-  } catch {
-    /* private mode — guest just re-enters the code next time */
-  }
-  return res;
-}
-
-export function forgetCode(slug: string) {
-  try {
-    sessionStorage.removeItem(storageKey(slug));
-  } catch {
-    /* ignore */
-  }
-}
-
-export function LockedView({
-  meta,
-  onUnlocked,
-}: {
-  meta: PublicEventMeta;
-  onUnlocked: (event: PublicEvent, token: string) => void;
-}) {
+export function LockedView({ meta, onUnlocked }: LockedViewProps) {
   const c = copyFor(meta);
-  const [code, setCode] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
-    try {
-      const res = await unlock(meta.slug, code.trim());
-      onUnlocked(res.event, res.token);
-    } catch (err) {
-      setError(err instanceof ApiError && err.status === 429 ? c.tooMany : c.wrong);
-      setBusy(false);
-    }
-  };
+  const { code, setCode, busy, error, submit } = useUnlockForm(meta, c, onUnlocked);
 
   return (
     <Shell meta={meta}>

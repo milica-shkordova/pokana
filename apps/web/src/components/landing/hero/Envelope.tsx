@@ -1,6 +1,8 @@
 import { Wordmark } from "@pokanito/ui";
 import { useLang } from "../i18n";
 import { SEAL_CRUMBS } from "./sealBreak";
+import { CRACK_COLORS } from "./constants";
+import type { EnvelopeProps } from "./types";
 
 /**
  * The envelope of the hero intro (HANDOFF-ANIMATIONS B1, AnimHero.dc.html).
@@ -11,7 +13,7 @@ import { SEAL_CRUMBS } from "./sealBreak";
  * Only rendered visible while the intro runs (`.lp-hero__stage` is
  * `display: none` otherwise), so it never shows with reduced motion.
  */
-export default function Envelope({ businessName, logoUrl }: { businessName: string; logoUrl?: string | null }) {
+export default function Envelope({ businessName, logoUrl }: EnvelopeProps) {
   const hero = useLang().t.hero;
   return (
     <div className="lp-env" data-intro="env">
@@ -91,7 +93,7 @@ export default function Envelope({ businessName, logoUrl }: { businessName: stri
               className="lp-env__crack-main"
               pathLength={1}
               d="M62 2 L57 18 L60 26 L55 37 L61 48 L65 60 L59 70 L57 82 L61 90 L56 100 L60 110 L62 119"
-              stroke="#6A1E08"
+              stroke={CRACK_COLORS.dark}
               strokeWidth={1.3}
               opacity={0.55}
             />
@@ -99,12 +101,12 @@ export default function Envelope({ businessName, logoUrl }: { businessName: stri
               className="lp-env__crack-main"
               pathLength={1}
               d="M63.2 2 L58.2 18 L61.2 26 L56.2 37 L62.2 48 L66.2 60 L60.2 70 L58.2 82 L62.2 90 L57.2 100 L61.2 110 L63.2 119"
-              stroke="#FFB48A"
+              stroke={CRACK_COLORS.light}
               strokeWidth={0.6}
               opacity={0.4}
             />
-            <path className="lp-env__crack-branch" pathLength={1} d="M61 48 L72 44 L80 46" stroke="#6A1E08" strokeWidth={0.8} opacity={0.45} />
-            <path className="lp-env__crack-branch" pathLength={1} d="M57 82 L46 86 L40 84" stroke="#6A1E08" strokeWidth={0.8} opacity={0.45} />
+            <path className="lp-env__crack-branch" pathLength={1} d="M61 48 L72 44 L80 46" stroke={CRACK_COLORS.dark} strokeWidth={0.8} opacity={0.45} />
+            <path className="lp-env__crack-branch" pathLength={1} d="M57 82 L46 86 L40 84" stroke={CRACK_COLORS.dark} strokeWidth={0.8} opacity={0.45} />
           </svg>
           </span>
           {SEAL_CRUMBS.map((c, i) => (

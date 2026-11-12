@@ -166,6 +166,18 @@ export type PublicEventResponse =
   | { state: "ended"; meta: PublicEventMeta }
   | { state: "unpublished"; meta: PublicEventMeta };
 
+/** POST /events/:slug/unlock — the invitation plus proof the code was entered. */
+export interface PublicUnlockResponse {
+  event: PublicEvent;
+  token: string;
+}
+
+/** POST /events/:slug/rsvp and /leads (`demo` = accepted but not stored). */
+export interface PublicFormResponse {
+  ok: true;
+  demo?: true;
+}
+
 // ── RSVPs ───────────────────────────────────────────────────────────────────
 
 export interface RsvpGuest {

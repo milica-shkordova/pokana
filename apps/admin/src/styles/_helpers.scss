@@ -1,0 +1,28 @@
+// Admin-only text helpers (generic ones are .ui-* utilities in @pokanito/ui).
+
+.admin-h2 {
+  font-family: var(--ui-font-heading);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.admin-link-strong {
+  font-size: var(--ui-text-13);
+  font-weight: 600;
+}
+
+.admin-link-muted {
+  color: var(--ui-color-ink-soft) !important;
+  font-size: var(--ui-text-13);
+}
+
+.admin-btn-icon {
+  gap: var(--ui-space-8);
+}
+
+.admin-issues {
+  margin-left: var(--ui-space-18);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-6);
+}

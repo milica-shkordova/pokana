@@ -1,6 +1,7 @@
 import { useEffect, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "@pokanito/ui";
 import { requestScrollRefresh } from "./scrollRefresh";
 
 const GROUP = "[data-reveal-group]";
@@ -24,7 +25,7 @@ export function useLandingReveal(root: RefObject<HTMLElement>) {
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const toggleActions = "play none none reverse";

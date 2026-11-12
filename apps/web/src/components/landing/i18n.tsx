@@ -3,25 +3,15 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
-import { COPY, LANGS, type Copy, type Lang } from "@/content/landing";
+import { useIsoLayoutEffect, useSlidingIndicator } from "@pokanito/ui";
+import { COPY, LANGS, type Lang } from "@/content/landing";
 import { requestScrollRefresh } from "./scrollRefresh";
-
-const STORAGE_KEY = "pokanito:lang";
-
-interface LangValue {
-  lang: Lang;
-  setLang: (lang: Lang) => void;
-  /** The landing copy in the current language. */
-  t: Copy;
-  /** True once the saved language has been restored (client only). */
-  ready: boolean;
-}
+import { STORAGE_KEY } from "./lang/constants";
+import type { LangValue } from "./lang/types";
 
 const LangContext = createContext<LangValue>({ lang: "en", setLang: () => undefined, t: COPY.en, ready: true });
 
@@ -68,50 +58,35 @@ export function useLang(): LangValue {
   return useContext(LangContext);
 }
 
-// useLayoutEffect warns during SSR; this toggle only measures in the browser.
-const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
-
 /**
  * МК / EN switch for the header. A terracotta pill slides behind the chosen
  * language (measured from the buttons, so it fits either label exactly).
  */
-export function LangToggle({ className }: { className?: string }) {
+export function LangToggle({ className, variant = "pill" }: { className?: string; variant?: "pill" | "text" }) {
   const { lang, setLang, t } = useLang();
-  const group = useRef<HTMLDivElement>(null);
-  const thumb = useRef<HTMLSpanElement>(null);
   const [placed, setPlaced] = useState(false);
 
   // Move the pill under the active button; re-measure when sizes change
   // (fonts loading, language labels).
+  const [group, pill] = useSlidingIndicator<HTMLDivElement>(".lp-lang__opt--on", [lang]);
   useIsoLayoutEffect(() => {
-    const el = group.current;
-    const pill = thumb.current;
-    if (!el || !pill) return;
-    const place = () => {
-      const on = el.querySelector<HTMLElement>(".lp-lang__opt--on");
-      if (!on) return;
-      pill.style.width = `${on.offsetWidth}px`;
-      pill.style.transform = `translateX(${on.offsetLeft}px)`;
-    };
-    place();
     // Only animate moves after the first placement (no slide-in on load).
     const id = requestAnimationFrame(() => setPlaced(true));
-    const ro = new ResizeObserver(place);
-    ro.observe(el);
-    return () => {
-      cancelAnimationFrame(id);
-      ro.disconnect();
-    };
+    return () => cancelAnimationFrame(id);
   }, [lang]);
 
   return (
     <div
       ref={group}
-      className={`lp-lang${placed ? " lp-lang--placed" : ""}${className ? ` ${className}` : ""}`}
+      className={`lp-lang${variant === "text" ? " lp-lang--text" : ""}${placed ? " lp-lang--placed" : ""}${className ? ` ${className}` : ""}`}
       role="group"
       aria-label={t.lang.label}
     >
-      <span ref={thumb} className="lp-lang__thumb" aria-hidden />
+      <span
+        className="lp-lang__thumb"
+        style={pill ? { width: pill.width, transform: `translateX(${pill.left}px)` } : undefined}
+        aria-hidden
+      />
       {LANGS.map((l) => (
         <button
           key={l}

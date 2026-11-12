@@ -104,3 +104,6 @@ export const minimalWedding: TemplateDefinition = {
     },
   },
 };
+
+/** Catalog entries this design renders, in gallery order. */
+export const definitions: TemplateDefinition[] = [minimalWedding];

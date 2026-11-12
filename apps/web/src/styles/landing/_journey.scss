@@ -1,14 +1,12 @@
+@use "@pokanito/ui/tools" as ui;
+
 // Owned by the journey animation (HANDOFF-ANIMATIONS). Imported from landing.scss.
 // ── How it works: ribbon journey (B3) ───────────────────────────────────────
 // Base rules = the static layout (reduced motion): the card row from
-// landing.scss with coloured, tilted number tiles; decoration hidden.
+// landing/_steps.scss with coloured, tilted number tiles; decoration hidden.
 // With motion, CSS lays out the journey (scatter on desktop, stacked column
 // below 1024px) and HowItWorks/setupJourney draws the ribbon from those
 // measured positions. `.lp-journey--live` is set by JS while it animates.
-
-$lp-journey-motion: "(prefers-reduced-motion: no-preference)";
-$lp-journey-desk: "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
-$lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)";
 
 .lp-journey {
   overflow-x: clip;
@@ -33,7 +31,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
   }
 }
 
-@media #{$lp-journey-motion} {
+@include ui.motion-ok {
   .lp-journey {
     &__map {
       position: relative;
@@ -113,7 +111,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
       padding: 7px;
       border-radius: 28px;
       background: var(--ui-color-ink);
-      box-shadow: 0 20px 40px rgba(42, 37, 34, 0.2);
+      box-shadow: 0 20px 40px rgba(var(--ui-color-ink-rgb), 0.2);
     }
 
     &__screen {
@@ -161,8 +159,8 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
       align-items: center;
       padding: 10px 12px;
       border-radius: 16px;
-      background: #fff;
-      box-shadow: 0 12px 30px rgba(42, 37, 34, 0.16);
+      background: var(--ui-color-white);
+      box-shadow: 0 12px 30px rgba(var(--ui-color-ink-rgb), 0.16);
       text-align: left;
       transform-origin: 80% 100%;
       transform: scale(0);
@@ -175,7 +173,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
       height: 28px;
       border-radius: 8px;
       background: var(--ui-color-terracotta);
-      color: #fff;
+      color: var(--ui-color-white);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -215,8 +213,8 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
       width: 70px;
       height: 48px;
       border-radius: 8px;
-      background: #fffdf9;
-      box-shadow: 0 6px 16px rgba(42, 37, 34, 0.18);
+      background: var(--ui-color-paper);
+      box-shadow: 0 6px 16px rgba(var(--ui-color-ink-rgb), 0.18);
     }
 
     &__flap {
@@ -226,7 +224,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
       width: 70px;
       height: 28px;
       border-radius: 8px 8px 0 0;
-      background: #f3d7be;
+      background: var(--ui-color-envelope-flap);
       clip-path: polygon(0 0, 100% 0, 50% 100%);
     }
 
@@ -251,14 +249,14 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
       top: -20px;
       width: 26px;
       height: 34px;
-      border: 2px solid #fff;
+      border: 2px solid var(--ui-color-white);
       border-radius: 5px;
       background:
         linear-gradient(var(--ui-color-coral), var(--ui-color-coral)) 50% 7px / 14px 3px no-repeat,
         linear-gradient(#c9bfae, #c9bfae) 50% 15px / 16px 2px no-repeat,
         linear-gradient(#c9bfae, #c9bfae) 50% 20px / 12px 2px no-repeat,
         #e8e5d6;
-      box-shadow: 0 3px 8px rgba(42, 37, 34, 0.15);
+      box-shadow: 0 3px 8px rgba(var(--ui-color-ink-rgb), 0.15);
     }
 
     &__att--tag {
@@ -280,18 +278,18 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
       top: -18px;
       width: 28px;
       height: 28px;
-      border: 2px solid #fff;
+      border: 2px solid var(--ui-color-white);
       border-radius: 5px;
       background:
         radial-gradient(circle at 70% 30%, var(--ui-color-marigold) 0 4px, transparent 5px),
         radial-gradient(ellipse at 30% 115%, var(--ui-color-sage) 0 55%, transparent 56%),
-        linear-gradient(#d8c4b6, #b49a8a);
-      box-shadow: 0 3px 8px rgba(42, 37, 34, 0.15);
+        linear-gradient(#d8c4b6, var(--ui-color-photo-placeholder));
+      box-shadow: 0 3px 8px rgba(var(--ui-color-ink-rgb), 0.15);
     }
   }
 
   // Cards in the journey: tile beside the copy, dimmed until reached.
-  // (Specificity beats the landing.scss .lp-step rules, incl. nth-child tilts.)
+  // (Specificity beats the landing/_steps.scss .lp-step rules, incl. nth-child tilts.)
   .lp-journey .lp-journey__steps > .lp-step {
     position: relative; // paint above the ribbon SVG
     z-index: 1;
@@ -300,7 +298,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
     gap: 14px;
     padding: 16px;
     border-radius: 22px;
-    box-shadow: 0 12px 30px rgba(181, 80, 47, 0.04);
+    box-shadow: 0 12px 30px rgba(var(--ui-color-terracotta-rgb), 0.04);
     transition: box-shadow 0.3s ease; // no transform transition: JS scrubs it
 
     &:hover {
@@ -308,7 +306,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
     }
 
     &.is-reached {
-      box-shadow: 0 12px 30px rgba(181, 80, 47, 0.14);
+      box-shadow: 0 12px 30px rgba(var(--ui-color-terracotta-rgb), 0.14);
     }
 
     .lp-step__num {
@@ -351,8 +349,8 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
 }
 
 // ── Desktop: pinned stage, scattered cards, phone on the right
-@media #{$lp-journey-desk} {
-  .lp-section.lp-journey {
+@include ui.up(desktop, $and: ui.$motion-ok) {
+  .ui-section.lp-journey {
     padding: 0 24px;
   }
 
@@ -413,7 +411,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
 }
 
 // ── Below 1024px: stacked column, ribbon down the left gutter, phone last
-@media #{$lp-journey-mob} {
+@include ui.below(desktop, $and: ui.$motion-ok) {
   .lp-journey {
     &__map {
       padding: 48px 0 8px 64px;
@@ -441,7 +439,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
 
 // Phones / tablets: the pinned screen (setupJourney sets --journey-h); the
 // steps inside glide up as the envelope travels.
-@media #{$lp-journey-mob} {
+@include ui.below(desktop, $and: ui.$motion-ok) {
   .lp-journey.lp-journey--live .lp-journey__stage {
     height: var(--journey-h, 100svh);
     overflow: hidden;
@@ -455,7 +453,7 @@ $lp-journey-mob: "(max-width: 1023px) and (prefers-reduced-motion: no-preference
 // Phones / tablets: the steps slide up under the heading, which carries the
 // section background (cheaper than clipping the moving steps every frame).
 // The ::before reaches up and sideways to cover what passes above it.
-@media #{$lp-journey-mob} {
+@include ui.below(desktop, $and: ui.$motion-ok) {
   .lp-journey.lp-journey--live .lp-journey__inner > :first-child {
     position: relative;
     z-index: 3;

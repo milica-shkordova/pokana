@@ -1,3 +1,5 @@
+@use "@pokanito/ui/tools" as ui;
+
 // Animated landing sections built on top of landing.scss (HANDOFF-ANIMATIONS):
 // B2 flip cards, B5 inside dive, B7 contact envelope, B8 cursor, B9 footer.
 // Imported from global.scss.
@@ -22,7 +24,7 @@
 
   &__front {
     flex: 1;
-    box-shadow: 0 16px 40px rgba(181, 80, 47, 0.1);
+    box-shadow: 0 16px 40px rgba(var(--ui-color-terracotta-rgb), 0.1);
   }
 
   &__back {
@@ -31,7 +33,7 @@
     transform: rotateY(180deg);
     border-radius: 18px;
     background: var(--ui-color-terracotta);
-    box-shadow: 0 16px 40px rgba(181, 80, 47, 0.18);
+    box-shadow: 0 16px 40px rgba(var(--ui-color-terracotta-rgb), 0.18);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +91,7 @@
     height: 170px;
     margin: -85px 0 0 -130px;
     border-radius: 14px;
-    background: #fffdf9;
+    background: var(--ui-color-paper);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
     overflow: hidden;
     visibility: hidden;
@@ -103,7 +105,7 @@
     top: 0;
     width: 100%;
     height: 60%;
-    background: #f3d7be;
+    background: var(--ui-color-envelope-flap);
     clip-path: polygon(0 0, 100% 0, 50% 100%);
   }
 
@@ -269,7 +271,7 @@
     color: var(--ui-color-text-secondary);
   }
 
-  @media (max-width: 720px) {
+  @include ui.down(mobile) {
     padding: 64px 16px 40px;
     gap: 20px;
 
@@ -288,13 +290,13 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@include ui.reduced-motion {
   .lp-finale__drop {
     display: none;
   }
 }
 
-// The finale fills the viewport together with the small copyright row under it.
+// The finale fills the viewport together with the small © / language line under it.
 .lp-footer {
   min-height: 100vh;
   min-height: 100svh;
@@ -302,13 +304,6 @@
   border-top: 0;
   display: flex;
   flex-direction: column;
-
-  .lp-footer__row {
-    padding: 24px;
-    border-top: 0;
-    justify-content: center;
-    text-align: center;
-  }
 }
 
 // ── B8 Custom cursor ───────────────────────────────────────────────────────
@@ -344,7 +339,7 @@
     padding: 0 14px;
     border-radius: var(--ui-radius-pill);
     background: var(--ui-color-ink);
-    color: #fff;
+    color: var(--ui-color-white);
     font-size: 12px;
     font-weight: 700;
     white-space: nowrap;
@@ -355,13 +350,13 @@
     opacity: 0;
   }
 
-  @media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  @media #{ui.$coarse-pointer}, #{ui.$reduced-motion} {
     display: none;
   }
 }
 
 // What we do on desktop: sized to its content (no longer a full screen).
-@media (min-width: 1024px) {
+@include ui.up(desktop) {
   .lp-what {
     padding-top: 80px;
     padding-bottom: 88px;
@@ -466,7 +461,7 @@ html:has(.lp) {
   gap: 2px;
   padding: 3px;
   border-radius: var(--ui-radius-pill);
-  background: #fff;
+  background: var(--ui-color-white);
   border: 1px solid var(--ui-color-line);
 
   &__opt {
@@ -494,7 +489,7 @@ html:has(.lp) {
     // as the header "Get in touch" button).
     &--on,
     &--on:hover {
-      color: #fff;
+      color: var(--ui-color-white);
     }
   }
 
@@ -513,13 +508,13 @@ html:has(.lp) {
     width: 40px;
     border-radius: var(--ui-radius-pill);
     background: var(--ui-color-terracotta);
-    box-shadow: 0 2px 6px rgba(181, 80, 47, 0.3);
+    box-shadow: 0 2px 6px rgba(var(--ui-color-terracotta-rgb), 0.3);
     pointer-events: none;
   }
 
   &--placed &__thumb {
     transition:
-      transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 0.45s var(--ui-ease-bounce),
       width 0.3s ease;
   }
 
@@ -527,7 +522,7 @@ html:has(.lp) {
     scale: 0.94;
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  @include ui.reduced-motion {
     &--placed &__thumb {
       transition: none;
     }
@@ -538,13 +533,13 @@ html:has(.lp) {
 // background (no border).
 .lp-flip__front {
   box-shadow:
-    0 18px 40px rgba(181, 80, 47, 0.14),
-    0 2px 6px rgba(42, 37, 34, 0.06);
+    0 18px 40px rgba(var(--ui-color-terracotta-rgb), 0.14),
+    0 2px 6px rgba(var(--ui-color-ink-rgb), 0.06);
 }
 
 // Contact: on phones the card padding is smaller, so tuck the top confetti
 // into the top edge, clear of the eyebrow and the form fields.
-@media (max-width: 720px) {
+@include ui.down(mobile) {
   .lp-contact__confetti--1 {
     top: 10px;
     right: 24px;
@@ -554,11 +549,6 @@ html:has(.lp) {
     top: 8px;
     right: 56px;
   }
-}
-
-// Footer row: "© 2026 Pokanito" and the language switch, side by side.
-.lp-footer .lp-footer__row {
-  gap: 16px;
 }
 
 // Cursor: a small outlined ring (not a solid dot), so it never reads as

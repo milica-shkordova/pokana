@@ -2,10 +2,21 @@ import type { ReactNode } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Avatar, Button, PageHeader, Spinner, Wordmark, cx } from "@pokanito/ui";
-import { api } from "@/lib/api";
+import {
+  Avatar,
+  Button,
+  PageHeader,
+  Spinner,
+  Wordmark,
+  cx,
+  IconCalendar,
+  IconChat,
+  IconImage,
+  IconSettings,
+  IconTemplates,
+} from "@pokanito/ui";
+import { useLogout } from "@/features/auth/useLogout";
 import { useSession } from "@/lib/session";
-import { IconCalendar, IconChat, IconImage, IconSettings, IconTemplates } from "./Icons";
 
 interface Props {
   title: string;
@@ -37,7 +48,8 @@ export function AuthGate({ children, title }: { children: ReactNode; title: stri
 
 export default function AdminLayout({ title, kicker, actions, header, children }: Props) {
   const router = useRouter();
-  const { user, stats, setUser } = useSession();
+  const { user, stats } = useSession();
+  const logout = useLogout();
 
   const nav = [
     { href: "/", label: "Events", icon: <IconCalendar />, count: stats ? stats.live + stats.draftsAndReview : undefined },
@@ -49,12 +61,6 @@ export default function AdminLayout({ title, kicker, actions, header, children }
 
   const isActive = (href: string) =>
     href === "/" ? router.pathname === "/" || router.pathname.startsWith("/events") : router.pathname.startsWith(href);
-
-  const logout = async () => {
-    await api.post("/api/admin/auth/logout").catch(() => undefined);
-    setUser(null);
-    await router.replace("/login");
-  };
 
   return (
     <AuthGate title={title}>

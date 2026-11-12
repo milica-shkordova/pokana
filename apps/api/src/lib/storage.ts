@@ -9,6 +9,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+import { publicApiPaths, trimSlash } from "@pokanito/shared";
 import { env } from "../env";
 
 // Storage for uploaded media. "local" writes under MEDIA_DIR (dev, single
@@ -130,5 +131,5 @@ export const storage: Storage = env.MEDIA_DRIVER === "s3" ? s3Storage() : localS
 
 /** Public URL for a stored object. Relative by default (both Next apps proxy /api/public). */
 export function publicUrl(key: string): string {
-  return env.MEDIA_PUBLIC_URL ? `${env.MEDIA_PUBLIC_URL.replace(/\/$/, "")}/${key}` : `/api/public/media/${key}`;
+  return env.MEDIA_PUBLIC_URL ? `${trimSlash(env.MEDIA_PUBLIC_URL)}/${key}` : publicApiPaths.media(key);
 }

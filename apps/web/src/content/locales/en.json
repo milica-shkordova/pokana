@@ -215,7 +215,8 @@
   },
   "footer": {
     "tagline": "Digital invitations for moments worth remembering.",
-    "rights": "© {year} {name}"
+    "rights": "© {year} {name}",
+    "instagram": "See real invitations on Instagram"
   },
   "cursor": { "open": "Open" }
 }

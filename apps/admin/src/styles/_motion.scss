@@ -1,0 +1,199 @@
+@use "@pokanito/ui/tools" as ui;
+// ── Motion ─────────────────────────────────────────────────────────────────
+// Things animate as they appear (a keyframe animation plays whenever an
+// element is inserted): a new page, rows and cards once data has loaded or a
+// filter changes, a menu, a detail panel for a new selection. State changes
+// (selected, hover, on/off) crossfade instead of snapping. All of it is off
+// with prefers-reduced-motion (end of this section).
+
+// Switching pages: the page header and content rise in (the sidebar stays).
+.admin__main > :not(dialog) {
+  animation: ui-rise 0.42s var(--ui-ease-out) backwards;
+  @include ui.stagger(0.06s, 4);
+}
+
+// Login / invite card.
+.admin-login__card {
+  animation: ui-rise 0.5s var(--ui-ease-out) backwards;
+}
+
+// The spinner only shows if loading takes a moment (no flash on fast loads).
+.admin-loading,
+.admin-splash {
+  animation: ui-fade-in 0.3s 0.15s ease-out backwards;
+}
+
+// Rows and cards as they load / as a filter or tab changes.
+.admin-stats > *,
+.admin-events-table tbody tr,
+.admin-lead-list > *,
+.admin-template-grid > *,
+.admin-pick-grid > *,
+.admin-media-grid > *,
+.admin-picker-grid > *,
+.admin-photo-grid > *,
+.admin-team li,
+.admin-rows > * {
+  animation: ui-rise 0.38s var(--ui-ease-out) backwards;
+  @include ui.stagger;
+}
+
+// A newly selected lead / file: the detail panel slides in.
+.admin-panel-in {
+  animation: ui-slide-in 0.34s var(--ui-ease-out) backwards;
+}
+
+// Dropdown menu: pops out of its button.
+.admin-menu__list {
+  transform-origin: top right;
+  animation: ui-pop 0.18s var(--ui-ease-out);
+}
+
+// Its items cascade in.
+.admin-menu__item {
+  animation: ui-item-in 0.22s var(--ui-ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 22ms + 40ms);
+}
+
+// The row whose menu is open stays highlighted.
+.admin-events-table tbody tr {
+  transition: background-color var(--ui-duration-base) ease;
+
+  &:has(.admin-menu__button[aria-expanded="true"]) {
+    background: var(--ui-color-blush-tint, var(--ui-color-selected));
+  }
+}
+
+// "Add a section" list in the editor nav.
+.admin-secnav__add {
+  animation: ui-pop 0.2s var(--ui-ease-out);
+  transform-origin: top center;
+}
+
+// Editor preview: the device frame rises in once. Switching phone ↔ desktop
+// (LivePreview.tsx drives the phases): the screen fades out, the frame morphs
+// (size, corners, bezel) while the hidden screen snaps to its new size, then
+// the screen fades back in.
+.admin-device {
+  animation: ui-rise 0.36s var(--ui-ease-out) backwards;
+  transition:
+    width 0.46s var(--ui-ease-out),
+    height 0.46s var(--ui-ease-out),
+    padding 0.46s var(--ui-ease-out),
+    border-radius 0.46s var(--ui-ease-out);
+}
+
+.admin-device__screen {
+  transition: opacity 0.16s ease-out;
+}
+
+.admin-device.is-out .admin-device__screen,
+.admin-device.is-morph .admin-device__screen {
+  opacity: 0;
+}
+
+.admin-device.is-in .admin-device__screen {
+  animation: ui-fade-in 0.22s ease-out;
+}
+
+// Expanded reply details, alerts and issue lists appear softly.
+.admin-details,
+.admin-issues,
+.admin__main .ui-alert {
+  animation: ui-fade-in 0.3s ease-out backwards;
+}
+
+// Sidebar: links crossfade, icons nudge on hover, the unread badge pops.
+.admin__nav-link {
+  transition:
+    background-color var(--ui-duration-base) ease,
+    color var(--ui-duration-base) ease;
+
+  svg {
+    transition: transform var(--ui-duration-slow) var(--ui-ease-bounce);
+  }
+
+  &:hover svg {
+    transform: scale(1.12) rotate(-4deg);
+  }
+}
+
+.admin__nav-badge {
+  animation: ui-badge-pop 0.45s var(--ui-ease-bounce) backwards;
+}
+
+// Selectable rows/cards and toggles: smooth state changes; cards lift on hover.
+.admin-lead-row,
+.admin-settings__link,
+.admin-secnav__item,
+.admin-secnav__add-item,
+.admin-checklist__item,
+.ui-chip,
+.admin-menu__item,
+.admin-menu__button,
+.ui-icon-btn,
+.ui-dropzone,
+.admin-pipeline__bar,
+.admin-pipeline__label {
+  transition:
+    background-color var(--ui-duration-base) ease,
+    border-color var(--ui-duration-base) ease,
+    color var(--ui-duration-base) ease,
+    box-shadow var(--ui-duration-base) ease,
+    transform var(--ui-duration-base) ease;
+}
+
+.admin-template-card,
+.admin-media-card {
+  transition:
+    border-color var(--ui-duration-base) ease,
+    box-shadow var(--ui-duration-moderate) ease,
+    transform var(--ui-duration-moderate) var(--ui-ease-out);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ui-shadow-md);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.99);
+  }
+}
+
+.admin-editor-card__title,
+.admin-editor-card__aside {
+  transition: opacity var(--ui-duration-moderate) ease;
+}
+
+// Lead pipeline: the reached steps fill in left to right.
+.admin-pipeline__bar--on {
+  @for $i from 1 through 5 {
+    li:nth-child(#{$i}) > & {
+      transition-delay: ($i - 1) * 0.05s;
+    }
+  }
+}
+
+// Dropzone: a gentle grow while a file is dragged over it.
+.ui-dropzone--over {
+  transform: scale(1.01);
+}
+
+// Settings' section links glide to their section. Only on that page, so the
+// jump to the top on a page change stays instant.
+@include ui.motion-ok {
+  html:has(.admin-settings) {
+    scroll-behavior: smooth;
+  }
+}
+
+@include ui.reduced-motion {
+  .admin *,
+  .admin-login *,
+  .admin-loading,
+  .admin-splash,
+  .admin-menu__list {
+    animation: none !important;
+    transition: none !important;
+  }
+}

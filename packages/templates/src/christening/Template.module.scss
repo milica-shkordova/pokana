@@ -1,5 +1,7 @@
 // Christening — FloralChristening.dc.html. Theme: --theme-blush (paper),
 // --theme-petal (flowers), --theme-ink (headings, numbers, buttons).
+@use "../../styles/mixins" as *;
+
 $serif: "Cormorant Infant", serif;
 $text: #3e3a3a;
 $soft: #5e5757;
@@ -7,19 +9,11 @@ $card: #fbf5f3;
 $ink: var(--theme-ink, #4f6658);
 
 .page {
-  min-height: 100vh;
-  background: var(--theme-blush, #f6ecea);
+  @include page(var(--theme-blush, #f6ecea));
 }
 
 .phone {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: var(--theme-blush, #f6ecea);
-  font-family: "Nunito Sans", system-ui, sans-serif;
-  color: $text;
-  display: flex;
-  flex-direction: column;
+  @include phone-shell(var(--theme-blush, #f6ecea), ("Nunito Sans", system-ui, sans-serif), $text);
   align-items: center;
   text-align: center;
 
@@ -27,10 +21,7 @@ $ink: var(--theme-ink, #4f6658);
     color: $ink;
   }
 
-  :focus-visible {
-    outline: 2px solid $ink;
-    outline-offset: 2px;
-  }
+  @include focus-ring($ink);
 }
 
 .petal {
@@ -48,8 +39,7 @@ $ink: var(--theme-ink, #4f6658);
 
 .hero {
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  @include stack;
   align-items: center;
 }
 
@@ -144,9 +134,7 @@ $ink: var(--theme-ink, #4f6658);
 
 .countdown {
   margin-top: 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  @include stack(10px);
   align-items: center;
 }
 
@@ -172,7 +160,7 @@ $ink: var(--theme-ink, #4f6658);
   font-size: 44px;
   font-weight: 600;
   color: $ink;
-  font-variant-numeric: tabular-nums;
+  @include countdown-num;
 }
 
 .countdownUnit {
@@ -237,9 +225,7 @@ $ink: var(--theme-ink, #4f6658);
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  @include stack(14px);
 }
 
 .muted {
@@ -248,24 +234,21 @@ $ink: var(--theme-ink, #4f6658);
 }
 
 .label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  @include stack(6px);
   text-align: left;
   font-size: 13px;
   font-weight: 600;
 }
 
 .input {
+  @include field-input;
   min-height: 48px;
   padding: 0 16px;
   border: 1px solid #d9c3be;
   border-radius: 999px;
   background: #fff;
-  font: inherit;
   font-weight: 400;
   color: $text;
-  width: 100%;
 }
 
 .buttons {
@@ -332,10 +315,7 @@ $ink: var(--theme-ink, #4f6658);
 }
 
 .map {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+  @include map-fill;
 }
 
 .venueButtons {
@@ -367,9 +347,7 @@ $ink: var(--theme-ink, #4f6658);
 .footer {
   margin-top: auto;
   padding: 56px 0 44px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  @include stack(6px);
   align-items: center;
 }
 

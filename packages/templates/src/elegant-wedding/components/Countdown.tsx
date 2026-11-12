@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useInvitation } from "../../engine/runtime";
 import { useCountdown } from "../../engine/hooks";
+import { CountdownUnits } from "../../engine/components";
+import st from "../Template.module.scss";
 
 const COLORS = ["#d4a8b0", "#b8956a", "#e8d5c4", "#c9b8a8", "#f0e6d3", "#a89080"];
 const PIECE_COUNT = 120;
@@ -21,24 +23,26 @@ function makePieces() {
 
 export default function Countdown() {
   const { t, s, event } = useInvitation();
-  const c = useCountdown();
+  const c = useCountdown({ pad: "none" });
   const pieces = useMemo(makePieces, []);
 
   return (
-    <section className={`inv__countdown${c.done ? " inv__countdown--done" : ""}`}>
+    // "inv__countdown--done" has no styles; kept as a plain hook class.
+    <section className={`${st["inv__countdown"]}${c.done ? " inv__countdown--done" : ""}`}>
       {c.done && (
-        <div className="inv__confetti" aria-hidden>
+        <div className={st["inv__confetti"]} aria-hidden>
           {pieces.map((p) => (
             <span
               key={p.id}
-              className="inv__confetti-piece"
+              className={st["inv__confetti-piece"]}
               style={{
                 left: `${p.x}%`,
                 width: p.shape === "circle" ? p.size : p.size * 0.6,
                 height: p.shape === "circle" ? p.size : p.size * 1.4,
                 borderRadius: p.shape === "circle" ? "50%" : "2px",
                 background: p.color,
-                animation: `inv-confetti-fall ${p.duration}s ${p.delay}s linear infinite`,
+                // Module-scoped keyframes name (see _Countdown.scss).
+                animation: `${st["inv-confetti-fall"]} ${p.duration}s ${p.delay}s linear infinite`,
                 transform: `rotate(${p.rotation}deg)`,
               }}
             />
@@ -47,24 +51,15 @@ export default function Countdown() {
       )}
 
       {c.done ? (
-        <p className="inv__countdown-celebrate">{s.countdownDone}</p>
+        <p className={st["inv__countdown-celebrate"]}>{s.countdownDone}</p>
       ) : (
         <>
-          <p className="inv__label">{t(event.content.countdown?.heading)}</p>
-          <div className="inv__countdown-grid" role="timer" aria-live="off">
-            {(
-              [
-                [c.days, s.days],
-                [c.hours, s.hours],
-                [c.minutes, s.minutes],
-                [c.seconds, s.seconds],
-              ] as const
-            ).map(([n, unit]) => (
-              <div className="inv__countdown-item" key={unit}>
-                <span className="inv__countdown-num">{c.ready ? n : "–"}</span>
-                <span className="inv__countdown-unit">{unit}</span>
-              </div>
-            ))}
+          <p className={st["inv__label"]}>{t(event.content.countdown?.heading)}</p>
+          <div className={st["inv__countdown-grid"]} role="timer" aria-live="off">
+            <CountdownUnits
+              units={c.units}
+              classes={{ item: st["inv__countdown-item"], num: st["inv__countdown-num"], unit: st["inv__countdown-unit"] }}
+            />
           </div>
         </>
       )}

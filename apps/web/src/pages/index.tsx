@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import type { GetStaticProps } from "next";
 import Head from "next/head";
-import type { PublicSettings, TemplateSummary } from "@pokanito/shared";
+import { DEFAULT_PUBLIC_SETTINGS, LANDING_OG_SLUG, ogImageUrl, type PublicSettings, type TemplateSummary } from "@pokanito/shared";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import WhatWeDo from "@/components/landing/WhatWeDo";
@@ -16,7 +16,7 @@ import Cursor from "@/components/landing/Cursor";
 import { useLandingReveal } from "@/components/landing/useLandingReveal";
 import { useSmoothAnchors } from "@/components/landing/useSmoothAnchors";
 import { usePauseOffscreen } from "@/components/landing/usePauseOffscreen";
-import { serverApi, SITE_URL } from "@/lib/api";
+import { serverPublicApi, SITE_URL } from "@/lib/api";
 import { LangProvider, useLang } from "@/components/landing/i18n";
 import { fmt } from "@/content/landing";
 
@@ -24,14 +24,6 @@ interface Props {
   templates: TemplateSummary[];
   settings: PublicSettings;
 }
-
-const FALLBACK_SETTINGS: PublicSettings = {
-  businessName: "Pokanito",
-  contactEmail: "hello@pokanito.mk",
-  phone: "",
-  instagram: "",
-  logoUrl: null,
-};
 
 export default function Landing(props: Props) {
   return (
@@ -58,7 +50,7 @@ function LandingPage({ templates, settings }: Props) {
         <meta property="og:description" content={t.hero.lede} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
-        <meta property="og:image" content={`${SITE_URL}/api/og/_`} />
+        <meta property="og:image" content={ogImageUrl(SITE_URL, LANDING_OG_SLUG)} />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="canonical" href={SITE_URL} />
       </Head>
@@ -79,7 +71,7 @@ function LandingPage({ templates, settings }: Props) {
         <Faq />
         <Contact templates={templates} contactEmail={settings.contactEmail} />
       </main>
-      <Footer businessName={settings.businessName} instagram={settings.instagram} logoUrl={settings.logoUrl} />
+      <Footer businessName={settings.businessName} instagram={settings.instagram} />
       <Cursor />
     </div>
   );
@@ -90,15 +82,15 @@ function LandingPage({ templates, settings }: Props) {
 // unreachable we render without templates and retry soon.
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const [templates, settings] = await Promise.allSettled([
-    serverApi.get<TemplateSummary[]>("/api/public/templates"),
-    serverApi.get<PublicSettings>("/api/public/settings"),
+    serverPublicApi.templates(),
+    serverPublicApi.settings(),
   ]);
   const ok = templates.status === "fulfilled" && settings.status === "fulfilled";
   if (!ok) console.warn("[landing] API unavailable — rendering fallback content");
   return {
     props: {
       templates: templates.status === "fulfilled" ? templates.value : [],
-      settings: settings.status === "fulfilled" ? settings.value : FALLBACK_SETTINGS,
+      settings: settings.status === "fulfilled" ? settings.value : DEFAULT_PUBLIC_SETTINGS,
     },
     revalidate: ok ? 600 : 30,
   };

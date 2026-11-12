@@ -1,0 +1,182 @@
+@use "@pokanito/ui/tools" as ui;
+
+// Shell: sidebar, main column, splash / loading.
+body {
+  background: var(--ui-color-bg);
+}
+
+// ── Shell ─────────────────────────────────────────────────────────────────
+
+.admin {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  background: var(--ui-color-bg);
+
+  &__sidebar {
+    flex: 0 0 232px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-4);
+    padding: var(--ui-space-24) var(--ui-space-16);
+    background: var(--ui-color-surface);
+    border-right: 1px solid var(--ui-color-border);
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-10);
+    padding: 0 var(--ui-space-12) var(--ui-space-24);
+    text-decoration: none;
+  }
+
+  &__brand-tag {
+    font-size: var(--ui-text-11);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ui-color-muted);
+    border: 1px solid var(--ui-color-border);
+    border-radius: var(--ui-radius-pill);
+    padding: 3px var(--ui-space-8);
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-4);
+  }
+
+  &__nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-12);
+    min-height: var(--ui-touch);
+    padding: 0 var(--ui-space-12);
+    border-radius: var(--ui-radius-input);
+    text-decoration: none;
+    color: var(--ui-color-ink-soft) !important;
+
+    &:hover {
+      background: var(--ui-color-surface-muted);
+    }
+
+    &--active {
+      background: var(--ui-color-selected);
+      color: var(--ui-color-ink) !important;
+      font-weight: 600;
+
+      &:hover {
+        background: var(--ui-color-selected);
+      }
+    }
+  }
+
+  &__nav-count {
+    margin-left: auto;
+    font-size: var(--ui-text-12);
+    color: var(--ui-color-muted);
+    font-weight: 400;
+  }
+
+  &__nav-badge {
+    margin-left: auto;
+    font-size: var(--ui-text-11);
+    font-weight: 700;
+    color: var(--ui-color-white);
+    background: var(--ui-color-clay);
+    border-radius: var(--ui-radius-pill);
+    padding: var(--ui-space-2) var(--ui-space-8);
+  }
+
+  &__user {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-10);
+    padding: var(--ui-space-24) 0 0 var(--ui-space-12);
+    border-top: 1px solid var(--ui-color-border);
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      flex: 1;
+    }
+
+    &-name {
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &-role {
+      font-size: var(--ui-text-12);
+      color: var(--ui-color-muted);
+    }
+  }
+
+  &__main {
+    flex: 999 1 560px;
+    min-width: 0;
+    padding: var(--ui-space-32) var(--ui-space-40) var(--ui-space-48);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-24);
+  }
+
+  @include ui.down(tablet-lg) {
+    &__sidebar {
+      flex: 1 1 100%;
+      position: static;
+      height: auto;
+      padding: var(--ui-space-12) var(--ui-space-16);
+      border-right: 0;
+      border-bottom: 1px solid var(--ui-color-border);
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    &__brand {
+      padding: 0 var(--ui-space-8) 0 var(--ui-space-4);
+    }
+
+    &__nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    &__user {
+      margin: 0 0 0 auto;
+      padding: 0;
+      border: 0;
+    }
+
+    &__main {
+      padding: var(--ui-space-24) var(--ui-space-16) var(--ui-space-48);
+    }
+  }
+}
+
+.admin-splash,
+.admin-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ui-color-gold);
+}
+
+.admin-splash {
+  min-height: 100vh;
+  background: var(--ui-color-bg);
+}
+
+.admin-loading {
+  padding: var(--ui-space-56) 0;
+}

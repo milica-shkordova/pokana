@@ -1,0 +1,21 @@
+// ── Fixes on top of @pokanito/ui ──────────────────────────────────────────────
+
+// Template thumbnails use the template's own (often Cormorant) font, whose
+// default figures are old-style ("1" reads as "I").
+.admin-template-card__thumb {
+  font-variant-numeric: lining-nums;
+}
+
+.ui-segmented__option {
+  white-space: nowrap;
+}
+
+.admin-photo > .ui-row {
+  flex-wrap: wrap;
+  gap: var(--ui-space-4);
+
+  .ui-button {
+    padding-left: var(--ui-space-10);
+    padding-right: var(--ui-space-10);
+  }
+}

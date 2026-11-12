@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { clamp } from "@pokanito/shared";
 
 /**
  * "How it works" ribbon journey (HANDOFF-ANIMATIONS B3, design/anim/AnimJourney.dc.html).
@@ -25,7 +26,7 @@ interface Box {
   h: number;
 }
 
-const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+const clamp01 = (v: number) => clamp(v, 0, 1);
 const n1 = (v: number) => v.toFixed(1);
 const segD = (s: Seg) => `C${n1(s[1][0])} ${n1(s[1][1])} ${n1(s[2][0])} ${n1(s[2][1])} ${n1(s[3][0])} ${n1(s[3][1])}`;
 const pathD = (segs: Seg[]) => (segs.length ? `M${n1(segs[0][0][0])} ${n1(segs[0][0][1])}` + segs.map(segD).join(" ") : "");
@@ -61,7 +62,7 @@ function buildSegments(mode: JourneyMode, cards: Box[], phone: Box): Seg[] {
       [c3.x + c3.w * 0.5, c3.y + c3.h + 100],
       end,
     ];
-    const at = (i: number) => pts[Math.max(0, Math.min(pts.length - 1, i))];
+    const at = (i: number) => pts[clamp(i, 0, pts.length - 1)];
     const segs: Seg[] = [];
     for (let i = 0; i < pts.length - 1; i++) {
       const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
@@ -132,7 +133,7 @@ export function setupJourney(root: HTMLElement, mode: JourneyMode): () => void {
   const pointAt = (len: number): [number, number] => {
     const n = lut.length / 2 - 1;
     if (n < 1) return [0, 0];
-    const f = Math.max(0, Math.min(n, len / lutStep));
+    const f = clamp(len / lutStep, 0, n);
     const i = Math.min(n - 1, Math.floor(f));
     const k = f - i;
     return [lut[i * 2] + (lut[i * 2 + 2] - lut[i * 2]) * k, lut[i * 2 + 1] + (lut[i * 2 + 3] - lut[i * 2 + 1]) * k];
@@ -212,7 +213,7 @@ export function setupJourney(root: HTMLElement, mode: JourneyMode): () => void {
     ribbon!.setAttribute("d", d);
     total = Math.max(1, ribbon!.getTotalLength());
     ribbon!.style.strokeDasharray = `${total} ${total + 100}`;
-    const count = Math.max(2, Math.min(400, Math.ceil(total / 3)));
+    const count = clamp(Math.ceil(total / 3), 2, 400);
     lutStep = total / count;
     lut = new Float32Array((count + 1) * 2);
     for (let k = 0; k <= count; k++) {

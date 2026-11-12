@@ -1,10 +1,12 @@
+@use "@pokanito/ui/tools" as ui;
+
 // "Inside every invitation" try-it cards (HANDOFF-INSIDE-CARDS, Inside.tsx).
 // Desktop ≥1024: 4 in a row · tablet 640–1023: 2 × 2 · phone <640: carousel.
 
 .ic {
   position: relative;
   z-index: 1;
-  background: #fff;
+  background: var(--ui-color-white);
   padding: 96px 24px;
   color: var(--ui-color-ink);
 
@@ -30,13 +32,7 @@
     max-width: 620px;
   }
 
-  &__eyebrow {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ui-color-terracotta);
-  }
+  // The eyebrow is .ui-eyebrow (+ .ic__eyebrow for the phone size below).
 
   &__title {
     margin: 0;
@@ -58,7 +54,7 @@
     position: relative;
     flex: 0 0 auto;
     padding: 0 60px 52px 0;
-    font-family: "Caveat", "Comic Sans MS", cursive;
+    font-family: var(--ui-font-script);
     font-weight: 700;
     font-size: 30px;
     color: var(--ui-color-terracotta);
@@ -166,15 +162,15 @@
   }
 }
 
-@media (hover: hover) and (pointer: fine) {
+@include ui.fine-pointer {
   .ic-card:hover {
     transform: translateY(-10px) rotate(var(--tilt, 0deg));
-    box-shadow: 0 24px 40px rgba(42, 37, 34, 0.14);
+    box-shadow: 0 24px 40px rgba(var(--ui-color-ink-rgb), 0.14);
   }
 }
 
 .ic-script {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: var(--ui-font-serif);
   font-style: italic;
   font-weight: 500;
   font-size: 22px;
@@ -196,7 +192,7 @@
   &__tile {
     height: 78px;
     border-radius: 16px;
-    background: #fff;
+    background: var(--ui-color-white);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -219,10 +215,10 @@
 
     &--hot {
       background: var(--ui-color-terracotta);
-      color: #fff;
+      color: var(--ui-color-white);
 
       span {
-        color: #fff;
+        color: var(--ui-color-white);
         opacity: 0.85;
       }
     }
@@ -244,7 +240,7 @@
     min-height: 52px;
     border-radius: 14px;
     border: 2px solid var(--ui-color-success);
-    background: #fff;
+    background: var(--ui-color-white);
     color: var(--ui-color-success);
     font: inherit;
     font-size: 15px;
@@ -256,7 +252,7 @@
 
     &.is-on {
       background: var(--ui-color-success);
-      color: #fff;
+      color: var(--ui-color-white);
     }
   }
 
@@ -270,7 +266,7 @@
     justify-content: space-between;
     padding: 0 12px;
     border-radius: 14px;
-    background: #fff;
+    background: var(--ui-color-white);
     font-size: 14px;
     font-weight: 700;
     color: var(--ui-color-success);
@@ -313,7 +309,7 @@
 
     .ic-rsvp__plus {
       background: var(--ui-color-success);
-      color: #fff;
+      color: var(--ui-color-white);
     }
   }
 
@@ -378,8 +374,8 @@
     width: 30px;
     height: 30px;
     transition:
-      left 0.45s cubic-bezier(0.3, 0.7, 0.3, 1.2),
-      top 0.45s cubic-bezier(0.3, 0.7, 0.3, 1.2);
+      left 0.45s var(--ui-ease-spring),
+      top 0.45s var(--ui-ease-spring);
 
     span {
       display: block;
@@ -401,8 +397,8 @@
       min-height: 40px;
       border: 0;
       border-radius: 999px;
-      background: #fff;
-      color: #8a5a12;
+      background: var(--ui-color-white);
+      color: var(--ui-color-warning);
       font: inherit;
       font-size: 13px;
       font-weight: 700;
@@ -413,7 +409,7 @@
 
       &.is-on {
         background: var(--ui-color-terracotta);
-        color: #fff;
+        color: var(--ui-color-white);
       }
     }
   }
@@ -439,7 +435,7 @@
     display: flex;
     padding: 3px;
     border-radius: 999px;
-    background: #fff;
+    background: var(--ui-color-white);
     box-shadow: 0 4px 12px rgba(52, 80, 122, 0.12);
 
     button {
@@ -459,7 +455,7 @@
 
       &.is-on {
         background: var(--ui-color-ink);
-        color: #fff;
+        color: var(--ui-color-white);
       }
     }
   }
@@ -472,7 +468,7 @@
   }
 
   &__names {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: var(--ui-font-serif);
     font-style: italic;
     font-weight: 500;
     font-size: 32px;
@@ -496,7 +492,7 @@
 }
 
 // ── Tablet: 2 × 2 ──────────────────────────────────────────────────────────
-@media (max-width: 1023px) {
+@include ui.below(desktop) {
   .ic__title {
     font-size: 40px;
   }
@@ -512,7 +508,7 @@
 }
 
 // ── Phone: snap carousel with dots ─────────────────────────────────────────
-@media (max-width: 639px) {
+@include ui.below(phablet) {
   .ic {
     padding: 44px 0 48px;
 
@@ -622,7 +618,7 @@
 }
 
 // ── Reduced motion: state changes still happen, just instantly ─────────────
-@media (prefers-reduced-motion: reduce) {
+@include ui.reduced-motion {
   .ic__note-line,
   .ic__note-head,
   .ic-map__pin span,
@@ -648,7 +644,7 @@
 }
 
 // Phones: the heading is centred, like the other sections.
-@media (max-width: 639px) {
+@include ui.below(phablet) {
   .ic__head {
     justify-content: center;
   }

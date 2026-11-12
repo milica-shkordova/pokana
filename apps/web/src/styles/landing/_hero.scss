@@ -1,0 +1,421 @@
+@use "@pokanito/ui/tools" as ui;
+
+// ── Hero ───────────────────────────────────────────────────────────────────
+// Landing.dc.html: blush hero, confetti, tilted photo cards and sticker badges.
+// This is the static (finished) hero; the envelope intro on top of it lives in
+// landing/_intro.scss (HANDOFF-ANIMATIONS B1).
+.lp-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 96px 24px 64px;
+
+  // The blush background is its own layer so the intro can fade it in.
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background: var(--ui-color-blush-tint);
+  }
+
+  &__dots {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__confetti {
+    position: absolute;
+    display: block;
+    animation: lp-bob 5s ease-in-out infinite;
+
+    &--1 {
+      left: 6%;
+      top: 48px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--ui-color-marigold);
+    }
+    &--2 {
+      left: 44%;
+      top: 72px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--ui-color-coral);
+      animation-delay: -1.2s;
+    }
+    &--3 {
+      right: 8%;
+      top: 36px;
+      width: 34px;
+      height: 12px;
+      border-radius: 6px;
+      background: var(--ui-color-sage);
+      rotate: -25deg;
+      animation-delay: -2.4s;
+    }
+    &--4 {
+      left: 3%;
+      bottom: 90px;
+      width: 28px;
+      height: 10px;
+      border-radius: 5px;
+      background: var(--ui-color-rose);
+      rotate: 30deg;
+      animation-delay: -0.6s;
+    }
+    &--5 {
+      right: 4%;
+      bottom: 120px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--ui-color-rose);
+      animation-delay: -3s;
+    }
+  }
+
+  &__grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 56px;
+    align-items: center;
+  }
+
+  &__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+
+    .ui-heading--display {
+      font-size: clamp(42px, 6vw, 60px);
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+    }
+  }
+
+  &__title {
+    perspective: 600px; // "open" unfolds in 3D
+  }
+
+  &__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: var(--ui-radius-pill);
+    background: var(--ui-color-white);
+    color: var(--ui-color-terracotta);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  &__pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ui-color-marigold);
+  }
+
+  &__pop {
+    position: relative;
+    display: inline-block;
+    color: var(--ui-color-terracotta);
+  }
+
+  // Wavy marigold underline; drawn left → right (stroke-dashoffset 100 → 0).
+  // pathLength is 100, not 1: GSAP rounds px values, so 0–1 would just jump.
+  &__underline {
+    position: absolute;
+    left: -4px;
+    bottom: -0.2em;
+    width: calc(100% + 8px);
+    height: 0.24em;
+    overflow: visible;
+    pointer-events: none;
+
+    path {
+      fill: none;
+      stroke: var(--ui-color-marigold);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  &__dot {
+    display: inline-block;
+  }
+
+  &__lede.ui-lede {
+    max-width: 460px;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .ui-button {
+      min-height: 50px;
+      padding: 0 26px;
+      font-weight: 700;
+    }
+  }
+
+  // Magnetic wrapper (B8): GSAP moves this, the button keeps its CSS hover.
+  &__mag {
+    display: inline-flex;
+  }
+
+  &__ghost.ui-button--secondary {
+    background: var(--ui-color-white);
+    border-color: var(--ui-color-white);
+    color: var(--ui-color-ink);
+  }
+
+  &__collage {
+    position: relative;
+    height: 440px;
+  }
+
+  // Collage piece = positioned item (parallax) › drop/popper (intro) › visual.
+  &__item {
+    position: absolute;
+
+    &--one {
+      right: 20px;
+      top: 10px;
+      width: 260px;
+      height: 230px;
+    }
+
+    &--two {
+      left: 30px;
+      top: 190px;
+      width: 240px;
+      height: 210px;
+    }
+
+    &--rsvp {
+      left: 190px;
+      top: 150px;
+      z-index: 2;
+    }
+
+    &--days {
+      right: 0;
+      top: 270px;
+      z-index: 2;
+    }
+
+    &--one:hover,
+    &--two:hover {
+      z-index: 1;
+    }
+  }
+
+  &__drop {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__popper {
+    display: block;
+  }
+
+  &__photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    border: 8px solid var(--ui-color-white);
+    background: var(--ui-color-photo-placeholder);
+    box-shadow: 0 20px 40px rgba(var(--ui-color-terracotta-rgb), 0.16);
+    overflow: hidden;
+    transition:
+      transform 0.35s var(--ui-ease-bounce),
+      box-shadow 0.35s ease;
+
+    &:hover {
+      transform: rotate(0deg) scale(1.03) translateY(-4px);
+      box-shadow: 0 28px 50px rgba(var(--ui-color-terracotta-rgb), 0.22);
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &--one {
+      transform: rotate(4deg);
+    }
+
+    &--two {
+      background: #c9b39e;
+      transform: rotate(-5deg);
+    }
+  }
+
+  &__sticker {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: var(--ui-radius-pill);
+    color: var(--ui-color-ink);
+    font-family: var(--ui-font-heading);
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    box-shadow: 0 8px 20px rgba(var(--ui-color-ink-rgb), 0.12);
+    animation: lp-bob 4.5s ease-in-out infinite;
+
+    &--rsvp {
+      background: var(--ui-color-marigold);
+      rotate: -6deg;
+    }
+
+    &--days {
+      background: var(--ui-color-white);
+      rotate: 5deg;
+      animation-delay: -2.2s;
+    }
+  }
+
+  &__scroll {
+    position: relative;
+    z-index: 2;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--ui-color-muted);
+    text-decoration: none;
+    min-height: 44px;
+
+    &:hover {
+      color: var(--ui-color-ink);
+    }
+  }
+
+  &__mouse {
+    position: relative;
+    width: 22px;
+    height: 34px;
+    border: 1.5px solid currentColor;
+    border-radius: 11px;
+    opacity: 0.7;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      transform: translateX(-50%);
+      animation: lp-mouse-dot 1.8s ease-in-out infinite;
+    }
+  }
+
+  &__chevrons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      animation: lp-scroll-chevron 1.8s ease-in-out infinite;
+
+      & + span {
+        margin-top: -2px;
+        animation-delay: 0.22s;
+      }
+    }
+  }
+
+  // Desktop: the header + hero fill the (pinned) viewport, like the prototype.
+  @include ui.up(desktop) {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &__grid {
+      width: 100%;
+    }
+
+    &__scroll {
+      align-self: center;
+    }
+  }
+
+  @include ui.up(desktop, $and: ui.height-down-query(short)) {
+    padding-top: 56px;
+    padding-bottom: 32px;
+
+    &__scroll {
+      margin-top: 16px;
+    }
+  }
+
+  @include ui.down(mobile) {
+    padding: 48px 16px 40px;
+
+    &__grid {
+      gap: 32px;
+    }
+
+    &__collage {
+      height: 320px;
+      max-width: 340px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    &__item--one {
+      right: 0;
+      width: 200px;
+      height: 180px;
+    }
+
+    &__item--two {
+      left: 0;
+      top: 140px;
+      width: 190px;
+      height: 165px;
+    }
+
+    &__sticker {
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+
+    &__item--rsvp {
+      left: 96px;
+      top: 112px;
+    }
+
+    &__item--days {
+      top: 226px;
+    }
+
+    &__confetti--2 {
+      left: 70%;
+    }
+  }
+}

@@ -1,0 +1,149 @@
+@use "@pokanito/ui/tools" as ui;
+
+// ── Playful motion (restored from the original landing) ────────────────────
+.lp-feature,
+.lp-plan {
+  transition:
+    transform 0.3s var(--ui-ease-bounce),
+    box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px) rotate(-1deg);
+    box-shadow: var(--ui-shadow-warm-hover);
+  }
+}
+
+.lp-plan:hover {
+  transform: translateY(-6px);
+}
+
+.lp-feature__icon,
+.lp-step__num {
+  display: inline-flex;
+  transition: transform 0.3s var(--ui-ease-bounce);
+}
+
+.lp-feature:hover .lp-feature__icon,
+.lp-step:hover .lp-step__num {
+  transform: scale(1.12) rotate(8deg);
+}
+
+.lp .ui-button {
+  transition:
+    transform 0.25s var(--ui-ease-bounce),
+    box-shadow 0.25s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .ui-button__icon--right {
+    transition: transform 0.25s ease;
+  }
+
+  &:hover:not(:disabled) .ui-button__icon--right {
+    transform: translateX(4px);
+  }
+}
+
+.lp .ui-tabs__tab {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.lp-soon__chip {
+  transition:
+    transform 0.25s var(--ui-ease-bounce),
+    background 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px) rotate(-2deg);
+  }
+}
+
+@keyframes lp-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+@keyframes lp-mouse-dot {
+  0% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  60% {
+    transform: translateX(-50%) translateY(13px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes lp-scroll-chevron {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: rotate(45deg) translate(3px, 3px);
+  }
+}
+
+@keyframes lp-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-6deg);
+  }
+
+  75% {
+    transform: rotate(6deg);
+  }
+}
+
+@include ui.reduced-motion {
+  .lp *,
+  .lp *::before,
+  .lp *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .lp .ui-button:hover,
+  .lp .ui-tabs__tab:hover,
+  .lp-feature:hover,
+  .lp-plan:hover,
+  .lp-card:hover,
+  .lp-soon__chip:hover,
+  .lp-hero__photo:hover {
+    transform: none;
+  }
+}

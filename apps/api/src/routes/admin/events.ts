@@ -2,9 +2,11 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import type { Prisma } from "@prisma/client";
 import {
+  embedPreviewUrl,
   EVENT_STATUSES,
   eventCreateSchema,
   eventUpdateSchema,
+  previewUrl,
   slugSchema,
   type EventDetail,
   type EventStats,
@@ -323,8 +325,8 @@ eventRoutes.post("/:id/preview-link", async (c) => {
   }
   const token = createPreviewToken(id);
   return c.json({
-    url: `${env.WEB_URL}/${e.slug}?preview=${encodeURIComponent(token)}`,
-    embedUrl: `${env.WEB_URL}/preview/${id}?token=${encodeURIComponent(token)}&embed=1`,
+    url: previewUrl(env.WEB_URL, e.slug, token),
+    embedUrl: embedPreviewUrl(env.WEB_URL, id, token),
   });
 });
 

@@ -1,6 +1,8 @@
 import { useInvitation } from "../../engine/runtime";
 import { useRsvpDeadlineText } from "../../engine/hooks";
 import { useRsvpForm } from "../../engine/useRsvpForm";
+import { cx } from "../../engine/format";
+import st from "../Template.module.scss";
 
 export default function RsvpForm() {
   const { t, s, event } = useInvitation();
@@ -10,24 +12,24 @@ export default function RsvpForm() {
 
   if (!f.open) {
     return (
-      <section className="inv__section" data-gsap="rsvp">
-        <h2 className="inv__label">{heading}</h2>
-        <p className="inv__sub-text">{s.rsvpClosed}</p>
+      <section className={st["inv__section"]} data-gsap="rsvp">
+        <h2 className={st["inv__label"]}>{heading}</h2>
+        <p className={st["inv__sub-text"]}>{s.rsvpClosed}</p>
       </section>
     );
   }
 
   return (
-    <section className="inv__section" data-gsap="rsvp">
-      <h2 className="inv__label">{heading}</h2>
-      {deadline && <p className="inv__sub-text">{deadline}</p>}
-      <form className="inv__form" onSubmit={f.submit} noValidate>
-        <div className="inv__attendance" role="radiogroup">
-          <label className={`inv__attendance-option${f.attending ? " inv__attendance-option--active" : ""}`}>
+    <section className={st["inv__section"]} data-gsap="rsvp">
+      <h2 className={st["inv__label"]}>{heading}</h2>
+      {deadline && <p className={st["inv__sub-text"]}>{deadline}</p>}
+      <form className={st["inv__form"]} onSubmit={f.submit} noValidate>
+        <div className={st["inv__attendance"]} role="radiogroup">
+          <label className={cx(st["inv__attendance-option"], f.attending && st["inv__attendance-option--active"])}>
             <input type="radio" name="attendance" checked={f.attending} onChange={() => f.setAttending(true)} />
             {s.attending}
           </label>
-          <label className={`inv__attendance-option${!f.attending ? " inv__attendance-option--active" : ""}`}>
+          <label className={cx(st["inv__attendance-option"], !f.attending && st["inv__attendance-option--active"])}>
             <input type="radio" name="attendance" checked={!f.attending} onChange={() => f.setAttending(false)} />
             {s.notAttending}
           </label>
@@ -38,16 +40,16 @@ export default function RsvpForm() {
           return (
             <div
               key={guest.key}
-              className={`inv__guest-row${multi ? " inv__guest-row--multi" : ""}${guest.leaving ? " inv__guest-row--leaving" : ""}`}
+              className={cx(st["inv__guest-row"], multi && st["inv__guest-row--multi"], guest.leaving && st["inv__guest-row--leaving"])}
             >
               {multi && (
-                <button type="button" className="inv__guest-delete" onClick={() => f.removeGuest(guest.key)} aria-label={s.removeGuest}>
+                <button type="button" className={st["inv__guest-delete"]} onClick={() => f.removeGuest(guest.key)} aria-label={s.removeGuest}>
                   ×
                 </button>
               )}
-              <div className="inv__guest-name-row">
+              <div className={st["inv__guest-name-row"]}>
                 <input
-                  className="inv__input"
+                  className={st["inv__input"]}
                   type="text"
                   placeholder={s.namePlaceholder}
                   aria-label={s.name}
@@ -55,12 +57,12 @@ export default function RsvpForm() {
                   onChange={(e) => f.updateGuest(guest.key, { name: e.target.value })}
                 />
               </div>
-              {f.error(`guest-${guest.key}-name`) && <span className="inv__field-error">{s.required}</span>}
+              {f.error(`guest-${guest.key}-name`) && <span className={st["inv__field-error"]}>{s.required}</span>}
               {f.attending && f.needsMenu && (
                 <>
-                  <div className="inv__select-wrap">
+                  <div className={st["inv__select-wrap"]}>
                     <select
-                      className={`inv__select${guest.menu === "" ? " inv__select--empty" : ""}`}
+                      className={cx(st["inv__select"], guest.menu === "" && st["inv__select--empty"])}
                       aria-label={s.menu}
                       value={guest.menu}
                       onChange={(e) => f.updateGuest(guest.key, { menu: e.target.value })}
@@ -75,7 +77,7 @@ export default function RsvpForm() {
                       ))}
                     </select>
                   </div>
-                  {f.error(`guest-${guest.key}-menu`) && <span className="inv__field-error">{s.required}</span>}
+                  {f.error(`guest-${guest.key}-menu`) && <span className={st["inv__field-error"]}>{s.required}</span>}
                 </>
               )}
             </div>
@@ -83,15 +85,15 @@ export default function RsvpForm() {
         })}
 
         {f.attending && (
-          <button type="button" className="inv__add-guest" onClick={f.addGuest}>
+          <button type="button" className={st["inv__add-guest"]} onClick={f.addGuest}>
             {s.addGuest}
           </button>
         )}
 
-        {f.failed && <span className="inv__field-error">{f.resultText}</span>}
-        {f.sent && <p className="inv__form-success">{f.resultText}</p>}
+        {f.failed && <span className={st["inv__field-error"]}>{f.resultText}</span>}
+        {f.sent && <p className={st["inv__form-success"]}>{f.resultText}</p>}
 
-        <button className="inv__button" type="submit" disabled={f.sending}>
+        <button className={st["inv__button"]} type="submit" disabled={f.sending}>
           {f.submitLabel}
         </button>
       </form>

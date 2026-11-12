@@ -2,7 +2,8 @@ import { forwardRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type 
 import { cx } from "../cx";
 import { Spinner } from "./Spinner";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "accent";
+/** `link`: a plain button that looks like an inline link (ui-link-button); no icons or spinner. */
+export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "accent" | "link";
 export type ButtonSize = "sm" | "md" | "lg";
 
 interface CommonProps {
@@ -25,6 +26,7 @@ export function buttonClassName(
   { variant = "primary", size = "md", block, icon }: Pick<CommonProps, "variant" | "size" | "block" | "icon"> = {},
   extra?: string,
 ) {
+  if (variant === "link") return cx("ui-link-button", extra);
   return cx(
     "ui-button",
     `ui-button--${variant}`,
@@ -53,6 +55,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   { variant, size, block, icon, loading, iconLeft, iconRight, children, className, disabled, type = "button", ...rest },
   ref,
 ) {
+  if (variant === "link") {
+    return (
+      <button ref={ref} type={type} className={buttonClassName({ variant }, className)} disabled={disabled} {...rest}>
+        {children}
+      </button>
+    );
+  }
   return (
     <button
       ref={ref}

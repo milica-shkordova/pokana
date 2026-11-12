@@ -96,3 +96,6 @@ export const kidsBirthday: TemplateDefinition = {
     },
   },
 };
+
+/** Catalog entries this design renders, in gallery order. */
+export const definitions: TemplateDefinition[] = [kidsBirthday];

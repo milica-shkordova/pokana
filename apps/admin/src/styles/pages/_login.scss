@@ -1,0 +1,25 @@
+// ── Login ─────────────────────────────────────────────────────────────────
+
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ui-space-24) var(--ui-space-16);
+  background: var(--ui-color-bg);
+
+  &__card {
+    width: 100%;
+    max-width: 400px;
+    padding: var(--ui-space-32);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-16);
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--ui-space-10);
+  }
+}

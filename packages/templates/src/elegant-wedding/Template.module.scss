@@ -1,0 +1,13 @@
+// Elegant Wedding — one CSS Module for the whole template (the partials
+// reference each other's classes, e.g. `.inv__countdown .inv__label`), split
+// into partials colocated with the components. Class names keep the original
+// BEM names; components read them as st["inv__…"].
+@use "base";
+@use "components/Overlay";
+@use "components/Hero";
+@use "components/Welcome";
+@use "components/Countdown";
+@use "components/Program";
+@use "components/RsvpForm";
+@use "components/Location";
+@use "components/Footer";

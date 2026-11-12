@@ -1,0 +1,58 @@
+// Generic keyframes. Components animate with them, e.g.
+//   animation: ui-rise 0.38s var(--ui-ease-out) backwards;
+// and stagger lists with `@include ui.stagger;` (tools/_mixins.scss).
+// Component-specific keyframes (toast, dialog, confetti) live with their component.
+
+@keyframes ui-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ui-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+// Appear: rise up a little.
+@keyframes ui-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+// Popover / dropdown opening out of its trigger.
+@keyframes ui-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(-6px);
+  }
+}
+
+// Side panel for a new selection.
+@keyframes ui-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+// Badge / check mark popping in with an overshoot.
+@keyframes ui-badge-pop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+}
+
+// Menu items cascading in.
+@keyframes ui-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

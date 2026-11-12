@@ -1,22 +1,31 @@
 import { Fragment } from "react";
-import type { SectionKind } from "@pokanito/shared";
+import { pad2 } from "@pokanito/shared";
 import { useInvitation } from "../engine/runtime";
-import { useCountdown, useRsvpDeadlineText } from "../engine/hooks";
-import { useRsvpForm } from "../engine/useRsvpForm";
-import { LanguageToggle, MapEmbed, MapsLink, Multiline, MusicButton, Photo, PreviewNotice } from "../engine/components";
-import { dateParts, initials, pick } from "../common/format";
+import { useCountdown, useFooter, useVenues } from "../engine/hooks";
+import { MapFrame, MapsLink, Multiline, Photo } from "../engine/components";
+import { RsvpResult, RsvpSection, RsvpYesNoButtons, type RsvpClasses } from "../engine/rsvp";
+import { TemplateShell } from "../engine/TemplateShell";
+import { dateParts, initials, pick } from "../engine/format";
+import { COPY } from "./copy";
 import st from "./Template.module.scss";
 
-const COPY = {
-  mk: { days: "дена", hours: "часа", minutes: "минути", and: "и", joiner: "и" },
-  en: { days: "days", hours: "hours", minutes: "minutes", and: "and", joiner: "&" },
+const rsvpClasses: RsvpClasses = {
+  section: st.section,
+  heading: st.h2,
+  note: st.muted,
+  form: st.form,
+  error: st.error,
+  success: st.success,
+  buttons: st.buttons,
+  yes: st.yes,
+  no: st.no,
 };
 
 /** Numbered section label: "02 — Програма". */
 function Label({ n, text }: { n: number; text: string }) {
   return (
     <span className={st.label}>
-      {String(n).padStart(2, "0")} — {text}
+      {pad2(n)} — {text}
     </span>
   );
 }
@@ -69,7 +78,8 @@ function Welcome({ n }: { n: number }) {
 
 function Countdown() {
   const { t, s, event, locale } = useInvitation();
-  const c = useCountdown();
+  const c = useCountdown({ units: ["days", "hours", "minutes"], pad: "none" });
+  const [days, hours, minutes] = c.units;
   const copy = pick(COPY, locale);
   return (
     <section className={st.countdown} data-reveal>
@@ -77,9 +87,9 @@ function Countdown() {
         <span className={st.countdownText}>{s.countdownDone}</span>
       ) : (
         <>
-          <span className={st.countdownNum}>{c.ready ? c.days : "–"}</span>
+          <span className={st.countdownNum}>{days.value}</span>
           <span className={st.countdownText}>
-            {copy.days}, {c.ready ? c.hours : "–"} {copy.hours} {copy.and} {c.ready ? c.minutes : "–"} {copy.minutes}
+            {copy.days}, {hours.value} {copy.hours} {copy.and} {minutes.value} {copy.minutes}
             <br />
             {t(event.content.countdown?.heading)}
           </span>
@@ -119,89 +129,67 @@ function Program({ n }: { n: number }) {
 
 function Rsvp({ n }: { n: number }) {
   const { t, s, event } = useInvitation();
-  const f = useRsvpForm();
-  const deadline = useRsvpDeadlineText();
-  const guest = f.guests[0];
   return (
-    <section className={st.section} aria-labelledby="min-rsvp">
-      <Label n={n} text={s.rsvpHeading} />
-      <h2 id="min-rsvp" className={st.h2}>
-        {t(event.content.rsvp?.heading)}
-      </h2>
-      {!f.open ? (
-        <p className={st.muted}>{s.rsvpClosed}</p>
-      ) : (
-        <form
-          className={st.form}
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            void f.submitAs(true);
-          }}
-        >
-          {(t(event.content.rsvp?.note) || deadline) && <p className={st.muted}>{t(event.content.rsvp?.note) || deadline}</p>}
-          {guest && (
-            <>
-              <label className={st.field}>
-                {s.name}
-                <input
-                  className={st.input}
-                  value={guest.name}
-                  onChange={(e) => f.updateGuest(guest.key, { name: e.target.value })}
-                  autoComplete="name"
-                />
-              </label>
-              {f.error(`guest-${guest.key}-name`) && <span className={st.error}>{s.required}</span>}
-              {f.needsMenu && (
-                <>
-                  <label className={st.field}>
-                    {s.menu}
-                    <select className={st.input} value={guest.menu} onChange={(e) => f.updateGuest(guest.key, { menu: e.target.value })}>
-                      <option value="" disabled>
-                        {s.chooseMenu}
-                      </option>
-                      {f.menuOptions.map((m) => (
-                        <option key={m} value={m}>
-                          {m}
+    <RsvpSection
+      id="min-rsvp"
+      classes={rsvpClasses}
+      heading={t(event.content.rsvp?.heading)}
+      before={<Label n={n} text={s.rsvpHeading} />}
+    >
+      {(f) => {
+        const guest = f.guests[0];
+        return (
+          <>
+            {guest && (
+              <>
+                <label className={st.field}>
+                  {s.name}
+                  <input
+                    className={st.input}
+                    value={guest.name}
+                    onChange={(e) => f.updateGuest(guest.key, { name: e.target.value })}
+                    autoComplete="name"
+                  />
+                </label>
+                {f.error(`guest-${guest.key}-name`) && <span className={st.error}>{s.required}</span>}
+                {f.needsMenu && (
+                  <>
+                    <label className={st.field}>
+                      {s.menu}
+                      <select className={st.input} value={guest.menu} onChange={(e) => f.updateGuest(guest.key, { menu: e.target.value })}>
+                        <option value="" disabled>
+                          {s.chooseMenu}
                         </option>
-                      ))}
-                    </select>
-                  </label>
-                  {f.error(`guest-${guest.key}-menu`) && <span className={st.error}>{s.required}</span>}
-                </>
-              )}
-            </>
-          )}
-          {f.resultText && (
-            <p className={f.failed ? st.error : st.success} role="status">
-              {f.resultText}
-            </p>
-          )}
-          <div className={st.buttons}>
-            <button type="submit" className={st.yes} disabled={f.sending}>
-              {f.sending && f.attending ? s.sending : s.submit}
-            </button>
-            <button type="button" className={st.no} disabled={f.sending} onClick={() => void f.submitAs(false)}>
-              {f.sending && !f.attending ? s.sending : s.submitDecline}
-            </button>
-          </div>
-        </form>
-      )}
-    </section>
+                        {f.menuOptions.map((m) => (
+                          <option key={m} value={m}>
+                            {m}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    {f.error(`guest-${guest.key}-menu`) && <span className={st.error}>{s.required}</span>}
+                  </>
+                )}
+              </>
+            )}
+            <RsvpResult f={f} classes={rsvpClasses} />
+            <RsvpYesNoButtons f={f} classes={rsvpClasses} />
+          </>
+        );
+      }}
+    </RsvpSection>
   );
 }
 
 function Location({ n }: { n: number }) {
-  const { t, s, event } = useInvitation();
-  const loc = event.content.location;
+  const { t, s } = useInvitation();
+  const { heading, venues } = useVenues();
   return (
     <section className={st.section}>
-      <Label n={n} text={t(loc?.heading) || s.location} />
-      {loc?.venues.map((v) => (
+      <Label n={n} text={heading || s.location} />
+      {venues.map((v) => (
         <div key={v.id} className={st.venue} data-reveal>
-          <div className={st.mapWrap}>
-            <MapEmbed venue={v} className={st.map} />
-          </div>
+          <MapFrame venue={v} classes={{ wrap: st.mapWrap, map: st.map }} />
           <div className={st.venueRow}>
             <span>{[t(v.label), t(v.name), t(v.address)].filter(Boolean).join(", ")}</span>
             <MapsLink venue={v} className={st.directions}>
@@ -216,13 +204,13 @@ function Location({ n }: { n: number }) {
 
 function Footer() {
   const { t, event } = useInvitation();
-  const c = event.content;
+  const f = useFooter();
   const dp = dateParts(event.eventDate);
-  const one = t(c.partnerOne);
-  const two = t(c.partnerTwo);
+  const one = t(event.content.partnerOne);
+  const two = t(event.content.partnerTwo);
   return (
     <footer className={st.footer}>
-      <span className={st.footerInitials}>{t(c.footer?.text) || (one && two ? `${one[0]} & ${two[0]}` : initials(t(c.names)))}</span>
+      <span className={st.footerInitials}>{f.text || (one && two ? `${one[0]} & ${two[0]}` : initials(f.names))}</span>
       <span className={st.footerDate}>
         {dp.d}.{dp.m}.{dp.y}
       </span>
@@ -232,29 +220,19 @@ function Footer() {
 
 /** Modern Minimal Wedding — MinimalWedding.dc.html. */
 export default function MinimalWedding() {
-  const { sections, themeStyle } = useInvitation();
   // Numbered sections count up in render order (01 — Покана, 02 — Програма…).
-  let n = 0;
-  const numbered = (el: (n: number) => JSX.Element) => el(++n);
-  const render: Partial<Record<SectionKind, () => JSX.Element>> = {
-    welcome: () => numbered((i) => <Welcome n={i} />),
-    countdown: () => <Countdown />,
-    program: () => numbered((i) => <Program n={i} />),
-    rsvp: () => numbered((i) => <Rsvp n={i} />),
-    location: () => numbered((i) => <Location n={i} />),
-    footer: () => <Footer />,
-  };
   return (
-    <div className={st.page} style={themeStyle}>
-      <main className={st.phone}>
-        <PreviewNotice />
-        <LanguageToggle />
-        <MusicButton />
-        <Hero />
-        {sections.map((id) => (
-          <Fragment key={id}>{render[id]?.()}</Fragment>
-        ))}
-      </main>
-    </div>
+    <TemplateShell
+      classes={{ page: st.page, phone: st.phone }}
+      hero={<Hero />}
+      sections={{
+        welcome: (next) => <Welcome n={next()} />,
+        countdown: () => <Countdown />,
+        program: (next) => <Program n={next()} />,
+        rsvp: (next) => <Rsvp n={next()} />,
+        location: (next) => <Location n={next()} />,
+        footer: () => <Footer />,
+      }}
+    />
   );
 }

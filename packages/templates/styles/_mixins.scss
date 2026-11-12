@@ -1,0 +1,71 @@
+// Building blocks shared by the templates' CSS Modules
+// (`@use "../../styles/mixins" as *;`). They hold only declarations that are
+// identical across templates; anything a template styles differently is an
+// argument or stays in the template's module.
+
+/// Full-height backdrop around the phone column.
+@mixin page($bg) {
+  min-height: 100vh;
+  background: $bg;
+}
+
+/// The 480px column every template renders in.
+@mixin phone-shell($bg, $font, $color) {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: $bg;
+  font-family: $font;
+  color: $color;
+  display: flex;
+  flex-direction: column;
+}
+
+/// Keyboard focus ring for everything inside the including rule.
+@mixin focus-ring($color, $width: 2px) {
+  :focus-visible {
+    outline: $width solid $color;
+    outline-offset: 2px;
+  }
+}
+
+/// Vertical flex stack (`$gap: null` leaves the gap out).
+@mixin stack($gap: null) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+/// Text inputs and selects: full width, the template's font. Include first
+/// (the `font` shorthand must come before any font-size / font-weight).
+@mixin field-input {
+  width: 100%;
+  font: inherit;
+}
+
+/// Buttons: no border, the template's font. Include first, like field-input.
+@mixin button-base {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+/// Dimmed while the form is sending. Include last (it adds a nested rule).
+@mixin dim-when-disabled {
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+/// Count-down digits keep their width while ticking.
+@mixin countdown-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/// Google Maps iframe filling its wrapper.
+@mixin map-fill {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}

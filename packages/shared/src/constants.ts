@@ -1,3 +1,5 @@
+import type { PublicSettings } from "./types";
+
 // Domain constants shared by the API, the public site and the admin panel.
 
 export const LOCALES = ["mk", "en"] as const;
@@ -35,6 +37,12 @@ export const TEMPLATE_STATUSES = [
   "draft",
 ] as const;
 export type TemplateStatus = (typeof TEMPLATE_STATUSES)[number];
+export const TEMPLATE_STATUS_LABELS: Record<TemplateStatus, string> = {
+  live: "Live",
+  "coming-soon": "Coming soon",
+  hidden: "Hidden",
+  draft: "Draft",
+};
 
 export const EVENT_STATUSES = [
   "draft",
@@ -94,6 +102,13 @@ export const PHOTO_MIME = [
   "image/webp",
 ] as const;
 export const AUDIO_MIME = ["audio/mpeg", "audio/mp3"] as const;
+export type PhotoMime = (typeof PHOTO_MIME)[number];
+export type AudioMime = (typeof AUDIO_MIME)[number];
+/** File-input `accept` per kind (extensions too: browsers often send HEIC without a type). */
+export const MEDIA_ACCEPT: Record<MediaKind, string> = {
+  photo: [...PHOTO_MIME, ".heic", ".heif", ".jpg", ".jpeg", ".png"].join(","),
+  audio: [AUDIO_MIME[0], ".mp3"].join(","),
+};
 /** Web sizes generated for every photo. */
 export const PHOTO_WIDTHS = [640, 1080, 1600] as const;
 
@@ -125,6 +140,13 @@ export const RSVP_MODES = [
   "registration", // name + company + work email + dinner (Corporate)
 ] as const;
 export type RsvpMode = (typeof RSVP_MODES)[number];
+export const RSVP_MODE_LABELS: Record<RsvpMode, string> = {
+  "guests-with-menu": "One row per guest, with a menu choice",
+  "guest-count": "Name + number of guests",
+  kids: "Child's name, number of children and adults, allergies",
+  "plus-one": "Name + plus one",
+  registration: "Name, company, work email, staying for dinner",
+};
 
 // Invitations live at the root of the public site (`/<slug>`), so a slug
 // must never shadow one of the site's own routes.
@@ -143,3 +165,12 @@ export const RESERVED_SLUGS = [
   "robots.txt",
   "sitemap.xml",
 ] as const;
+
+/** Public business details used when the API can't be reached (landing page). */
+export const DEFAULT_PUBLIC_SETTINGS: PublicSettings = {
+  businessName: "Pokanito",
+  contactEmail: "hello@pokanito.mk",
+  phone: "",
+  instagram: "",
+  logoUrl: null,
+};

@@ -1,0 +1,58 @@
+// ── How it works ───────────────────────────────────────────────────────────
+.lp-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  gap: 20px;
+}
+
+.lp-step {
+  background: var(--ui-color-white);
+  border-radius: 24px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition:
+    transform 0.3s var(--ui-ease-bounce),
+    box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--ui-shadow-warm-hover);
+  }
+
+  &__num {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    font-family: var(--ui-font-heading);
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    rotate: -6deg;
+  }
+
+  &:nth-child(2) &__num {
+    rotate: 5deg;
+  }
+  &:nth-child(3) &__num {
+    rotate: -4deg;
+  }
+  &:nth-child(4) &__num {
+    rotate: 6deg;
+  }
+
+  b {
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  &__text {
+    color: var(--ui-color-text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}

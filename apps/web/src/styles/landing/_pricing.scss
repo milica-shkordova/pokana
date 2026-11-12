@@ -1,0 +1,94 @@
+@use "@pokanito/ui/tools" as ui;
+
+// ── Pricing ────────────────────────────────────────────────────────────────
+.lp-pricing__badge {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--ui-color-mint);
+  color: var(--ui-color-success);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.lp-plans {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 20px;
+}
+
+.lp-plan {
+  position: relative;
+  border: 2px solid var(--ui-color-line);
+  background: var(--ui-color-white);
+  border-radius: 28px;
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &--featured {
+    background: var(--ui-color-blush-tint);
+    border-color: var(--ui-color-coral);
+  }
+
+  &__ribbon {
+    position: absolute;
+    top: -15px;
+    left: 30px;
+    background: var(--ui-color-marigold);
+    color: var(--ui-color-ink);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    rotate: -3deg;
+  }
+
+  &__name {
+    font-family: var(--ui-font-heading);
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  &__price {
+    font-family: var(--ui-font-heading);
+    font-size: 36px;
+    font-weight: 500;
+
+    span {
+      font-size: 14px;
+      color: var(--ui-color-muted);
+    }
+  }
+
+  &__features {
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--ui-color-ink-soft);
+    line-height: 1.5;
+  }
+
+  &__cta.ui-button {
+    margin-top: auto;
+    min-height: 50px;
+    font-weight: 700;
+  }
+
+  &__cta.ui-button--outline {
+    border-width: 2px;
+  }
+
+  @include ui.down(mobile) {
+    padding: 28px 22px;
+  }
+}

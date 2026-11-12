@@ -103,3 +103,45 @@ export function countdownParts(iso: string, now = Date.now()) {
 }
 
 export const pad2 = (n: number) => String(n).padStart(2, "0");
+
+// ── Admin-style dates (English, Skopje time) ────────────────────────────────
+
+const dateFmt = new Intl.DateTimeFormat("en-GB", { timeZone: EVENT_TIMEZONE, day: "numeric", month: "short", year: "numeric" });
+const dateTimeFmt = new Intl.DateTimeFormat("en-GB", {
+  timeZone: EVENT_TIMEZONE,
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+/** "18 Sep 2027" in Skopje time. */
+export const formatDate = (iso: string | null | undefined) => (iso ? dateFmt.format(new Date(iso)) : "—");
+export const formatDateTime = (iso: string | null | undefined) => (iso ? dateTimeFmt.format(new Date(iso)) : "—");
+
+export function timeAgo(iso: string | number, now = Date.now()): string {
+  const s = Math.round((now - new Date(iso).getTime()) / 1000);
+  if (s < 45) return "just now";
+  const m = Math.round(s / 60);
+  if (m < 60) return `${m} min ago`;
+  const h = Math.round(m / 60);
+  if (h < 24) return `${h} h ago`;
+  const d = Math.round(h / 24);
+  if (d === 1) return "Yesterday";
+  if (d < 7) return `${d} days ago`;
+  if (d < 14) return "Last week";
+  if (d < 30) return `${Math.round(d / 7)} weeks ago`;
+  return formatDate(new Date(iso).toISOString());
+}
+
+/** Tries to read "12 Jun 2027", "2027-06-12", "12.06.2027" from a lead (noon UTC, so the Skopje day stays right). */
+export function guessDate(text: string | null | undefined): string | undefined {
+  if (!text) return undefined;
+  const dmy = text.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  const iso = dmy ? `${dmy[3]}-${pad2(Number(dmy[2]))}-${pad2(Number(dmy[1]))}` : null;
+  const t = Date.parse(iso ?? text);
+  if (Number.isNaN(t)) return undefined;
+  const d = new Date(t);
+  return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 12)).toISOString();
+}

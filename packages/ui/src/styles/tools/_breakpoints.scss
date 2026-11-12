@@ -1,0 +1,119 @@
+// KEEP IN SYNC with src/tokens.ts (BREAKPOINTS and MEDIA, the TypeScript copies for matchMedia).
+// Breakpoints and media-query mixins (Sass only, no CSS output).
+//
+//   @use "@pokanito/ui/tools" as ui;
+//
+//   .x {
+//     @include ui.down(mobile) { … }        // @media (max-width: 720px)
+//     @include ui.below(desktop) { … }      // @media (max-width: 1023px)
+//     @include ui.up(desktop) { … }         // @media (min-width: 1024px)
+//     @include ui.reduced-motion { … }      // @media (prefers-reduced-motion: reduce)
+//     @include ui.below(desktop, $and: ui.$motion-ok) { … }
+//       // @media (max-width: 1023px) and (prefers-reduced-motion: no-preference)
+//   }
+//
+// `down` is inclusive (max-width: value), `below` is exclusive (value - 1px),
+// so up(desktop) and below(desktop) never overlap. Every value here is one the
+// apps actually use; add a name rather than writing a literal query.
+
+@use "sass:map";
+
+$breakpoints: (
+  "phone-sm": 520px, // landing contact form → one column
+  "phone": 600px, // admin compact paddings
+  "phablet": 640px, // below: landing "inside" cards become a carousel
+  "mobile": 720px, // main mobile layout (gutter, sections, landing)
+  "tablet-sm": 760px, // admin program rows wrap
+  "tablet": 768px, // (unused in apps; template pages)
+  "tablet-lg": 900px, // admin sidebar / settings nav collapse
+  "desktop": 1024px, // landing desktop (pinned intro, journey, gallery)
+  "desktop-md": 1100px, // admin editor preview stops being sticky
+  "container": 1128px, // .ui-container max (1080) + 2 × gutter
+  "desktop-lg": 1180px, // admin new-event panel moves above the grid
+);
+
+$heights: (
+  "short": 820px, // short desktop viewports (landing hero)
+);
+
+// Media features, for combining (`$and:`) or comma lists.
+$reduced-motion: "(prefers-reduced-motion: reduce)";
+$motion-ok: "(prefers-reduced-motion: no-preference)";
+$fine-pointer: "(hover: hover) and (pointer: fine)";
+$coarse-pointer: "(pointer: coarse)";
+
+@function bp($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`. Known: #{map.keys($breakpoints)}.";
+  }
+  @return map.get($breakpoints, $name);
+}
+
+@function up-query($name) {
+  @return "(min-width: #{bp($name)})";
+}
+
+@function down-query($name) {
+  @return "(max-width: #{bp($name)})";
+}
+
+@function below-query($name) {
+  @return "(max-width: #{bp($name) - 1px})";
+}
+
+@function height-down-query($name) {
+  @if not map.has-key($heights, $name) {
+    @error "Unknown height breakpoint `#{$name}`. Known: #{map.keys($heights)}.";
+  }
+  @return "(max-height: #{map.get($heights, $name)})";
+}
+
+@function _and($query, $and) {
+  @if $and == null {
+    @return $query;
+  }
+  @return "#{$query} and #{$and}";
+}
+
+// `$and`: extra media feature(s), joined with "and".
+@mixin up($name, $and: null) {
+  @media #{_and(up-query($name), $and)} {
+    @content;
+  }
+}
+
+@mixin down($name, $and: null) {
+  @media #{_and(down-query($name), $and)} {
+    @content;
+  }
+}
+
+@mixin below($name, $and: null) {
+  @media #{_and(below-query($name), $and)} {
+    @content;
+  }
+}
+
+@mixin height-down($name) {
+  @media #{height-down-query($name)} {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media #{$reduced-motion} {
+    @content;
+  }
+}
+
+@mixin motion-ok {
+  @media #{$motion-ok} {
+    @content;
+  }
+}
+
+@mixin fine-pointer {
+  @media #{$fine-pointer} {
+    @content;
+  }
+}
